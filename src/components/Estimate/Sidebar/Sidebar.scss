@@ -1,0 +1,31 @@
+.c-sidebar-modal {
+  width: 60%;
+}
+
+.modal-content {
+  background-color: #F2E1B2;
+}
+
+.c-sidebar-header {
+  font-size: 24px;
+}
+
+.c-sidebar-item {
+  background-color: rgb(180, 228, 28);
+  padding: 5px;
+  margin: 15px;
+  font-size: 16px;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.c-sidebar-modal .modal-body{
+  height: 60vh;
+  border: 1px solid black;
+}
+
+.c-sidebar-modal .modal-dialog {
+    width: 60%;
+}

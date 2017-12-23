@@ -1,0 +1,60 @@
+.c-estimators-worksheet-items {
+    height: 30px;
+}
+.c-estimators-worksheet-items-focus {
+    height: 60px;
+}
+
+.c-estimators-worksheet-list-item {
+  display: inline-block;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  font-size: 8px;
+  height: 100%;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.c-estimators-worksheet-list-item-no {
+  width: 5%;
+}
+
+.c-estimators-worksheet-list-item-code {
+  width: 11%;
+}
+
+.c-estimators-worksheet-list-item-amt {
+  width: 10%;
+}
+
+.c-estimators-worksheet-list-item-amt-input {
+  width: 90%;
+  vertical-align: top;
+}
+
+
+.c-estimators-worksheet-list-item-units {
+  width: 11%;
+  background-color: white;
+}
+
+.c-estimators-worksheet-list-item-desc {
+  width: 36%;
+  overflow-y: scroll;
+}
+.c-estimators-worksheet-list-item-desc-input {
+  width:100%;
+  height:100%;
+}
+
+.c-estimators-worksheet-list-item-mtrl {
+  width: 11%;
+}
+
+.c-estimators-worksheet-list-item-lbr {
+  width: 11%;
+}
+
+.c-estimators-worksheet-list-item-x {
+  width: 5%;
+}

@@ -1,0 +1,85 @@
+.c-estimators-worksheet-body{
+  width: 88%;
+  margin-left: 6%;
+}
+
+.c-estimators-worksheet-title{
+  background-color: white;
+  border-top: 10px solid #19AB27;
+  border-bottom: 1px solid #000;
+  height: 40px;
+  padding-top: 5px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.c-estimators-worksheet-select-container{
+  width: 50%;
+  display: inline-block;
+}
+.c-estimators-worksheet-select {
+  width: 100%;
+  font-size: 10px;
+}
+
+
+.c-estimators-worksheet-categories-select .Select-input > input{
+  caret-color: white;
+}
+
+.c-estimators-worksheet-categories-select .Select-control {
+  background-color: black;
+  color: black;
+  border: 1px solid rgb(166, 166, 166);
+}
+
+.c-estimators-worksheet-categories-select .Select.is-focused > .Select-control {
+  background-color: black;
+  color: white
+}
+
+.c-estimators-worksheet-list{
+  margin-top: 0px;
+  background-color: white;
+  margin-bottom: 75px;
+}
+.c-estimators-worksheet-list-title{
+    height: 100%;
+}
+.c-estimators-worksheet-list-header {
+  display: inline-block;
+  margin-top: 0px;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+  font-size: 10px;
+  background-color: white;
+  text-align: center;
+}
+.c-estimators-worksheet {
+
+}
+
+.c-estimators-worksheet-list-no {
+  width: 5%;
+}
+.c-estimators-worksheet-list-code {
+  width: 11%;
+}
+.c-estimators-worksheet-list-amt {
+  width: 10%;
+}
+.c-estimators-worksheet-list-units {
+  width: 11%;
+}
+.c-estimators-worksheet-list-desc {
+  width: 36%;
+}
+.c-estimators-worksheet-list-mtrl {
+  width: 11%;
+}
+.c-estimators-worksheet-list-lbr {
+  width: 11%;
+}
+.c-estimators-worksheet-list-x {
+  width: 5%;
+}

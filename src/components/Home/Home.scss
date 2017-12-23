@@ -1,0 +1,42 @@
+.c-home {
+  &-body {
+    background-color: #F2E1B2;
+    min-height: 100vh;
+    overflow-y: scroll;
+    text-align: center;
+  }
+
+  &-logo {
+    width:60%;
+    max-width: 200px;
+    margin: 40px auto 30px;
+  }
+
+  &-button {
+    width:30%;
+    font-size: 15px;
+    text-align: center;
+    background-color: rgb(180, 228, 28);
+    border: 2px solid #000;
+    border-radius: 20px;
+    &-group {
+      margin-top: 20px;
+    }
+    &-top {
+      margin: 0% 35% 5%;
+    }
+    &-bottom{
+      margin: 0% 5%;
+    }
+  }
+
+  &-gear{
+    width: 20%;
+    margin-left:70%;
+    padding-top: 40px;
+    text-align: center;
+    &-icon{
+      font-size: 30px;
+    }
+  }
+}

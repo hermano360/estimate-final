@@ -1,0 +1,118 @@
+@import './partialsEstimate';
+
+$application-background: #F2E1B2;
+
+.c-estimate{
+  &-body {
+    background-color: $application-background;
+    min-height: 100vh;
+    overflow-y: scroll;
+  }
+  &-header {
+    padding-top: 20px;
+  }
+  &-next-quote{
+    text-align: right;
+    margin-right: 5%;
+    margin-bottom: 10px;
+    font-size: 30px;
+    &-page{
+      font-size: 25px;
+      margin: 0% 3%;
+      display: inline;
+    }
+  }
+  &-logo {
+    width:90%;
+    max-width: 200px;
+    &-container {
+      width:35%;
+      margin-left:40%;
+      display: inline-block;
+    }
+  }
+  &-sidebar {
+    top: 10px;
+    left: 6%;
+  }
+  &-action-button {
+    background-color: rgb(180, 228, 28);
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    min-width: 50px;
+    font-size: 12px;
+    position: fixed;
+    color: black;
+    text-align: center;
+  }
+  &-show-total {
+    width:25%;
+    max-width: 200px;
+    vertical-align: middle;
+    text-align: right;
+  }
+
+  &-input {
+    border: 1px solid rgb(166, 166, 166);
+    border-radius: 3px;
+    margin-top: 4px;
+    height: 32px;
+    font-size: 12px;
+    margin-left: 1%;
+    margin-right: 1%;
+    padding-left: 5px;
+    background-color: white;
+    color: black;
+    display: inline-block;
+
+    &-body{
+      width: 90%;
+      margin-left: 5%;
+    }
+    &-textarea {
+      height: 70px;
+      padding-top:10px;
+      padding-bottom:10px;
+    }
+    &-half {
+      width:48%;
+      display: inline-block;
+      &.dateDiv {
+        vertical-align: middle;
+        margin-top: 4px;
+      }
+    }
+    &-third {
+      width:31.33%;
+    }
+    &-full {
+      width:98%;
+    }
+
+    &-textarea {
+      width:98%;
+    }
+  }
+
+  &-estimator {
+    text-align-last: center;
+  }
+  &-total {
+    bottom: 30px;
+    right: 10%;
+  }
+  &-back {
+    bottom: 30px;
+    left: 10%;
+  }
+  &-save {
+    bottom: 30px;
+    left: calc(50% - 25px);
+  }
+
+}
+
+.hidden {
+  display: none;
+}
