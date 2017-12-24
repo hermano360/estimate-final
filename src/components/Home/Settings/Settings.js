@@ -51,7 +51,7 @@ class Settings extends Component {
   }
   handleChangeLabor(value){
     const {dispatch} = this.props
-    localStorage.setItem('extraLabor', value)
+    localStorage.setItem('labor', value)
     dispatch(actions.changeLabor(value))
   }
   handleChangeEstimator(value){

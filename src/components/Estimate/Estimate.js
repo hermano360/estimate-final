@@ -25,12 +25,14 @@ export class Estimate extends Component {
     this.state = {
       showTotal: false,
       showSidebar: false,
-      availableQuoteNumbers: []
+      availableQuoteNumbers: [],
+      currentDate: ""
     }
     this.toggleShowModal = this.toggleShowModal.bind(this)
     this.incrementQuoteNumber = this.incrementQuoteNumber.bind(this)
     this.decrementQuoteNumber = this.decrementQuoteNumber.bind(this)
     this.saveQuoteToDatabase = this.saveQuoteToDatabase.bind(this)
+    this.handleChangeDate = this.handleChangeDate.bind(this)
   }
 
   toggleShowModal(){
@@ -68,6 +70,9 @@ export class Estimate extends Component {
     if(currentQuoteNumberPosition !== -1 && currentQuoteNumberPosition + 1 < availableQuoteNumbers.length){
       dispatch(actions.setQuoteNumber(Number(availableQuoteNumbers[currentQuoteNumberPosition + 1])))
     }
+    this.setState({
+      currentDate: ""
+    })
 
   }
   decrementQuoteNumber(){
@@ -77,6 +82,9 @@ export class Estimate extends Component {
     if(currentQuoteNumberPosition !== -1 && currentQuoteNumberPosition > 0){
       dispatch(actions.setQuoteNumber(Number(availableQuoteNumbers[currentQuoteNumberPosition - 1])))
     }
+    this.setState({
+      currentDate: ""
+    })
   }
 
   componentWillMount(){
@@ -99,9 +107,27 @@ export class Estimate extends Component {
     const {dispatch} = this.props
     dispatch(actions.changePage(component))
   }
+
   saveQuoteToDatabase(){
     const {quotes, quoteNumber,dispatch} = this.props
-    console.log(quotes[quoteNumber])
+    let {currentDate} = this.state
+    let estimator = localStorage.getItem('estimator')
+    let quoteToBeSaved = quotes[quoteNumber]
+
+    if(currentDate === ""){
+      if(quoteToBeSaved.date === ""){
+        quoteToBeSaved = moment().format('MM-DD-YYYY')
+      }
+    } else {
+      quoteToBeSaved.date = currentDate
+    }
+
+    if(quoteToBeSaved.estimator === ""){
+      if(estimator !== undefined && estimator !== ''){
+        quoteToBeSaved.estimator = estimator
+      }
+    }
+
     request
       .post('http://localhost:8000/quotes')
       .send(quotes[quoteNumber])
@@ -118,14 +144,40 @@ export class Estimate extends Component {
       return 'Save'
     }
   }
+  handleChangeDate(e){
+    this.setState({
+      currentDate: e
+    })
+  }
 
   render() {
-    const {dispatch, estimator, quotes, quoteNumber, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
+    const {dispatch, quotes, quoteNumber, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
     const {showTotal, showSidebar} = this.state
     let availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
+    let currentDate
+    let estimator
 
-    const currentDate = moment().format('MM-DD-YYYY')
-    console.log(currentDate)
+    // move this into renderCurrentQuote function
+    if(this.state.currentDate === ""){
+      if(quotes[quoteNumber].date ===""){
+        currentDate = moment().format('MM-DD-YYYY')
+      } else {
+        currentDate = quotes[quoteNumber].date
+      }
+    } else {
+      currentDate = this.state.currentDate
+    }
+    if(quotes[quoteNumber].estimator === ""){
+      if( localStorage.getItem('estimator') === undefined || localStorage.getItem('estimator') === ""){
+        estimator = ""
+      } else {
+        estimator = localStorage.getItem('estimator')
+      }
+    } else {
+      estimator = quotes[quoteNumber].estimator
+    }
+
+
     const currentQuote = this.renderCurrentQuote(quotes, quoteNumber)
 
     return (
@@ -190,7 +242,7 @@ export class Estimate extends Component {
             ref = {input => { if (shoppingCartDOMNodes['email'] === undefined && input !== null) {dispatch(actions.setShoppingCartNode('email', input))}}}
             onKeyPress={(e) => { if (e.charCode === 13) { shoppingCartDOMNodes['scopeOfWork'].focus() } }}/>
           <select className='c-estimate-estimator c-estimate-input c-estimate-input-half'
-            value={currentQuote.estimator} onChange={(e)=>{dispatch(actions.changeEstimator(e.target.value))}}>
+            value={estimator} onChange={(e)=>{dispatch(actions.editQuoteAttribute(quoteNumber,'estimator', e.target.value))}}>
             <option value="">-Estimator-</option>
             <option value="Arnold Corona">Arnold Corona</option>
             <option value="Gary Banks">Gary Banks</option>
@@ -202,7 +254,8 @@ export class Estimate extends Component {
             <option value="Cameron Sterling">Cameron Sterling</option>
           </select>
           <div className="c-estimate-input-half dateDiv">
-            <DateTimeField mode="date" dateTime={currentDate} format= "MM-DD-YYYY" inputFormat= "MM/DD/YYYY" onChange={(e)=>{console.log(e,'now')}}/>
+            <DateTimeField mode="date" dateTime={currentDate}
+            format= "MM-DD-YYYY" inputFormat= "MM/DD/YYYY" onChange={this.handleChangeDate}/>
           </div>
           <textarea className="c-estimate-input c-estimate-input-textarea"
             placeholder="Scope of Work" value={currentQuote.scopeOfWork}
