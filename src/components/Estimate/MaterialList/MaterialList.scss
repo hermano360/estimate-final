@@ -1,0 +1,25 @@
+.c-materiallist{
+  &-modal {
+    text-align: center;
+      .modal-header{
+        border-bottom: none;
+      }
+  }
+  &-pair{
+    border-bottom: 1px solid grey;
+  }
+  &-property {
+    width:30%;
+    text-align: left;
+    display: inline-block;
+    vertical-align: top;
+  }
+  &-value {
+    width:70%;
+    text-align: left;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+
+}
