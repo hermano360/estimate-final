@@ -4,22 +4,46 @@
       .modal-header{
         border-bottom: none;
       }
+      .modal-body {
+        width: 90%;
+        margin-left: 5%;
+        border: 2px solid green;
+        border-radius: 10px;
+
+      }
   }
   &-pair{
     border-bottom: 1px solid grey;
   }
   &-property {
     width:30%;
-    text-align: left;
+    text-align: middle;
     display: inline-block;
     vertical-align: top;
+    font-size: 12px;
+    font-weight: bold;
+    &.full{
+      width:100%
+    }
   }
   &-value {
     width:70%;
-    text-align: left;
+    text-align: middle;
     display: inline-block;
     vertical-align: top;
+    font-size: 12px;
+    &.full{
+      width:100%
+    }
   }
 
+  &-picture {
+
+    &-frame {
+      height: 300px;
+      width: 100%;
+      border: 1px solid black;
+    }
+  }
 
 }

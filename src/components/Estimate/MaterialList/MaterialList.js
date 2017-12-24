@@ -86,8 +86,12 @@ export class MaterialList extends Component {
           <div className="c-materiallist-value">{quotes[quoteNumber].shoppingCart[0].labor}</div>
         </div>
         <div className="c-materiallist-pair">
-          <div className="c-materiallist-property">Supplier</div>
-          <div className="c-materiallist-value">{quotes[quoteNumber].shoppingCart[0].specifications}</div>
+          <div className="c-materiallist-property full">Supplier</div>
+          <div className="c-materiallist-value full">{quotes[quoteNumber].shoppingCart[0].specifications}</div>
+        </div>
+        <div className="c-materiallist-picture">
+          <div className="c-materiallist-picture-frame"></div>
+
         </div>
 
 

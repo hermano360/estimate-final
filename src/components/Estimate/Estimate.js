@@ -10,6 +10,7 @@ import DateTimeField from 'react-bootstrap-datetimepicker'
 
 
 import EstimateWorksheet from './EstimateWorksheet/EstimateWorksheet'
+import MaterialList from './MaterialList/MaterialList'
 import Sidebar from './Sidebar/Sidebar'
 
 import logo from '../../assets/images/ezestimator_logo.png'
@@ -183,6 +184,7 @@ export class Estimate extends Component {
     return (
       <div className="c-estimate-body">
         <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers}/>
+        <MaterialList />
         <div className="c-estimate-action-button c-estimate-sidebar"
           onClick={this.toggleShowModal}>
           <MdMenu/>
