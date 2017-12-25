@@ -26,10 +26,12 @@ export class Estimate extends Component {
     this.state = {
       showTotal: false,
       showSidebar: false,
+      showMaterialInfo: false,
       availableQuoteNumbers: [],
       currentDate: ""
     }
     this.toggleShowModal = this.toggleShowModal.bind(this)
+    this.toggleShowMaterial = this.toggleShowMaterial.bind(this)
     this.incrementQuoteNumber = this.incrementQuoteNumber.bind(this)
     this.decrementQuoteNumber = this.decrementQuoteNumber.bind(this)
     this.saveQuoteToDatabase = this.saveQuoteToDatabase.bind(this)
@@ -40,6 +42,13 @@ export class Estimate extends Component {
     const {showSidebar} = this.state
     this.setState({
       showSidebar: !showSidebar
+    })
+  }
+
+  toggleShowMaterial(){
+    const {showMaterialInfo} = this.state
+    this.setState({
+      showMaterialInfo: !showMaterialInfo
     })
   }
 
@@ -153,7 +162,7 @@ export class Estimate extends Component {
 
   render() {
     const {dispatch, quotes, quoteNumber, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
-    const {showTotal, showSidebar} = this.state
+    const {showTotal, showSidebar, showMaterialInfo} = this.state
     let availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     let currentDate
     let estimator
@@ -184,7 +193,7 @@ export class Estimate extends Component {
     return (
       <div className="c-estimate-body">
         <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers}/>
-        <MaterialList />
+        <MaterialList show={showMaterialInfo} toggleShowMaterial={this.toggleShowMaterial}/>
         <div className="c-estimate-action-button c-estimate-sidebar"
           onClick={this.toggleShowModal}>
           <MdMenu/>

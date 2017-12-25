@@ -14,7 +14,7 @@ export class MaterialList extends Component {
   }
 
   render() {
-    const {quotes,quoteNumber} = this.props
+    const {quotes,quoteNumber, show, toggleShowMaterial} = this.props
     console.log(quotes[quoteNumber].shoppingCart)
 
 //     group
@@ -56,7 +56,7 @@ export class MaterialList extends Component {
 // <div>{quotes[quoteNumber].shoppingCart[0].labor}</div>
 // <div>{quotes[quoteNumber].shoppingCart[0].specifications}</div>
     return (
-      <Modal show={true} onHide={()=>console.log('close')}  className="c-materiallist-modal" >
+      <Modal show={show} onHide={toggleShowMaterial}  className="c-materiallist-modal" >
         <Modal.Header closeButton>
           <div className="c-materiallist-header">Material/Labor Cost List</div>
         </Modal.Header>
@@ -97,7 +97,7 @@ export class MaterialList extends Component {
 
           </Modal.Body>
         <Modal.Footer>
-          <Button className="c-materiallist-close" onClick={()=>console.log('close')}>Close</Button>
+          <Button className="c-materiallist-close" onClick={toggleShowMaterial}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
