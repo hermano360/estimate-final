@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import TiArrowLeftOutline from 'react-icons/lib/ti/arrow-left-outline'
+import TiArrowRightOutline from 'react-icons/lib/ti/arrow-right-outline'
 import {Modal, Button} from 'react-bootstrap'
 import actions from '../../../redux/actions/actions'
 import request from 'superagent'
@@ -7,95 +9,78 @@ import request from 'superagent'
 import './MaterialList.scss'
 
 export class MaterialList extends Component {
-  constructor(e){
-    super(e)
-    this.state = {
+  incrementItemNumber(shoppingCart, itemNumber){
+    const {changeItemNumber} = this.props
+    if(itemNumber < shoppingCart.length){
+      changeItemNumber(itemNumber + 1)
+    } else {
+      changeItemNumber(1)
     }
+  }
+  decrementItemNumber(shoppingCart, itemNumber){
+    const {changeItemNumber} = this.props
+    if(itemNumber > 1){
+      changeItemNumber(itemNumber - 1)
+    } else {
+      changeItemNumber(shoppingCart.length)
+    }
+  }
+  removeItemNumber(itemNumber){
+    const {dispatch, quoteNumber} = this.props
+    dispatch(actions.removeFromShoppingCart(itemNumber, quoteNumber))
   }
 
   render() {
-    const {quotes,quoteNumber, show, toggleShowMaterial} = this.props
-    console.log(quotes[quoteNumber].shoppingCart)
+    const {show, toggleShowMaterial, itemNumber, shoppingCart, dispatch, quoteNumber} = this.props
+    let renderedItem = shoppingCart[itemNumber-1]
 
-//     group
-// :
-// "Bathroom faucets"
-// keycode
-// :
-// "Bfaucet1"
-// labor
-// :
-// "$60.00"
-// quantity
-// :
-// "7"
-// sku
-// :
-// "84503"
-// specifications
-// :
-// "Supply Labor And Material For Installation of Moen Adler Chrome 1-handle WaterSense® Bathroom Faucet (Drain Included)  At New Addition Include Supply Flex Lines. *" widespread additional $65.00 lto install ."
-// supplier
-// :
-// "Lowes"
-// template
-// :
-// "Bath2"
-// totalMaterial
-// :
-// "$64.50"
-// uom
-// :
-// "ea"
-//
-// <div>{quotes[quoteNumber].shoppingCart[0].supplier}</div>
-// <div>{quotes[quoteNumber].shoppingCart[0].keycode}</div>
-// <div>{quotes[quoteNumber].shoppingCart[0].sku}</div>
-// <div>{quotes[quoteNumber].shoppingCart[0].uom}</div>
-// <div>{quotes[quoteNumber].shoppingCart[0].totalMaterial}</div>
-// <div>{quotes[quoteNumber].shoppingCart[0].labor}</div>
-// <div>{quotes[quoteNumber].shoppingCart[0].specifications}</div>
     return (
-      <Modal show={show} onHide={toggleShowMaterial}  className="c-materiallist-modal" >
+      <Modal show={show} onHide={toggleShowMaterial} className="c-materiallist-modal" >
         <Modal.Header closeButton>
           <div className="c-materiallist-header">Material/Labor Cost List</div>
         </Modal.Header>
         <Modal.Body>
-        <div className="c-materiallist-pair">
-          <div className="c-materiallist-property">Supplier</div>
-          <div className="c-materiallist-value">{quotes[quoteNumber].shoppingCart[0].supplier}</div>
-        </div>
-        <div className="c-materiallist-pair">
-          <div className="c-materiallist-property">Supplier</div>
-          <div className="c-materiallist-value">{quotes[quoteNumber].shoppingCart[0].keycode}</div>
-        </div>
-        <div className="c-materiallist-pair">
-          <div className="c-materiallist-property">Supplier</div>
-          <div className="c-materiallist-value">{quotes[quoteNumber].shoppingCart[0].sku}</div>
-        </div>
-        <div className="c-materiallist-pair">
-          <div className="c-materiallist-property">Supplier</div>
-          <div className="c-materiallist-value">{quotes[quoteNumber].shoppingCart[0].totalMaterial}</div>
-        </div>
-        <div className="c-materiallist-pair">
-          <div className="c-materiallist-property">Supplier</div>
-          <div className="c-materiallist-value">{quotes[quoteNumber].shoppingCart[0].uom}</div>
-        </div>
-        <div className="c-materiallist-pair">
-          <div className="c-materiallist-property">Supplier</div>
-          <div className="c-materiallist-value">{quotes[quoteNumber].shoppingCart[0].labor}</div>
-        </div>
-        <div className="c-materiallist-pair">
-          <div className="c-materiallist-property full">Supplier</div>
-          <div className="c-materiallist-value full">{quotes[quoteNumber].shoppingCart[0].specifications}</div>
-        </div>
-        <div className="c-materiallist-picture">
-          <div className="c-materiallist-picture-frame"></div>
-
-        </div>
-
-
-          </Modal.Body>
+          <div className="c-materiallist-pair">
+            <div className="c-materiallist-property">Supplier</div>
+            <div className="c-materiallist-value">{renderedItem.supplier}</div>
+          </div>
+          <div className="c-materiallist-pair">
+            <div className="c-materiallist-property">Keycode</div>
+            <div className="c-materiallist-value">{renderedItem.keycode}</div>
+          </div>
+          <div className="c-materiallist-pair">
+            <div className="c-materiallist-property">SKU</div>
+            <div className="c-materiallist-value">{renderedItem.sku}</div>
+          </div>
+          <div className="c-materiallist-pair">
+            <div className="c-materiallist-property">Total Material</div>
+            <div className="c-materiallist-value">{renderedItem.totalMaterial}</div>
+          </div>
+          <div className="c-materiallist-pair">
+            <div className="c-materiallist-property">UOM</div>
+            <div className="c-materiallist-value">{renderedItem.uom}</div>
+          </div>
+          <div className="c-materiallist-pair">
+            <div className="c-materiallist-property">Labor</div>
+            <div className="c-materiallist-value">{renderedItem.labor}</div>
+          </div>
+          <div className="c-materiallist-pair">
+            <div className="c-materiallist-property full">Specifications</div>
+            <div className="c-materiallist-value full">{renderedItem.specifications}</div>
+          </div>
+          <div className="c-materiallist-picture">
+            <div className="c-materiallist-picture-frame"></div>
+          </div>
+          <div className="c-materiallist-nav">
+            <div className="c-materiallist-nav-opt prev" onClick={()=>this.decrementItemNumber(shoppingCart, itemNumber)}>
+              <TiArrowLeftOutline />
+            </div>
+            <div className="c-materiallist-remove" onClick={()=>this.removeItemNumber(itemNumber)}>Remove</div>
+            <div className="c-materiallist-nav-opt next" onClick={()=>this.incrementItemNumber(shoppingCart, itemNumber)}>
+              <TiArrowRightOutline />
+            </div>
+          </div>
+        </Modal.Body>
         <Modal.Footer>
           <Button className="c-materiallist-close" onClick={toggleShowMaterial}>Close</Button>
         </Modal.Footer>
@@ -107,7 +92,6 @@ export class MaterialList extends Component {
 export default connect(
   (state)=>{
     return {
-      quotes: state.quotes,
       quoteNumber: state.quoteNumber
     }
   }

@@ -5,11 +5,38 @@ import actions from '../../../redux/actions/actions'
 import 'react-select/dist/react-select.css';
 
 import EstimateWorksheetItem from './EstimateWorksheetItem/EstimateWorksheetItem'
+import MaterialList from '../MaterialList/MaterialList'
 import './EstimateWorksheet.css'
 
 class EstimateWorksheet extends Component {
   constructor(e){
     super(e)
+    this.state={
+      itemNumber: 0
+    }
+    this.renderMaterialInfo = this.renderMaterialInfo.bind(this)
+    this.setItemNumber = this.setItemNumber.bind(this)
+    this.changeItemNumber = this.changeItemNumber.bind(this)
+  }
+
+  renderMaterialInfo(){
+    const {quotes, quoteNumber, toggleShowMaterial, showMaterialInfo} = this.props
+    const {itemNumber} = this.state
+    let {shoppingCart} = quotes[quoteNumber]
+    if(itemNumber === 0 || shoppingCart.length === 0){
+      return (<div/>)
+    } else {
+      return (
+        <MaterialList show={showMaterialInfo} itemNumber={itemNumber}
+        shoppingCart={shoppingCart} toggleShowMaterial={toggleShowMaterial}
+        changeItemNumber={this.changeItemNumber}/>
+      )
+    }
+  }
+  changeItemNumber(itemNumber){
+    this.setState({
+      itemNumber
+    })
   }
 
   generateCategorySelect(categories){
@@ -22,6 +49,16 @@ class EstimateWorksheet extends Component {
       return {value: product.keycode, label: product.keycode}
     })
   }
+
+  setItemNumber(itemNumber){
+    const {toggleShowMaterial} = this.props
+    this.setState({
+      itemNumber
+    })
+    toggleShowMaterial()
+  }
+
+
   generateEstimateWorksheet(shoppingCart){
     return shoppingCart.map((shoppingCartItem,i)=>{
       const {keycode, group} = shoppingCartItem
@@ -31,6 +68,7 @@ class EstimateWorksheet extends Component {
           item={shoppingCartItem}
           itemNumber={i+1 }
           lastNumber={shoppingCart.length}
+          setItemNumber={this.setItemNumber}
         />)
     })
   }
@@ -64,10 +102,11 @@ class EstimateWorksheet extends Component {
 
 
   render() {
-    const {categories, products, shoppingCart} = this.props
+    const {categories, products, shoppingCart, toggleShowMaterial, showMaterialInfo} = this.props
 
     return (
       <div className="c-estimators-worksheet-body">
+        {this.renderMaterialInfo()}
         <div className="c-estimators-worksheet-title">Estimators Worksheet</div>
         <span className="c-estimators-worksheet-select-container">
           <Select

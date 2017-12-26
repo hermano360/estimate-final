@@ -2,9 +2,7 @@ var webpack = require('webpack')
 var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const VENDOR_LIBS = [
-  'react', 'react-dom'
-]
+const VENDOR_LIBS = ["moment", "react", "react-bootstrap", "react-bootstrap-datetimepicker", "react-datepicker", "react-dom", "react-loading-overlay", "react-modal", "react-numeric-input", "react-router-dom", "react-select", "react-sidebar", "react-tap-event-plugin", "react-toggle", "superagent"]
 
 module.exports = {
   entry: {

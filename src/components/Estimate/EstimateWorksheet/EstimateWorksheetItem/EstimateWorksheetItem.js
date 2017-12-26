@@ -33,18 +33,22 @@ class EstimateWorksheetItem extends Component {
       }
   }
 
-
-
   render() {
-    const {item, itemNumber, quoteNumber, dispatch, lastNumber, shoppingCartDOMNodes} = this.props
+    const { item, itemNumber, quoteNumber, dispatch, lastNumber, shoppingCartDOMNodes, quotes} = this.props
     const totalMaterial = item.totalMaterial.slice(1)
     const labor = item.labor.slice(1)
     const {focus} = this.state
+
     // const nextNode = this.findNextAvailableNodePosition(shoppingCartDOMNodes, itemNumber)
 
     return (
       <div className={`c-estimators-worksheet-items ${focus ? 'c-estimators-worksheet-items-focus' : ''}`}>
-          <span className="c-estimators-worksheet-list-item c-estimators-worksheet-list-item-no">{itemNumber}</span>
+          <span className="c-estimators-worksheet-list-item c-estimators-worksheet-list-item-no">
+            <div className="c-estimators-worksheet-list-item-no-button"
+            onClick={()=>this.props.setItemNumber(itemNumber)}>
+              {itemNumber}
+            </div>
+          </span>
           <span className="c-estimators-worksheet-list-item c-estimators-worksheet-list-item-code">{item.keycode}</span>
           <span className="c-estimators-worksheet-list-item c-estimators-worksheet-list-item-amt">
             <input type="text" className="c-estimators-worksheet-list-item-amt-input"
@@ -84,6 +88,7 @@ class EstimateWorksheetItem extends Component {
 export default connect(
   (state)=>{
     return {
+      quotes: state.quotes,
       quoteNumber: state.quoteNumber,
       shoppingCartDOMNodes: state.shoppingCartDOMNodes
     }

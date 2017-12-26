@@ -7,10 +7,11 @@ import ToggleButton from 'react-toggle'
 import moment from 'moment'
 import request from 'superagent'
 import DateTimeField from 'react-bootstrap-datetimepicker'
-
+import Loadable from 'react-loading-overlay'
 
 import EstimateWorksheet from './EstimateWorksheet/EstimateWorksheet'
 import MaterialList from './MaterialList/MaterialList'
+import RemoveQuote from './RemoveQuote/RemoveQuote'
 import Sidebar from './Sidebar/Sidebar'
 
 import logo from '../../assets/images/ezestimator_logo.png'
@@ -27,10 +28,14 @@ export class Estimate extends Component {
       showTotal: false,
       showSidebar: false,
       showMaterialInfo: false,
+      removeQuoteModal: false,
       availableQuoteNumbers: [],
-      currentDate: ""
+      currentDate: "",
+      loadingSave: false,
+      shoppingCartInMaterialInfo: {}
     }
     this.toggleShowModal = this.toggleShowModal.bind(this)
+    this.toggleRemoveQuote = this.toggleRemoveQuote.bind(this)
     this.toggleShowMaterial = this.toggleShowMaterial.bind(this)
     this.incrementQuoteNumber = this.incrementQuoteNumber.bind(this)
     this.decrementQuoteNumber = this.decrementQuoteNumber.bind(this)
@@ -42,6 +47,12 @@ export class Estimate extends Component {
     const {showSidebar} = this.state
     this.setState({
       showSidebar: !showSidebar
+    })
+  }
+  toggleRemoveQuote(){
+    const {removeQuoteModal} = this.state
+    this.setState({
+      removeQuoteModal: !removeQuoteModal
     })
   }
 
@@ -137,13 +148,19 @@ export class Estimate extends Component {
         quoteToBeSaved.estimator = estimator
       }
     }
+    this.setState({
+      loadingSave: true
+    })
 
     request
-      .post('http://localhost:8000/quotes')
+      .post('/quotes')
       .send(quotes[quoteNumber])
       .then(res=> {
         dispatch(actions.loadQuotes(res.body))
         dispatch(actions.loadDatabaseQuoteNumbers(res.body.map(quote=>quote.quoteNumber)))
+        this.setState({
+          loadingSave: false
+        })
       })
       .catch(err=> console.log(err))
   }
@@ -160,9 +177,10 @@ export class Estimate extends Component {
     })
   }
 
+
   render() {
     const {dispatch, quotes, quoteNumber, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
-    const {showTotal, showSidebar, showMaterialInfo} = this.state
+    const {showTotal, showSidebar, showMaterialInfo, loadingSave, shoppingCartInMaterialInfo, removeQuoteModal} = this.state
     let availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     let currentDate
     let estimator
@@ -191,9 +209,13 @@ export class Estimate extends Component {
     const currentQuote = this.renderCurrentQuote(quotes, quoteNumber)
 
     return (
+      <Loadable
+        active={loadingSave}
+        spinner
+        text='Saving Quote Information...'>
       <div className="c-estimate-body">
         <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers}/>
-        <MaterialList show={showMaterialInfo} toggleShowMaterial={this.toggleShowMaterial}/>
+        <RemoveQuote show={removeQuoteModal} toggleRemoveQuote={this.toggleRemoveQuote} />
         <div className="c-estimate-action-button c-estimate-sidebar"
           onClick={this.toggleShowModal}>
           <MdMenu/>
@@ -204,6 +226,7 @@ export class Estimate extends Component {
             <div className="c-estimate-next-quote-page">#{quoteNumber}</div>
             <TiArrowRightOutline onClick={this.incrementQuoteNumber}/>
           </div>
+          <div className="c-estimate-remove-quote" onClick={this.toggleRemoveQuote}>Remove Quote</div>
           <div className="c-estimate-logo-container">
             <img src={logo} alt='Estimate Logo' className="c-estimate-logo"/>
           </div>
@@ -274,7 +297,7 @@ export class Estimate extends Component {
             ref = {input => { if (shoppingCartDOMNodes['scopeOfWork'] === undefined && input !== null) {dispatch(actions.setShoppingCartNode('scopeOfWork', input))}}}
             onKeyPress={e =>  {if(e.charCode === 13)  {shoppingCartDOMNodes['products'][1]===undefined ? shoppingCartDOMNodes['firstName'].focus() : shoppingCartDOMNodes['products'][1].focus()}} }/>
         </div>
-        <EstimateWorksheet shoppingCart={currentQuote.shoppingCart}/>
+        <EstimateWorksheet showMaterialInfo={showMaterialInfo} toggleShowMaterial={this.toggleShowMaterial} shoppingCart={currentQuote.shoppingCart} renderMaterialInfo={this.renderMaterialInfo}/>
           <div className="c-estimate-action-button c-estimate-back" onClick={()=>this.redirectToComponent('')}>Back</div>
         <div className="c-estimate-action-button c-estimate-save"
           onClick={this.saveQuoteToDatabase}
@@ -285,6 +308,7 @@ export class Estimate extends Component {
         ${this.generateTotal(quotes[quoteNumber]).toFixed(2)}
         </div>
       </div>
+      </Loadable>
     );
   }
 }

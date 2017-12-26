@@ -4,9 +4,18 @@ import Home from './Home/Home'
 import Estimate from './Estimate/Estimate'
 import actions from '../redux/actions/actions'
 import request from 'superagent'
+import Loadable from 'react-loading-overlay'
 import './Main.scss'
 
 class Main extends Component {
+  constructor(e){
+    super(e)
+    this.state = {
+      categoriesReady: false,
+      productsReady: false,
+      quotesReady:false
+    }
+  }
 
   retrieveExternalCategories(){
     const {dispatch} = this.props
@@ -16,13 +25,18 @@ class Main extends Component {
 
     if(currentTime - timeCategoriesLastAccessed < oneDay && localStorage.getItem('categories')){
       dispatch(actions.loadCategories(JSON.parse(localStorage.getItem('categories'))))
+      this.setState({
+        categoriesReady: true
+      })
     } else {
-      request.get(`http://localhost:8000/categories`)
+      request.get(`/categories`)
         .then((res) => {
-          console.log(res)
           localStorage.setItem('categories', JSON.stringify(res.body))
           localStorage.setItem('categoriesAccessDate',new Date().getTime())
           dispatch(actions.loadCategories(res.body))
+          this.setState({
+            categoriesReady: true
+          })
         }).catch((err) => { console.log(err) })
     }
   }
@@ -34,15 +48,21 @@ class Main extends Component {
     const timeProductsLastAccessed = localStorage.getItem('productsAccessDate')
     const oneDay = 86400000
     if(currentTime - timeProductsLastAccessed > oneDay || localStorage.getItem('products')===undefined){
-      request.get(`http://localhost:8000/products`)
+      request.get(`/products`)
         .then((res) => {
           console.log(res)
           localStorage.setItem('products', JSON.stringify(res.body))
           localStorage.setItem('productsAccessDate',new Date().getTime())
           dispatch(actions.loadProducts(res.body))
+          this.setState({
+            productsReady: true
+          })
         }).catch((err) => { console.log(err) })
     } else {
       dispatch(actions.loadProducts(JSON.parse(localStorage.getItem('products'))))
+      this.setState({
+        productsReady: true
+      })
     }
   }
 
@@ -51,12 +71,15 @@ class Main extends Component {
     const currentTime = new Date().getTime()
     const timeProductsLastAccessed = localStorage.getItem('quotesAccessDate')
     const oneDay = 86400000
-    request.get(`http://localhost:8000/quotes`)
+    request.get(`/quotes`)
       .then((res) => {
         localStorage.setItem('quotes', JSON.stringify(res.body))
         localStorage.setItem('quotesAccessDate',new Date().getTime())
         dispatch(actions.loadQuotes(res.body))
         dispatch(actions.loadDatabaseQuoteNumbers(res.body.map(quote=>quote.quoteNumber)))
+        this.setState({
+          quotesReady: true
+        })
       }).catch((err) => { console.log(err) })
 
   }
@@ -87,9 +110,17 @@ class Main extends Component {
 
   }
   render () {
+    const {quotesReady, productsReady, categoriesReady} = this.state
+    const stillLoading = !(quotesReady && productsReady && categoriesReady)
     return (
       <div>
-        {this.renderCorrectPage()}
+      <Loadable
+        active={stillLoading}
+        spinner
+        text='Loading your content...'>
+        <div>{this.renderCorrectPage()}</div>
+      </Loadable>
+
       </div>
     )
   }

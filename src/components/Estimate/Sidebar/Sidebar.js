@@ -38,7 +38,7 @@ export class Sidebar extends Component {
     if(quoteInformation.shoppingCart.length > 0) {
       console.log('api to be hit')
       request
-        .post('http://localhost:8000/generateDocument')
+        .post('/generateDocument')
         .set('Content-Type', 'application/json')
         .send({
           quoteInformation,
@@ -103,7 +103,7 @@ export class Sidebar extends Component {
         </Modal.Header>
         <Modal.Body>
           {!estimateReady && <div className="c-sidebar-item" onClick={()=>this.handleEstimate(estimateReady)}>Estimate</div>}
-          {estimateReady && <a href='http://localhost:8000/downloadWordDocument' onClick={() => {
+          {estimateReady && <a href='/downloadWordDocument' onClick={() => {
             this.setState({
               estimateReady: false
             })

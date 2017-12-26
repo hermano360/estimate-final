@@ -17,14 +17,22 @@
 
 .c-estimators-worksheet-list-item-no {
   width: 5%;
+
+}
+
+.c-estimators-worksheet-list-item-no-button {
+  padding: 3px;
+  background-color: #b4e41c;
+  border-radius: 10%;
+  border-bottom: 1px solid black;
 }
 
 .c-estimators-worksheet-list-item-code {
-  width: 11%;
+  width: 13%;
 }
 
 .c-estimators-worksheet-list-item-amt {
-  width: 10%;
+  width: 8%;
 }
 
 .c-estimators-worksheet-list-item-amt-input {
