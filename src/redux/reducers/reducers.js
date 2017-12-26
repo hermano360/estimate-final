@@ -68,10 +68,7 @@ export const QuotesReducer = (state = {}, action) => {
       action.quotes.forEach((quote)=>{
         quotesState[quote.quoteNumber] = quote
       })
-      return {
-        ...state,
-        ...quotesState
-      }
+      return quotesState
     case 'ADD_NEW_QUOTE':
       return {
         ...state,

@@ -5,6 +5,7 @@ import Estimate from './Estimate/Estimate'
 import actions from '../redux/actions/actions'
 import request from 'superagent'
 import Loadable from 'react-loading-overlay'
+import baseURL from './baseURL'
 import './Main.scss'
 
 class Main extends Component {
@@ -29,7 +30,7 @@ class Main extends Component {
         categoriesReady: true
       })
     } else {
-      request.get(`/categories`)
+      request.get(`${baseURL.url}/categories`)
         .then((res) => {
           localStorage.setItem('categories', JSON.stringify(res.body))
           localStorage.setItem('categoriesAccessDate',new Date().getTime())
@@ -48,7 +49,7 @@ class Main extends Component {
     const timeProductsLastAccessed = localStorage.getItem('productsAccessDate')
     const oneDay = 86400000
     if(currentTime - timeProductsLastAccessed > oneDay || localStorage.getItem('products')===undefined){
-      request.get(`/products`)
+      request.get(`${baseURL.url}/products`)
         .then((res) => {
           console.log(res)
           localStorage.setItem('products', JSON.stringify(res.body))
@@ -71,7 +72,7 @@ class Main extends Component {
     const currentTime = new Date().getTime()
     const timeProductsLastAccessed = localStorage.getItem('quotesAccessDate')
     const oneDay = 86400000
-    request.get(`/quotes`)
+    request.get(`${baseURL.url}/quotes`)
       .then((res) => {
         localStorage.setItem('quotes', JSON.stringify(res.body))
         localStorage.setItem('quotesAccessDate',new Date().getTime())

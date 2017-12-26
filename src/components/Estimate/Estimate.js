@@ -14,6 +14,7 @@ import MaterialList from './MaterialList/MaterialList'
 import RemoveQuote from './RemoveQuote/RemoveQuote'
 import Sidebar from './Sidebar/Sidebar'
 
+import baseURL from '../baseURL'
 import logo from '../../assets/images/ezestimator_logo.png'
 import actions from '../../redux/actions/actions'
 
@@ -153,7 +154,7 @@ export class Estimate extends Component {
     })
 
     request
-      .post('/quotes')
+      .post(`${baseURL.url}/quotes`)
       .send(quotes[quoteNumber])
       .then(res=> {
         dispatch(actions.loadQuotes(res.body))
@@ -172,9 +173,20 @@ export class Estimate extends Component {
     }
   }
   handleChangeDate(e){
-    this.setState({
-      currentDate: e
-    })
+
+    const regex = /([0-9]{2})-([0-9]{2})-([0-9]{4})/g;
+
+    let month = Number(e.replace(regex,"$1"))
+    let day = Number(e.replace(regex,"$2"))
+    let year = Number(e.replace(regex,"$3"))
+
+    if(month > 0 && month < 13 && day > 0 && day < 32 && year > 2000 && year < 3000){
+      console.log(e)
+      this.setState({
+        currentDate: e
+      })
+    }
+
   }
 
 

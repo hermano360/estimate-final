@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {Modal, Button} from 'react-bootstrap'
 import actions from '../../../redux/actions/actions'
 import request from 'superagent'
+import baseURL from '../../baseURL'
 
 import './Sidebar.scss'
 
@@ -38,7 +39,7 @@ export class Sidebar extends Component {
     if(quoteInformation.shoppingCart.length > 0) {
       console.log('api to be hit')
       request
-        .post('/generateDocument')
+        .post(`${baseURL.url}/generateDocument`)
         .set('Content-Type', 'application/json')
         .send({
           quoteInformation,

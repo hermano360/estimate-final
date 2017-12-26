@@ -94,6 +94,20 @@ app.post('/quotes', (req, res) => {
   })
 })
 
+app.post('/remove-quote', (req, res) => {
+  MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', (err, db) => {
+    db.collection('proQuotes').remove({quoteNumber: req.body.quoteNumber })
+      .then(
+        db.collection('proQuotes').find({}, { _id: 0}).sort({ quoteNumber: 1 }).toArray((err, quotes) => {
+          res.send(quotes)
+          db.close()
+        })
+      )
+      .catch(err=>res.send(err))
+      db.close()
+  })
+})
+
 
 
 app.post('/products', (req, res) => {

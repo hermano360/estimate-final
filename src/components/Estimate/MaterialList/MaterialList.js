@@ -4,7 +4,6 @@ import TiArrowLeftOutline from 'react-icons/lib/ti/arrow-left-outline'
 import TiArrowRightOutline from 'react-icons/lib/ti/arrow-right-outline'
 import {Modal, Button} from 'react-bootstrap'
 import actions from '../../../redux/actions/actions'
-import request from 'superagent'
 
 import './MaterialList.scss'
 
