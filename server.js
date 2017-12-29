@@ -119,10 +119,10 @@ app.post('/products', (req, res) => {
 })
 
 app.post('/shopping-list', (req, res) => {
-  shoppingList.generateShoppingList(req.body.total, req.body.shoppingList, (response) => {
+  console.log(req.body)
+  shoppingList.generateShoppingList(req.body.total, req.body.shoppingList, req.body.quoteNumber, (response) => {
     res.send(response)
   })
-  res.send('awesome')
 })
 
 

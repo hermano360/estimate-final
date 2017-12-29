@@ -24,7 +24,8 @@ let monthRef = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 
 let dateString = `${nowDate.getDate()}-${monthRef[nowDate.getMonth()]}-${nowDate.getFullYear().toString().slice(-2)}`
 
 module.exports = {
-  generateShoppingList: (total, quoteInfo, cb) => {
+  generateShoppingList: (total, shoppingList, quoteNumber, cb) => {
+    console.log(total, shoppingList, quoteNumber)
     var content = fs
         .readFileSync(path.resolve(__dirname, 'shoppingListInput.docx'), 'binary')
     var zip = new JSZip(content)
@@ -32,11 +33,11 @@ module.exports = {
     doc.loadZip(zip)
     // set the templateVariables
     doc.setData({
-      quoteNo: quoteInfo.quoteNumber,
+      quoteNo: quoteNumber,
       Company: 'Pro Builders Express',
       grandTotal: total,
       Date: dateString,
-      cart: convertShoppingCart(quoteInfo.shoppingCart)
+      cart: convertShoppingCart(shoppingList)
     })
 
     try {

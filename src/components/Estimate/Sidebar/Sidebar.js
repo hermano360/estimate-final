@@ -89,6 +89,7 @@ export class Sidebar extends Component {
       .set('Content-Type', 'application/json')
       .send({
         shoppingList: quotes[quoteNumber].shoppingCart,
+        quoteNumber,
         total
         }).then(res=>{
         console.log(res)
