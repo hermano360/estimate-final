@@ -25,6 +25,11 @@
   background-color: #b4e41c;
   border-radius: 10%;
   border-bottom: 1px solid black;
+  cursor: pointer;
+}
+
+.c-estimators-worksheet-list-item-no-button:hover {
+  background-color: #fff;
 }
 
 .c-estimators-worksheet-list-item-code {

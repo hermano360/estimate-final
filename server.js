@@ -108,8 +108,6 @@ app.post('/remove-quote', (req, res) => {
   })
 })
 
-
-
 app.post('/products', (req, res) => {
   MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', (err, db) => {
     db.collection('proProducts').find({'keycode': {$in: req.body.products}}, { _id: 0 }).toArray((err, products) => {
@@ -117,6 +115,11 @@ app.post('/products', (req, res) => {
       db.close()
     })
   })
+})
+
+app.post('/shopping-list', (req, res) => {
+  console.log(req.body)
+  res.send('awesome')
 })
 
 

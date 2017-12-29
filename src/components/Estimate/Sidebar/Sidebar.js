@@ -11,9 +11,11 @@ export class Sidebar extends Component {
   constructor(e){
     super(e)
     this.state = {
-      estimateReady: false
+      estimateReady: false,
+      shoppingListReady: false
     }
     this.handleEstimate = this.handleEstimate.bind(this)
+    this.handleShoppingList = this.handleShoppingList.bind(this)
     this.onHideModal = this.onHideModal.bind(this)
   }
   generateTotal(quote){
@@ -80,7 +82,18 @@ export class Sidebar extends Component {
     console.log('work order')
   }
   handleShoppingList(){
-    console.log('shopping list')
+    const {quotes, quoteNumber} = this.props
+    request
+      .post(`${baseURL.url}/shopping-list`)
+      .set('Content-Type', 'application/json')
+      .send({
+        shoppingList: quotes[quoteNumber].shoppingCart
+        }).then(res=>{
+        console.log(res)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
   }
   handleEmailBid(){
     console.log('email bid')
@@ -109,7 +122,6 @@ export class Sidebar extends Component {
               estimateReady: false
             })
           }}><div className="c-sidebar-item">Download</div></a>}
-
           <div className="c-sidebar-item" onClick={()=>this.handleDuplicate()}>Duplicate</div>
           <div className="c-sidebar-item" onClick={()=>this.handleNewQuote()}>New Quote</div>
           <div className="c-sidebar-item" onClick={()=>this.handleWorkOrder()}>Work Order</div>

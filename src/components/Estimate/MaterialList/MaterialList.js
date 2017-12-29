@@ -24,8 +24,11 @@ export class MaterialList extends Component {
       changeItemNumber(shoppingCart.length)
     }
   }
-  removeItemNumber(itemNumber){
-    const {dispatch, quoteNumber} = this.props
+  removeItemNumber(itemNumber, shoppingCart){
+    const {dispatch, quoteNumber, changeItemNumber} = this.props
+    if(itemNumber === shoppingCart.length){
+      changeItemNumber(itemNumber - 1)
+    }
     dispatch(actions.removeFromShoppingCart(itemNumber, quoteNumber))
   }
 
@@ -74,7 +77,7 @@ export class MaterialList extends Component {
             <div className="c-materiallist-nav-opt prev" onClick={()=>this.decrementItemNumber(shoppingCart, itemNumber)}>
               <TiArrowLeftOutline />
             </div>
-            <div className="c-materiallist-remove" onClick={()=>this.removeItemNumber(itemNumber)}>Remove</div>
+            <div className="c-materiallist-remove" onClick={()=>this.removeItemNumber(itemNumber, shoppingCart)}>Remove</div>
             <div className="c-materiallist-nav-opt next" onClick={()=>this.incrementItemNumber(shoppingCart, itemNumber)}>
               <TiArrowRightOutline />
             </div>

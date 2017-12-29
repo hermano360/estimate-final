@@ -56,6 +56,10 @@ $application-background: #F2E1B2;
     color: black;
     text-align: center;
   }
+  &-action-button:hover {
+    background-color: #fff;
+    cursor: pointer;
+  }
   &-show-total {
     width:25%;
     max-width: 200px;
