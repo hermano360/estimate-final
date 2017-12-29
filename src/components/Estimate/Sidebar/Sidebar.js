@@ -23,7 +23,7 @@ export class Sidebar extends Component {
     quote.shoppingCart.forEach((item)=>{
       total += item.quantity *  parseFloat(item.labor.substr(1)) + item.quantity *  parseFloat(item.totalMaterial.substr(1))
     })
-    return total
+    return total.toFixed(2).toString()
   }
   removeEmptyItems(quote){
     return {
@@ -83,11 +83,13 @@ export class Sidebar extends Component {
   }
   handleShoppingList(){
     const {quotes, quoteNumber} = this.props
+    const total = this.generateTotal(quotes[quoteNumber])
     request
       .post(`${baseURL.url}/shopping-list`)
       .set('Content-Type', 'application/json')
       .send({
-        shoppingList: quotes[quoteNumber].shoppingCart
+        shoppingList: quotes[quoteNumber].shoppingCart,
+        total
         }).then(res=>{
         console.log(res)
       })

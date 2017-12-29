@@ -2,6 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var sendMail = require('./api/sendMail')
 var wordDoc = require('./api/TestWordDoc')
+var shoppingList = require('./api/ShoppingList')
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient
 
@@ -118,7 +119,9 @@ app.post('/products', (req, res) => {
 })
 
 app.post('/shopping-list', (req, res) => {
-  console.log(req.body)
+  shoppingList.generateShoppingList(req.body.total, req.body.shoppingList, (response) => {
+    res.send(response)
+  })
   res.send('awesome')
 })
 
