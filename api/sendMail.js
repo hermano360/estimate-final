@@ -3,7 +3,14 @@ const path = require('path')
 
 module.exports = {
   sendEmail: function (pathToFile, name, email, cb) {
-    console.log('send email')
+    let typeOfDocument
+    if(pathToFile === 'ProBuildersEstimate.docx'){
+      typeOfDocument = 'estimate'
+    } else {
+      typeOfDocument = 'shopping list'
+    }
+
+
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -16,14 +23,17 @@ module.exports = {
 
     console.log('SMTP Configured')
     let message = {
-      to: `${name} <hermano360@gmail.com>,${email}`,
+      to: `${name} <hermano360@gmail.com>,<${email}>`,
       subject: `Probuilders Estimate`,
       text: ``,
-      html: `<p>Hello</p>
-      <div>Your estimate  is attached</div>
+      html: `<p>Hello ${name},</p>
+      <div>Your ${typeOfDocument} is attached</div>
         <br/>
         <div>Regards,</div>
-        <div>ProBuilders Express</div>`,
+        <div>ProBuilders Express</div>
+        <br/>
+        <br/>
+        <br/>`,
       attachments: [{
         path: path.resolve(__dirname, pathToFile),
         contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -34,7 +44,7 @@ module.exports = {
     console.log('Sending Mail')
     transporter.sendMail(message, (error, info) => {
       if (error) {
-        console.log(error.message)
+        cb({'status': error})
         return
       }
       cb({'status': 'successful, partner'})

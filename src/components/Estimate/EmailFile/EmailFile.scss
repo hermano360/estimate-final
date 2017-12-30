@@ -1,4 +1,7 @@
 .c-emailfile{
+  &-header{
+    font-size: 24px;
+  }
   &-modal {
     text-align: center;
 
@@ -17,4 +20,57 @@
         margin-left: 15%;
       }
   }
+  &-options{
+    &-files {
+    margin-top: 5px;
+    &-title {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+    &-opt {
+      width: 47.5%;
+      display: inline-block;
+      background-color: white;
+      border: 1px solid black;
+      padding-top: 5%;
+      padding-bottom: 5%;
+      cursor: pointer;
+    }
+    &-opt:first-child{
+      margin-right: 2.5%;
+    }
+    &-opt:nth-child(2){
+      margin-left: 2.5%;
+    }
+    &-opt.selected{
+      background-color: #b4e41c;
+    }
+    &-opt.invalid{
+      border: 2px solid red;
+    }
+  }
+  &-input{
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    &.invalid{
+      border:2px solid red;
+    }
+  }
+  &-send {
+    width: 50%;
+    margin-left: 25%;
+    background-color: #b4e41c;
+    border: 1px solid black;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    cursor: pointer;
+    margin-top: 10%;
+    font-size: 16px;
+  }
+}
+
 }

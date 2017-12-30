@@ -31,18 +31,22 @@ export class Estimate extends Component {
       showSidebar: false,
       showMaterialInfo: false,
       removeQuoteModal: false,
+      showEmailFile: false,
       availableQuoteNumbers: [],
       currentDate: "",
       loadingSave: false,
+      sendingEmail: false,
       shoppingCartInMaterialInfo: {}
     }
     this.toggleShowModal = this.toggleShowModal.bind(this)
     this.toggleRemoveQuote = this.toggleRemoveQuote.bind(this)
     this.toggleShowMaterial = this.toggleShowMaterial.bind(this)
+    this.toggleEmailFile = this.toggleEmailFile.bind(this)
     this.incrementQuoteNumber = this.incrementQuoteNumber.bind(this)
     this.decrementQuoteNumber = this.decrementQuoteNumber.bind(this)
     this.saveQuoteToDatabase = this.saveQuoteToDatabase.bind(this)
     this.handleChangeDate = this.handleChangeDate.bind(this)
+    this.sendEmail = this.sendEmail.bind(this)
   }
 
   toggleShowModal(){
@@ -55,6 +59,12 @@ export class Estimate extends Component {
     const {removeQuoteModal} = this.state
     this.setState({
       removeQuoteModal: !removeQuoteModal
+    })
+  }
+  toggleEmailFile(){
+    const {showEmailFile} = this.state
+    this.setState({
+      showEmailFile: !showEmailFile
     })
   }
 
@@ -174,9 +184,7 @@ export class Estimate extends Component {
     }
   }
   handleChangeDate(e){
-
     const regex = /([0-9]{2})-([0-9]{2})-([0-9]{4})/g;
-
     let month = Number(e.replace(regex,"$1"))
     let day = Number(e.replace(regex,"$2"))
     let year = Number(e.replace(regex,"$3"))
@@ -187,13 +195,40 @@ export class Estimate extends Component {
         currentDate: e
       })
     }
+  }
+  sendEmail(fileToBeSent, finalName, recipientEmail){
+    this.toggleEmailFile()
+    this.setState({
+      loadingSave: true,
+      sendingEmail: true
+    })
+    const fileName = fileToBeSent === 'estimate' ? `ProBuildersEstimate.docx` : `ProBuildersShoppingList.docx`
+
+    request
+      .post(`${baseURL.url}/emailFile`)
+      .set('Content-Type', 'application/json')
+      .send({
+        dirPath: fileName,
+        name: finalName,
+        email: recipientEmail
+      }).then(res=>{
+          console.log(res)
+          this.setState({
+            loadingSave: false,
+            sendingEmail: false
+          })
+      })
+      .catch(err=>{
+        console.log(err)
+      })
 
   }
 
 
   render() {
     const {dispatch, quotes, quoteNumber, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
-    const {showTotal, showSidebar, showMaterialInfo, loadingSave, shoppingCartInMaterialInfo, removeQuoteModal} = this.state
+    const {showTotal, showSidebar, showMaterialInfo, loadingSave,
+      shoppingCartInMaterialInfo, removeQuoteModal, showEmailFile, sendingEmail} = this.state
     let availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     let currentDate
     let estimator
@@ -225,11 +260,11 @@ export class Estimate extends Component {
       <Loadable
         active={loadingSave}
         spinner
-        text='Saving Quote Information...'>
+        text={`${sendingEmail ? 'Sending Your File...' : 'Saving Quote Information...'}`}>
       <div className="c-estimate-body">
-        <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers}/>
+        <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers} toggleEmailFile={this.toggleEmailFile}/>
         <RemoveQuote show={removeQuoteModal} toggleRemoveQuote={this.toggleRemoveQuote} />
-        <EmailFile show={false} toggleRemoveQuote={this.toggleRemoveQuote} />
+        <EmailFile show={showEmailFile} sendEmail={this.sendEmail} toggleEmailFile={this.toggleEmailFile} name={`${currentQuote.customerFirstName} ${currentQuote.customerLastName}`}/>
         <div className="c-estimate-action-button c-estimate-sidebar"
           onClick={this.toggleShowModal}>
           <MdMenu/>

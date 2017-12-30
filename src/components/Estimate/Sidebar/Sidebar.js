@@ -12,7 +12,7 @@ export class Sidebar extends Component {
     super(e)
     this.state = {
       estimateReady: false,
-      shoppingListReady: false
+      shoppingListReady: false,
     }
     this.handleEstimate = this.handleEstimate.bind(this)
     this.handleShoppingList = this.handleShoppingList.bind(this)
@@ -106,20 +106,11 @@ export class Sidebar extends Component {
   }
 
   handleEmailBid(){
-    request
-      .post(`${baseURL.url}/emailFile`)
-      .set('Content-Type', 'application/json')
-      .send({
-        dirPath:'ProBuildersEstimate.docx', 
-        name:'Germaniam',
-        email: 'hermano360@gmail.com'
-      }).then(res=>{
-          console.log(res)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
+    const {toggleEmailFile,toggleShowModal} = this.props
+    toggleShowModal()
+    toggleEmailFile()
   }
+
   onHideModal(){
     const {toggleShowModal} = this.props
     toggleShowModal()
