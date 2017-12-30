@@ -13,7 +13,8 @@ const convertShoppingCart = (shoppingCart) => {
       sku:cartItem.sku,
       description:cartItem.specifications,
       uom:cartItem.uom,
-      mtl: cartItem.totalMaterial
+      mtl: cartItem.totalMaterial,
+      supplier: cartItem.supplier
     }
   })
 }
