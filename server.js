@@ -2,7 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var sendMail = require('./api/sendMail')
 var wordDoc = require('./api/TestWordDoc')
-var shoppingList = require('./api/ShoppingList')
+var shoppingList = require('./api/shoppingList')
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient
 
