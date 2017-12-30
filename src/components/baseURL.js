@@ -1,5 +1,5 @@
 const baseURL = {
-  url: ''
+  url: 'http://localhost:8000'
 }
 
 export default baseURL

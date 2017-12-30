@@ -11,6 +11,7 @@ import Loadable from 'react-loading-overlay'
 
 import EstimateWorksheet from './EstimateWorksheet/EstimateWorksheet'
 import MaterialList from './MaterialList/MaterialList'
+import EmailFile from './EmailFile/EmailFile'
 import RemoveQuote from './RemoveQuote/RemoveQuote'
 import Sidebar from './Sidebar/Sidebar'
 
@@ -228,6 +229,7 @@ export class Estimate extends Component {
       <div className="c-estimate-body">
         <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers}/>
         <RemoveQuote show={removeQuoteModal} toggleRemoveQuote={this.toggleRemoveQuote} />
+        <EmailFile show={false} toggleRemoveQuote={this.toggleRemoveQuote} />
         <div className="c-estimate-action-button c-estimate-sidebar"
           onClick={this.toggleShowModal}>
           <MdMenu/>

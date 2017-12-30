@@ -1,7 +1,8 @@
 const nodemailer = require('nodemailer')
+const path = require('path')
 
 module.exports = {
-  sendEmail: function (pathToPdf, name, email, cb) {
+  sendEmail: function (pathToFile, name, email, cb) {
     console.log('send email')
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -19,13 +20,13 @@ module.exports = {
       subject: `Probuilders Estimate`,
       text: ``,
       html: `<p>Hello</p>
-      <div>Your pdf file is attached</div>
+      <div>Your estimate  is attached</div>
         <br/>
         <div>Regards,</div>
         <div>ProBuilders Express</div>`,
       attachments: [{
-        path: pathToPdf,
-        contentType: 'application/pdf'
+        path: path.resolve(__dirname, pathToFile),
+        contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 
       }]
     }

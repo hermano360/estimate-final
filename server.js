@@ -37,7 +37,7 @@ app.get('/downloadShoppingList', function (req, res) {
   res.download(path.join(__dirname, '/api/ProBuildersShoppingList.docx'), 'ProBuildersShoppingList.docx')
 })
 
-app.post('/pdfEmail', (req, res, next) => {
+app.post('/emailFile', (req, res, next) => {
   sendMail.sendEmail(req.body.dirPath, req.body.name, req.body.email, (message) => res.json(message))
 })
 

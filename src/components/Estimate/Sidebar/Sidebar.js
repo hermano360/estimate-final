@@ -106,7 +106,19 @@ export class Sidebar extends Component {
   }
 
   handleEmailBid(){
-    console.log('email bid')
+    request
+      .post(`${baseURL.url}/emailFile`)
+      .set('Content-Type', 'application/json')
+      .send({
+        dirPath:'ProBuildersEstimate.docx', 
+        name:'Germaniam',
+        email: 'hermano360@gmail.com'
+      }).then(res=>{
+          console.log(res)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
   }
   onHideModal(){
     const {toggleShowModal} = this.props
