@@ -33,6 +33,9 @@ app.post('/generateDocument', function (req, res) {
 app.get('/downloadWordDocument', function (req, res) {
   res.download(path.join(__dirname, '/api/ProBuildersEstimate.docx'), 'ProBuildersEstimate.docx')
 })
+app.get('/downloadShoppingList', function (req, res) {
+  res.download(path.join(__dirname, '/api/ProBuildersShoppingList.docx'), 'ProBuildersShoppingList.docx')
+})
 
 app.post('/pdfEmail', (req, res, next) => {
   sendMail.sendEmail(req.body.dirPath, req.body.name, req.body.email, (message) => res.json(message))
@@ -61,7 +64,6 @@ app.post('/categoryGroups', (req, res) => {
 })
 
 app.get('/products', (req, res) => {
-
   MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', (err, db) => {
     db.collection('proProducts').find({}, { _id: 0, updated: 0, misc: 0, materialCost: 0 }).sort({ keycode: 1 }).toArray((err, products) => {
       res.send(products)
@@ -70,9 +72,7 @@ app.get('/products', (req, res) => {
   })
 })
 
-
 app.get('/quotes', (req, res) => {
-
   MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', (err, db) => {
     db.collection('proQuotes').find({}, { _id: 0}).sort({ quoteNumber: 1 }).toArray((err, categories) => {
       res.send(categories)

@@ -9,6 +9,7 @@ const convertShoppingCart = (shoppingCart) => {
   console.log(shoppingCart)
 
   return shoppingCart.map((cartItem) => {
+    console.log(cartItem.supplier)
     return {
       sku:cartItem.sku,
       description:cartItem.specifications,

@@ -37,9 +37,7 @@ export class Sidebar extends Component {
     const {quotes, quoteNumber, toggleShowModal} = this.props
     const quoteInformation = this.removeEmptyItems(quotes[quoteNumber])
     const total = this.generateTotal(quotes[quoteNumber])
-    console.log(JSON.stringify(quoteInformation), total)
     if(quoteInformation.shoppingCart.length > 0) {
-      console.log('api to be hit')
       request
         .post(`${baseURL.url}/generateDocument`)
         .set('Content-Type', 'application/json')
@@ -47,7 +45,6 @@ export class Sidebar extends Component {
           quoteInformation,
           total
         }).then(res=>{
-          console.log(res)
           this.setState({
             estimateReady: !estimateReady
           })
@@ -58,6 +55,32 @@ export class Sidebar extends Component {
       } else {
         toggleShowModal()
       }
+  }
+
+  handleShoppingList(){
+    const {quotes, quoteNumber} = this.props
+    const {shoppingListReady} = this.state
+
+    const total = this.generateTotal(quotes[quoteNumber])
+    if(quotes[quoteNumber].shoppingCart.length > 0){
+      request
+        .post(`${baseURL.url}/shopping-list`)
+        .set('Content-Type', 'application/json')
+        .send({
+          shoppingList: quotes[quoteNumber].shoppingCart,
+          quoteNumber,
+          total
+          }).then(res=>{
+          this.setState({
+            shoppingListReady: !shoppingListReady
+          })
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+    } else {
+      toggleShowModal()
+    }
 
   }
   handleDuplicate(){
@@ -81,23 +104,7 @@ export class Sidebar extends Component {
   handleWorkOrder(){
     console.log('work order')
   }
-  handleShoppingList(){
-    const {quotes, quoteNumber} = this.props
-    const total = this.generateTotal(quotes[quoteNumber])
-    request
-      .post(`${baseURL.url}/shopping-list`)
-      .set('Content-Type', 'application/json')
-      .send({
-        shoppingList: quotes[quoteNumber].shoppingCart,
-        quoteNumber,
-        total
-        }).then(res=>{
-        console.log(res)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-  }
+
   handleEmailBid(){
     console.log('email bid')
   }
@@ -111,7 +118,7 @@ export class Sidebar extends Component {
 
   render() {
     const {toggleShowModal, show} = this.props
-    const {estimateReady} = this.state
+    const {estimateReady, shoppingListReady} = this.state
 
     return (
       <Modal show={show} onHide={this.onHideModal}  className="c-sidebar-modal" >
@@ -128,7 +135,14 @@ export class Sidebar extends Component {
           <div className="c-sidebar-item" onClick={()=>this.handleDuplicate()}>Duplicate</div>
           <div className="c-sidebar-item" onClick={()=>this.handleNewQuote()}>New Quote</div>
           <div className="c-sidebar-item" onClick={()=>this.handleWorkOrder()}>Work Order</div>
-          <div className="c-sidebar-item" onClick={()=>this.handleShoppingList()}>Shopping List</div>
+          {!shoppingListReady && <div className="c-sidebar-item" onClick={()=>this.handleShoppingList()}>Shopping List</div>}
+          {shoppingListReady && <a href='/downloadShoppingList' onClick={() => {
+            this.setState({
+              shoppingListReady: false
+            })
+          }}><div className="c-sidebar-item">Download</div></a>}
+
+
           <div className="c-sidebar-item" onClick={()=>this.handleEmailBid()}>Email Bid</div>
         </Modal.Body>
         <Modal.Footer>
