@@ -3,8 +3,10 @@ var bodyParser = require('body-parser')
 var sendMail = require('./api/sendMail')
 var wordDoc = require('./api/TestWordDoc')
 var shoppingList = require('./api/shoppingList')
+var saveSignature = require('./api/saveSignature')
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient
+const fs = require('fs')
 
 // Create out app
 
@@ -117,6 +119,12 @@ app.post('/products', (req, res) => {
     })
   })
 })
+
+app.post('/save_sig', (req, res) => {
+  saveSignature.save(req.body.imgBase64, (message) => res.json(message))
+})
+
+
 
 app.post('/shopping-list', (req, res) => {
   console.log(req.body)

@@ -14,6 +14,7 @@ import MaterialList from './MaterialList/MaterialList'
 import EmailFile from './EmailFile/EmailFile'
 import RemoveQuote from './RemoveQuote/RemoveQuote'
 import Sidebar from './Sidebar/Sidebar'
+import SignatureBox from './SignatureBox/SignatureBox'
 
 import baseURL from '../baseURL'
 import logo from '../../assets/images/ezestimator_logo.png'
@@ -265,6 +266,7 @@ export class Estimate extends Component {
         <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers} toggleEmailFile={this.toggleEmailFile}/>
         <RemoveQuote show={removeQuoteModal} toggleRemoveQuote={this.toggleRemoveQuote} />
         <EmailFile show={showEmailFile} sendEmail={this.sendEmail} toggleEmailFile={this.toggleEmailFile} name={`${currentQuote.customerFirstName} ${currentQuote.customerLastName}`}/>
+        <SignatureBox />
         <div className="c-estimate-action-button c-estimate-sidebar"
           onClick={this.toggleShowModal}>
           <MdMenu/>
@@ -356,6 +358,7 @@ export class Estimate extends Component {
         <br/>
         ${this.generateTotal(quotes[quoteNumber]).toFixed(2)}
         </div>
+
       </div>
       </Loadable>
     );
