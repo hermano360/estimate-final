@@ -31,7 +31,7 @@ export class SignatureBox extends Component {
     const {show, toggleShowMaterial, itemNumber, shoppingCart, dispatch, quoteNumber} = this.props
 
     return (
-      <Modal show={true} onHide={()=>console.log('')} className="c-materiallist-modal" >
+      <Modal show={false} onHide={()=>console.log('')} className="c-materiallist-modal" >
         <Modal.Header closeButton>
           <div className="c-materiallist-header">Signature Box</div>
         </Modal.Header>

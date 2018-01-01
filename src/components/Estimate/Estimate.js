@@ -12,6 +12,7 @@ import Loadable from 'react-loading-overlay'
 import EstimateWorksheet from './EstimateWorksheet/EstimateWorksheet'
 import MaterialList from './MaterialList/MaterialList'
 import EmailFile from './EmailFile/EmailFile'
+import AddProduct from './AddProduct/AddProduct'
 import RemoveQuote from './RemoveQuote/RemoveQuote'
 import Sidebar from './Sidebar/Sidebar'
 import SignatureBox from './SignatureBox/SignatureBox'
@@ -33,6 +34,7 @@ export class Estimate extends Component {
       showMaterialInfo: false,
       removeQuoteModal: false,
       showEmailFile: false,
+      showAddProduct: false,
       availableQuoteNumbers: [],
       currentDate: "",
       loadingSave: false,
@@ -42,6 +44,7 @@ export class Estimate extends Component {
     this.toggleShowModal = this.toggleShowModal.bind(this)
     this.toggleRemoveQuote = this.toggleRemoveQuote.bind(this)
     this.toggleShowMaterial = this.toggleShowMaterial.bind(this)
+    this.toggleAddProduct = this.toggleAddProduct.bind(this)
     this.toggleEmailFile = this.toggleEmailFile.bind(this)
     this.incrementQuoteNumber = this.incrementQuoteNumber.bind(this)
     this.decrementQuoteNumber = this.decrementQuoteNumber.bind(this)
@@ -60,6 +63,12 @@ export class Estimate extends Component {
     const {removeQuoteModal} = this.state
     this.setState({
       removeQuoteModal: !removeQuoteModal
+    })
+  }
+  toggleAddProduct(){
+    const {showAddProduct} = this.state
+    this.setState({
+      showAddProduct: !showAddProduct
     })
   }
   toggleEmailFile(){
@@ -228,7 +237,7 @@ export class Estimate extends Component {
 
   render() {
     const {dispatch, quotes, quoteNumber, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
-    const {showTotal, showSidebar, showMaterialInfo, loadingSave,
+    const {showTotal, showSidebar, showMaterialInfo, loadingSave, showAddProduct,
       shoppingCartInMaterialInfo, removeQuoteModal, showEmailFile, sendingEmail} = this.state
     let availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     let currentDate
@@ -263,9 +272,10 @@ export class Estimate extends Component {
         spinner
         text={`${sendingEmail ? 'Sending Your File...' : 'Saving Quote Information...'}`}>
       <div className="c-estimate-body">
-        <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers} toggleEmailFile={this.toggleEmailFile}/>
+        <Sidebar show={showSidebar} toggleShowModal={this.toggleShowModal} availableQuoteNumbers={availableQuoteNumbers} toggleEmailFile={this.toggleEmailFile} toggleAddProduct={this.toggleAddProduct}/>
         <RemoveQuote show={removeQuoteModal} toggleRemoveQuote={this.toggleRemoveQuote} />
         <EmailFile show={showEmailFile} sendEmail={this.sendEmail} toggleEmailFile={this.toggleEmailFile} name={`${currentQuote.customerFirstName} ${currentQuote.customerLastName}`}/>
+        <AddProduct show={showAddProduct} toggleAddProduct={this.toggleAddProduct}/>
         <SignatureBox />
         <div className="c-estimate-action-button c-estimate-sidebar"
           onClick={this.toggleShowModal}>

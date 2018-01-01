@@ -17,6 +17,7 @@ export class Sidebar extends Component {
     this.handleEstimate = this.handleEstimate.bind(this)
     this.handleShoppingList = this.handleShoppingList.bind(this)
     this.onHideModal = this.onHideModal.bind(this)
+    this.handleAddProduct = this.handleAddProduct.bind(this)
   }
   generateTotal(quote){
     let total = 0
@@ -118,6 +119,11 @@ export class Sidebar extends Component {
       estimateReady: false
     })
   }
+  handleAddProduct(){
+    const {toggleAddProduct, toggleShowModal} = this.props
+    toggleShowModal()
+    toggleAddProduct()
+  }
 
   render() {
     const {toggleShowModal, show} = this.props
@@ -147,6 +153,7 @@ export class Sidebar extends Component {
 
 
           <div className="c-sidebar-item" onClick={()=>this.handleEmailBid()}>Email Bid</div>
+          <div className="c-sidebar-item" onClick={()=>this.handleAddProduct()}>Add Product</div>
         </Modal.Body>
         <Modal.Footer>
           <Button className="c-sidebar-close" onClick={toggleShowModal}>Close</Button>

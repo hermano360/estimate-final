@@ -4,6 +4,7 @@ var sendMail = require('./api/sendMail')
 var wordDoc = require('./api/TestWordDoc')
 var shoppingList = require('./api/shoppingList')
 var saveSignature = require('./api/saveSignature')
+var productScraping = require('./api/scraping/productScraping')
 const path = require('path')
 const MongoClient = require('mongodb').MongoClient
 const fs = require('fs')
@@ -122,6 +123,10 @@ app.post('/products', (req, res) => {
 
 app.post('/save_sig', (req, res) => {
   saveSignature.save(req.body.imgBase64, (message) => res.json(message))
+})
+
+app.post('/searchSKU', (req, res) => {
+  productScraping.retrieveSKU(req.body.sku, (message) => res.json(message))
 })
 
 
