@@ -231,20 +231,25 @@ export class Estimate extends Component {
       .catch(err=>{
         console.log(err)
       })
-
   }
 
 
   render() {
-    const {dispatch, quotes, quoteNumber, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
+    let {quoteNumber} = this.props
+    const {dispatch, quotes, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
     const {showTotal, showSidebar, showMaterialInfo, loadingSave, showAddProduct,
       shoppingCartInMaterialInfo, removeQuoteModal, showEmailFile, sendingEmail} = this.state
     let availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     let currentDate
     let estimator
+    console.log(databaseQuoteNumbers)
+    if(quoteNumber === null) {
+      quoteNumber = databaseQuoteNumbers[0]
+    }
 
     // move this into renderCurrentQuote function
     if(this.state.currentDate === ""){
+      console.log(quoteNumber)
       if(quotes[quoteNumber].date ===""){
         currentDate = moment().format('MM-DD-YYYY')
       } else {

@@ -154,7 +154,7 @@ export const QuotesReducer = (state = {}, action) => {
   }
 }
 
-export const QuoteNumberReducer = (state = 1, action) => {
+export const QuoteNumberReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_QUOTE_NUMBER':
       return action.quoteNumber

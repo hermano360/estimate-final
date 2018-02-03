@@ -1,9 +1,9 @@
-9
-69
-
-205576573
-03112-93192C
-Alexandria Moulding
-7/16 in. x 3-1/4 in. x 96 in. Primed Pine Finger-Jointed Base Moulding
-https://images.homedepot-static.com/productImages/269af90c-6253-49e9-ae08-2bbf2b0238e1/svn/primed-white-alexandria-moulding-baseboard-03112-93192c-64_1000.jpg
-/piece
+dollars 910
+cents 58
+sku 1001521568
+internet 206336868
+modelno RWR18X075UNM
+brand Ekena Millwork
+title 18 in. x 75 in. Exterior Real Wood Sapele Mahogany Raised Panel Shutters Pair Unfinished
+img https://images.homedepot-static.com/productImages/56c3366f-931a-447d-a4fc-3530b65eb207/svn/unfinished-ekena-millwork-raised-panel-rwr18x075unm-64_1000.jpg
+uom /pair

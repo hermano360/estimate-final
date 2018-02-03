@@ -40,7 +40,7 @@ export var configure = (initialState = {}) => {
       products: {}
     },
     quotes: { },
-    quoteNumber: 1,
+    quoteNumber: null,
     databaseQuoteNumbers: []
   }
   var store = redux.createStore(reducer, initialState, redux.compose(

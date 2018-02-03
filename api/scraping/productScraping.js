@@ -25,8 +25,8 @@ const retrieveSKU = (sku,cb) => {
       if($('#product_internet_number') ) {
         productEntry.internet = $('#product_internet_number').text()
       }
-      if($('#product_store_sku')){
-        productEntry.sku = $('#product_store_sku').text()
+      if($('#product_store_sku').text() || $('.product_details')){
+        productEntry.sku = $('#product_store_sku').text() || $('.product_details').toString().replace(/^[\s\S]*?Store SO SKU #<span>(.*?)<\/span>[\s\S]*$/g,"$1").trim() || sku
       }
       if($('.pricingReg').text()){
         productEntry.uom = $('.pricingReg').text().trim().replace(/^[\S\s]*?(\/.*)/g, '$1')
