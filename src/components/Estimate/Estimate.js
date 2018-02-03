@@ -86,9 +86,11 @@ export class Estimate extends Component {
   }
 
   generateTotal(quote){
+    const {labor, material} = this.props
+    console.log(material, labor)
     let total = 0
     quote.shoppingCart.forEach((item)=>{
-      total += item.quantity *  parseFloat(item.labor.substr(1)) + item.quantity *  parseFloat(item.totalMaterial.substr(1))
+      total += item.quantity *  parseFloat(item.labor.substr(1)) * (1 + labor/100)  + item.quantity *  parseFloat(item.totalMaterial.substr(1)) * (1 + material/100)
     })
     return total
   }
@@ -381,13 +383,15 @@ export class Estimate extends Component {
 }
 
 export default connect(
-  (state)=>{
+  state => {
     return {
       estimator: state.estimator,
       quotes: state.quotes,
       quoteNumber: state.quoteNumber,
       shoppingCartDOMNodes: state.shoppingCartDOMNodes,
-      databaseQuoteNumbers: state.databaseQuoteNumbers
+      databaseQuoteNumbers: state.databaseQuoteNumbers,
+      labor: state.labor,
+      material: state.material
     }
   }
 )(Estimate)

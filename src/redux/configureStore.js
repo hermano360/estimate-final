@@ -4,6 +4,7 @@ var {
   PageReducer,
   TaxReducer,
   LaborReducer,
+  MaterialReducer,
   ExtraWorkReducer,
   EstimatorReducer,
   CategoriesReducer,
@@ -19,6 +20,7 @@ export var configure = (initialState = {}) => {
     page: PageReducer,
     tax: TaxReducer,
     labor: LaborReducer,
+    material: MaterialReducer,
     extraWork: ExtraWorkReducer,
     estimator: EstimatorReducer,
     categories: CategoriesReducer,
@@ -31,6 +33,7 @@ export var configure = (initialState = {}) => {
   initialState = {
     page: '',
     labor: 30,
+    material: 30,
     extraWork: 40,
     tax: 9.5,
     estimator: "",

@@ -27,6 +27,15 @@ const LaborActions = {
   }
 }
 
+const MaterialActions = {
+  changeMaterial : (material) => {
+    return {
+      type: 'CHANGE_MATERIAL',
+      material
+    }
+  }
+}
+
 const ExtraWorkActions = {
   changeExtraWork : (extraWork) => {
     return {
@@ -160,6 +169,7 @@ const actions = {
   ...PageActions,
   ...TaxActions,
   ...LaborActions,
+  ...MaterialActions,
   ...ExtraWorkActions,
   ...EstimatorActions,
   ...CategoryActions,

@@ -9,13 +9,6 @@ import './Settings.css'
 
 
 class Settings extends Component {
-  constructor(e){
-    super(e)
-    this.handleChangeTax = this.handleChangeTax.bind(this)
-    this.handleChangeExtraWork = this.handleChangeExtraWork.bind(this)
-    this.handleChangeLabor = this.handleChangeLabor.bind(this)
-    this.handleChangeEstimator = this.handleChangeEstimator.bind(this)
-  }
 
   componentWillMount(){
     const {dispatch} = this.props
@@ -28,6 +21,11 @@ class Settings extends Component {
       this.handleChangeLabor(30)
     } else {
       dispatch(actions.changeLabor(parseFloat(localStorage.getItem('labor'))))
+    }
+    if(localStorage.getItem('material')=== undefined || localStorage.getItem('material')=== null){
+      this.handleChangeMaterial(30)
+    } else {
+      dispatch(actions.changeMaterial(parseFloat(localStorage.getItem('material'))))
     }
     if(localStorage.getItem('extraWork')=== undefined || localStorage.getItem('extraWork')=== null){
       this.handleChangeExtraWork(40)
@@ -54,6 +52,11 @@ class Settings extends Component {
     localStorage.setItem('labor', value)
     dispatch(actions.changeLabor(value))
   }
+  handleChangeMaterial(value){
+    const {dispatch} = this.props
+    localStorage.setItem('material', value)
+    dispatch(actions.changeMaterial(value))
+  }
   handleChangeEstimator(value){
     const {dispatch} = this.props
     localStorage.setItem('estimator', value.target.value)
@@ -61,7 +64,7 @@ class Settings extends Component {
   }
 
   render() {
-    const {labor, tax, extraWork, showModal, estimator, toggleSettingsModal, dispatch} = this.props
+    const {labor, tax, extraWork, showModal, estimator, toggleSettingsModal, dispatch, material} = this.props
     return (
 
       <Modal show={showModal} onHide={toggleSettingsModal} className="c-settings-modal">
@@ -70,7 +73,7 @@ class Settings extends Component {
         </Modal.Header>
         <Modal.Body>
           <div className='c-settings-label'>Estimator</div>
-          <select className='c-settings-estimator' value={estimator} onChange={this.handleChangeEstimator}>
+          <select className='c-settings-estimator' value={estimator} onChange={this.handleChangeEstimator.bind(this)}>
             <option value="">-Select-</option>
             <option value="Arnold Corona">Arnold Corona</option>
             <option value="Gary Banks">Gary Banks</option>
@@ -82,11 +85,13 @@ class Settings extends Component {
             <option value="Cameron Sterling">Cameron Sterling</option>
           </select>
           <div className='c-settings-label'>Labor %</div>
-          <NumericInput min={0} max={100} value={labor} step={5}  mobile onChange={this.handleChangeLabor} />
+          <NumericInput min={0} max={100} value={labor} step={5}  mobile onChange={this.handleChangeLabor.bind(this)} />
+          <div className='c-settings-label'>Material %</div>
+          <NumericInput min={0} max={100} value={material} step={5}  mobile onChange={this.handleChangeMaterial.bind(this)} />
           <div className='c-settings-label'>Extra Work %</div>
-          <NumericInput min={0} max={100} value={extraWork} step={5}  mobile onChange={this.handleChangeExtraWork} />
+          <NumericInput min={0} max={100} value={extraWork} step={5}  mobile onChange={this.handleChangeExtraWork.bind(this)} />
           <div className='c-settings-label'>Tax %</div>
-          <NumericInput min={7} max={15} value={tax} step={0.1} mobile onChange={this.handleChangeTax} />
+          <NumericInput min={7} max={15} value={tax} step={0.1} mobile onChange={this.handleChangeTax.bind(this)} />
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={toggleSettingsModal}>Close</Button>
@@ -101,6 +106,7 @@ export default connect(
   (state)=>{
     return {
       labor: state.labor,
+      material: state.material,
       tax: state.tax,
       extraWork: state.extraWork,
       estimator: state.estimator

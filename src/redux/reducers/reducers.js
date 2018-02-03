@@ -24,6 +24,14 @@ export const LaborReducer = (state = '', action) => {
       return state
   }
 }
+export const MaterialReducer = (state = '', action) => {
+  switch (action.type) {
+    case 'CHANGE_MATERIAL':
+      return action.material
+    default:
+      return state
+  }
+}
 
 export const ExtraWorkReducer = (state = '', action) => {
   switch (action.type) {
