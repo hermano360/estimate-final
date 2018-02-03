@@ -42,7 +42,7 @@ class Home extends Component {
         </div>
         <img src={logo} alt='Estimate Logo' className="c-home-logo"/>
         <div className="c-home-button-group">
-          <Button bsSize="large" className="c-home-button c-home-button-top" onClick={()=>this.redirectToComponent('estimate')}>Estimate</Button>
+          <Button bsSize="large" className="c-home-button c-home-button-top" onClick={()=>this.redirectToComponent('estimate')}>Estimates</Button>
           <Button bsSize="large" className="c-home-button c-home-button-bottom" onClick={()=>this.redirectToComponent('products')}>Products</Button>
           <Button bsSize="large" className="c-home-button c-home-button-bottom" onClick={()=>this.redirectToComponent('phonelist')}>Phone List</Button>
         </div>
