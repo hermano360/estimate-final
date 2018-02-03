@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 var {connect} = require('react-redux')
+import Loadable from 'react-loading-overlay'
+
+import request from 'superagent'
 import Home from './Home/Home'
 import Estimate from './Estimate/Estimate'
+import Login from './Login/Login'
 import actions from '../redux/actions/actions'
-import request from 'superagent'
-import Loadable from 'react-loading-overlay'
 import baseURL from './baseURL'
 import './Main.scss'
 
@@ -43,7 +45,6 @@ class Main extends Component {
   }
 
   retrieveExternalProducts(){
-
     const {dispatch} = this.props
     const currentTime = new Date().getTime()
     const timeProductsLastAccessed = localStorage.getItem('productsAccessDate')
@@ -97,7 +98,7 @@ class Main extends Component {
     const {page} = this.props
     switch(page){
       case "estimate":
-        return <Estimate/>
+        return <Estimate retrieveProducts={this.retrieveExternalProducts} />
         break
       case "phonelist":
         return (<div>Phonelist</div>)
@@ -105,8 +106,11 @@ class Main extends Component {
       case "products":
         return (<div>Products</div>)
         break
-      default:
+        case "home":
           return (<Home/>)
+          break
+      default:
+          return (<Login baseURL={baseURL}/>)
     }
 
   }

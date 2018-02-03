@@ -16,7 +16,6 @@ class Home extends Component {
     this.state={
       showModal: false
     }
-    this.toggleSettingsModal = this.toggleSettingsModal.bind(this)
   }
 
   toggleSettingsModal(){
@@ -35,8 +34,8 @@ class Home extends Component {
     const {showModal} = this.state
     return (
       <div className="c-home-body">
-        <Settings showModal={showModal} toggleSettingsModal={this.toggleSettingsModal}/>
-        <div className="c-home-gear" onClick={this.toggleSettingsModal}>
+        <Settings showModal={showModal} toggleSettingsModal={this.toggleSettingsModal.bind(this)}/>
+        <div className="c-home-gear" onClick={this.toggleSettingsModal.bind(this)}>
           <div className="c-home-gear-icon"><GoGear/></div>
           <div className="c-home-gear-text">Settings</div>
         </div>

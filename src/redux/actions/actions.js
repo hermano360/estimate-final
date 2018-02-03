@@ -124,6 +124,14 @@ const QuoteActions = {
       quantity
     }
   },
+  updateItemKeyCode: (itemNumber, quoteNumber, product) => {
+    return {
+      type: "UPDATE_ITEM_KEYCODE",
+      itemNumber,
+      quoteNumber,
+      product
+    }
+  },
   editQuoteAttribute: (quoteNumber, attribute, value) => {
     return {
       type: "EDIT_QUOTE_ATTRIBUTE",

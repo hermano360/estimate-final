@@ -27,6 +27,14 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.post('/authenticate', function (req, res) {
+  if(req.body.username === 'admin' && req.body.password === 'password') {
+    res.send('valid')
+  } else {
+    res.send('invalid')
+  }
+})
+
 app.post('/generateDocument', function (req, res) {
   wordDoc.generateWord(req.body.total, req.body.quoteInformation, (response) => {
     res.send(response)

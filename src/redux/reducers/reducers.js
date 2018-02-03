@@ -70,6 +70,8 @@ export const ProductsReducer = (state = [], action) => {
 }
 
 export const QuotesReducer = (state = {}, action) => {
+  let newShoppingCart = []
+
   switch (action.type) {
     case 'LOAD_QUOTES':
       let quotesState = {}
@@ -136,12 +138,26 @@ export const QuotesReducer = (state = {}, action) => {
       }
     case 'UPDATE_ITEM_QUANTITY':
 
-      let newShoppingCart = [...state[action.quoteNumber].shoppingCart]
+      newShoppingCart = [...state[action.quoteNumber].shoppingCart]
       newShoppingCart[action.itemNumber-1] = {
         ...newShoppingCart[action.itemNumber-1],
         quantity: action.quantity
       }
 
+      return {
+        ...state,
+        [action.quoteNumber]: {
+          ...state[action.quoteNumber],
+          shoppingCart: newShoppingCart
+        }
+      }
+    case 'UPDATE_ITEM_KEYCODE':
+      newShoppingCart = [...state[action.quoteNumber].shoppingCart]
+      newShoppingCart[action.itemNumber-1] = {
+        ...action.product,
+        quantity: newShoppingCart[action.itemNumber-1].quantity,
+        template: newShoppingCart[action.itemNumber-1].template
+      }
       return {
         ...state,
         [action.quoteNumber]: {

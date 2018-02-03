@@ -33,8 +33,17 @@ class EstimateWorksheetItem extends Component {
       }
   }
 
+  handleProductChange(keycode){
+    const {dispatch, itemNumber, quoteNumber} = this.props
+    const productFromKeycode = JSON.parse(localStorage.getItem('products')).filter((products)=>{
+      return products.keycode === keycode.value
+    })[0]
+    dispatch(actions.updateItemKeyCode(itemNumber, quoteNumber, productFromKeycode))
+  }
+
+
   render() {
-    const { item, itemNumber, quoteNumber, dispatch, lastNumber, shoppingCartDOMNodes, quotes} = this.props
+    const { item, itemNumber, quoteNumber, dispatch, lastNumber, shoppingCartDOMNodes, quotes, productList} = this.props
     const totalMaterial = item.totalMaterial.slice(1)
     const labor = item.labor.slice(1)
     const {focus} = this.state
@@ -49,7 +58,16 @@ class EstimateWorksheetItem extends Component {
               {itemNumber}
             </div>
           </span>
-          <span className="c-estimators-worksheet-list-item c-estimators-worksheet-list-item-code">{item.keycode}</span>
+
+          <Select
+            options = {productList}
+            value={item.keycode}
+            onChange={this.handleProductChange.bind(this)}
+            placeholder='Choose Template'
+            noResultsText='N/A'
+            clearable={false}
+            className='c-estimators-worksheet-list-item c-estimators-worksheet-list-item-code'
+          />
           <span className="c-estimators-worksheet-list-item c-estimators-worksheet-list-item-amt">
             <input type="text" className="c-estimators-worksheet-list-item-amt-input"
               defaultValue={item.quantity}
@@ -76,7 +94,6 @@ class EstimateWorksheetItem extends Component {
             className="c-estimators-worksheet-list-item c-estimators-worksheet-list-item-x"
             onClick={() =>{
               dispatch(actions.removeFromShoppingCart(itemNumber, quoteNumber))
-
             }}>
             <FaClose />
           </span>

@@ -238,7 +238,7 @@ export class Estimate extends Component {
 
   render() {
     let {quoteNumber} = this.props
-    const {dispatch, quotes, shoppingCartDOMNodes, databaseQuoteNumbers} = this.props
+    const {dispatch, quotes, shoppingCartDOMNodes, databaseQuoteNumbers, retrieveProducts} = this.props
     const {showTotal, showSidebar, showMaterialInfo, loadingSave, showAddProduct,
       shoppingCartInMaterialInfo, removeQuoteModal, showEmailFile, sendingEmail} = this.state
     let availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
@@ -365,7 +365,7 @@ export class Estimate extends Component {
             ref = {input => { if (shoppingCartDOMNodes['scopeOfWork'] === undefined && input !== null) {dispatch(actions.setShoppingCartNode('scopeOfWork', input))}}}
             onKeyPress={e =>  {if(e.charCode === 13)  {shoppingCartDOMNodes['products'][1]===undefined ? shoppingCartDOMNodes['firstName'].focus() : shoppingCartDOMNodes['products'][1].focus()}} }/>
         </div>
-        <EstimateWorksheet showMaterialInfo={showMaterialInfo} toggleShowMaterial={this.toggleShowMaterial} shoppingCart={currentQuote.shoppingCart} renderMaterialInfo={this.renderMaterialInfo}/>
+        <EstimateWorksheet retrieveProducts={retrieveProducts} howMaterialInfo={showMaterialInfo} toggleShowMaterial={this.toggleShowMaterial} shoppingCart={currentQuote.shoppingCart} renderMaterialInfo={this.renderMaterialInfo}/>
           <div className="c-estimate-action-button c-estimate-back" onClick={()=>this.redirectToComponent('')}>Back</div>
         <div className="c-estimate-action-button c-estimate-save"
           onClick={this.saveQuoteToDatabase}
