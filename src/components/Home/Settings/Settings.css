@@ -12,6 +12,9 @@
   border-bottom: 1px solid black;
 }
 
+.c-settings-box {
+  text-align: center;
+}
 /*configuring the numeric inputs*/
 .react-numeric-input {
   width:60%;

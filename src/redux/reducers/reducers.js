@@ -75,7 +75,7 @@ export const QuotesReducer = (state = {}, action) => {
   switch (action.type) {
     case 'LOAD_QUOTES':
       let quotesState = {}
-      action.quotes.forEach((quote)=>{
+      action.quotes.forEach( quote =>{
         quotesState[quote.quoteNumber] = quote
       })
       return quotesState

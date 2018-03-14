@@ -10,7 +10,7 @@ import actions from '../redux/actions/actions'
 import baseURL from './baseURL'
 import './Main.scss'
 
-class Main extends Component {
+export class Main extends Component {
   constructor(e){
     super(e)
     this.state = {
@@ -85,8 +85,6 @@ class Main extends Component {
       }).catch((err) => { console.log(err) })
 
   }
-
-
 
   componentDidMount(){
     this.retrieveExternalCategories()

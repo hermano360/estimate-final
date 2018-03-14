@@ -1,6 +1,6 @@
 // separate actions according to redux key and combine using object destructuring
 
-const PageActions = {
+export const PageActions = {
   changePage : (page) => {
     return {
       type: 'CHANGE_PAGE',
@@ -9,7 +9,7 @@ const PageActions = {
   }
 }
 
-const TaxActions = {
+export const TaxActions = {
   changeTax : (tax) => {
     return {
       type: 'CHANGE_TAX',
@@ -18,7 +18,7 @@ const TaxActions = {
   }
 }
 
-const LaborActions = {
+export const LaborActions = {
   changeLabor : (labor) => {
     return {
       type: 'CHANGE_LABOR',
@@ -27,7 +27,7 @@ const LaborActions = {
   }
 }
 
-const MaterialActions = {
+export const MaterialActions = {
   changeMaterial : (material) => {
     return {
       type: 'CHANGE_MATERIAL',
@@ -36,7 +36,7 @@ const MaterialActions = {
   }
 }
 
-const ExtraWorkActions = {
+export const ExtraWorkActions = {
   changeExtraWork : (extraWork) => {
     return {
       type: 'CHANGE_EXTRA_WORK',
@@ -45,7 +45,7 @@ const ExtraWorkActions = {
   }
 }
 
-const EstimatorActions = {
+export const EstimatorActions = {
   changeEstimator : (estimator) => {
     return {
       type: 'CHANGE_ESTIMATOR',
@@ -54,7 +54,7 @@ const EstimatorActions = {
   }
 }
 
-const CategoryActions = {
+export const CategoryActions = {
   loadCategories : (categories) => {
     return {
       type: 'LOAD_CATEGORIES',
@@ -63,7 +63,7 @@ const CategoryActions = {
   }
 }
 
-const ProductActions = {
+export const ProductActions = {
   loadProducts : (products) => {
     return {
       type: 'LOAD_PRODUCTS',
@@ -72,7 +72,7 @@ const ProductActions = {
   }
 }
 
-const QuoteNumberActions = {
+export const QuoteNumberActions = {
   setQuoteNumber : (quoteNumber) => {
     return {
       type: 'SET_QUOTE_NUMBER',
@@ -81,7 +81,7 @@ const QuoteNumberActions = {
   }
 }
 
-const QuoteActions = {
+export const QuoteActions = {
   loadQuotes : (quotes) => {
     return {
       type: 'LOAD_QUOTES',
@@ -142,7 +142,7 @@ const QuoteActions = {
   }
 }
 
-const DOMNodesActions = {
+export const DOMNodesActions = {
   setShoppingCartNode: (key, node) => {
     return {
       type: 'SET_SHOPPING_CART_NODE',
@@ -164,7 +164,7 @@ const DOMNodesActions = {
   }
 }
 
-const DatabaseQuoteNumberActions = {
+export const DatabaseQuoteNumberActions = {
   loadDatabaseQuoteNumbers: (databaseQuotes) => {
     return {
       type: 'LOAD_DATABASE_QUOTE_NUMBERS',

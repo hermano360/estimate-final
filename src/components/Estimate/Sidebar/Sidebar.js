@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {Modal, Button} from 'react-bootstrap'
+import SimpleModal from '../../Common/SimpleModal'
 import actions from '../../../redux/actions/actions'
 import request from 'superagent'
 import baseURL from '../../baseURL'
@@ -106,6 +107,10 @@ export class Sidebar extends Component {
     console.log('work order')
   }
 
+  firstTest = () => {
+    return 'success!'
+  }
+
   handleEmailBid(){
     const {toggleEmailFile,toggleShowModal} = this.props
     toggleShowModal()
@@ -128,37 +133,35 @@ export class Sidebar extends Component {
   render() {
     const {toggleShowModal, show} = this.props
     const {estimateReady, shoppingListReady} = this.state
-
+    console.log(estimateReady)
     return (
-      <Modal show={show} onHide={this.onHideModal}  className="c-sidebar-modal" >
-        <Modal.Header closeButton>
-          <div className="c-sidebar-header">Options</div>
-        </Modal.Header>
-        <Modal.Body>
-          {!estimateReady && <div className="c-sidebar-item" onClick={()=>this.handleEstimate(estimateReady)}>Estimate</div>}
-          {estimateReady && <a href='/downloadWordDocument' onClick={() => {
-            this.setState({
-              estimateReady: false
-            })
-          }}><div className="c-sidebar-item">Download</div></a>}
-          <div className="c-sidebar-item" onClick={()=>this.handleDuplicate()}>Duplicate</div>
-          <div className="c-sidebar-item" onClick={()=>this.handleNewQuote()}>New Quote</div>
-          <div className="c-sidebar-item" onClick={()=>this.handleWorkOrder()}>Work Order</div>
-          {!shoppingListReady && <div className="c-sidebar-item" onClick={()=>this.handleShoppingList()}>Shopping List</div>}
-          {shoppingListReady && <a href='/downloadShoppingList' onClick={() => {
-            this.setState({
-              shoppingListReady: false
-            })
-          }}><div className="c-sidebar-item">Download</div></a>}
+      <SimpleModal open={show} toggle={this.onHideModal} >
+        <div className="c-sidebar-header">Options</div>
+
+        {!estimateReady && <div className="c-sidebar-item" onClick={()=>this.handleEstimate(estimateReady)}>Estimate</div>}
+        {estimateReady && <a href='/downloadWordDocument' onClick={() => {
+          console.log('herminio')
+          this.setState({
+            estimateReady: false
+          })
+        }}><div className="c-sidebar-item">Download</div></a>}
+        <div className="c-sidebar-item" onClick={()=>this.handleDuplicate()}>Duplicate</div>
+        <div className="c-sidebar-item" onClick={()=>this.handleNewQuote()}>New Quote</div>
+        <div className="c-sidebar-item" onClick={()=>this.handleWorkOrder()}>Work Order</div>
+        {!shoppingListReady && <div className="c-sidebar-item" onClick={()=>this.handleShoppingList()}>Shopping List</div>}
+        {shoppingListReady && <a href='/downloadShoppingList' onClick={() => {
+          this.setState({
+            shoppingListReady: false
+          })
+        }}><div className="c-sidebar-item">Download</div></a>}
 
 
-          <div className="c-sidebar-item" onClick={()=>this.handleEmailBid()}>Email Bid</div>
-          <div className="c-sidebar-item" onClick={()=>this.handleAddProduct()}>Add Product</div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button className="c-sidebar-close" onClick={toggleShowModal}>Close</Button>
-        </Modal.Footer>
-      </Modal>
+        <div className="c-sidebar-item" onClick={()=>this.handleEmailBid()}>Email Bid</div>
+        <div className="c-sidebar-item" onClick={()=>this.handleAddProduct()}>Add Product</div>
+
+        <Button className="c-sidebar-close" onClick={toggleShowModal}>Close</Button>
+      </SimpleModal>
+
     );
   }
 }

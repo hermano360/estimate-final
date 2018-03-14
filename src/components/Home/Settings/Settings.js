@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {Modal, Button} from 'react-bootstrap'
+import { Button} from 'react-bootstrap'
 import NumericInput from 'react-numeric-input'
-
+import SimpleModal from '../../Common/SimpleModal.js'
 import actions from '../../../redux/actions/actions'
 import './Settings.css'
 
@@ -66,38 +66,32 @@ class Settings extends Component {
   render() {
     const {labor, tax, extraWork, showModal, estimator, toggleSettingsModal, dispatch, material} = this.props
     return (
-
-      <Modal show={showModal} onHide={toggleSettingsModal} className="c-settings-modal">
-        <Modal.Header closeButton>
-          <div className='c-settings-title'>Settings</div>
-        </Modal.Header>
-        <Modal.Body>
-          <div className='c-settings-label'>Estimator</div>
-          <select className='c-settings-estimator' value={estimator} onChange={this.handleChangeEstimator.bind(this)}>
-            <option value="">-Select-</option>
-            <option value="Arnold Corona">Arnold Corona</option>
-            <option value="Gary Banks">Gary Banks</option>
-            <option value="John Chavez">John Chavez</option>
-            <option value="John Gutierrez">John Gutierrez</option>
-            <option value="Bob Leon">Bob Leon</option>
-            <option value="Ricardo Rivera">Ricardo Rivera</option>
-            <option value="Mike Rogers">Mike Rogers</option>
-            <option value="Cameron Sterling">Cameron Sterling</option>
-          </select>
-          <div className='c-settings-label'>Labor %</div>
-          <NumericInput min={0} max={100} value={labor} step={5}  mobile onChange={this.handleChangeLabor.bind(this)} />
-          <div className='c-settings-label'>Material %</div>
-          <NumericInput min={0} max={100} value={material} step={5}  mobile onChange={this.handleChangeMaterial.bind(this)} />
-          <div className='c-settings-label'>Extra Work %</div>
-          <NumericInput min={0} max={100} value={extraWork} step={5}  mobile onChange={this.handleChangeExtraWork.bind(this)} />
-          <div className='c-settings-label'>Tax %</div>
-          <NumericInput min={7} max={15} value={tax} step={0.1} mobile onChange={this.handleChangeTax.bind(this)} />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={toggleSettingsModal}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-
+      <SimpleModal open={showModal} toggle={toggleSettingsModal}>
+        <div className="c-settings-box">
+          <div className="c-settings-box-image-container">
+            <div className='c-settings-label'>Estimator</div>
+            <select className='c-settings-estimator' value={estimator} onChange={this.handleChangeEstimator.bind(this)}>
+              <option value="">-Select-</option>
+              <option value="Arnold Corona">Arnold Corona</option>
+              <option value="Gary Banks">Gary Banks</option>
+              <option value="John Chavez">John Chavez</option>
+              <option value="John Gutierrez">John Gutierrez</option>
+              <option value="Bob Leon">Bob Leon</option>
+              <option value="Ricardo Rivera">Ricardo Rivera</option>
+              <option value="Mike Rogers">Mike Rogers</option>
+              <option value="Cameron Sterling">Cameron Sterling</option>
+            </select>
+            <div className='c-settings-label'>Labor %</div>
+            <NumericInput min={0} max={100} value={labor} step={5}  mobile onChange={this.handleChangeLabor.bind(this)} />
+            <div className='c-settings-label'>Material %</div>
+            <NumericInput min={0} max={100} value={material} step={5}  mobile onChange={this.handleChangeMaterial.bind(this)} />
+            <div className='c-settings-label'>Extra Work %</div>
+            <NumericInput min={0} max={100} value={extraWork} step={5}  mobile onChange={this.handleChangeExtraWork.bind(this)} />
+            <div className='c-settings-label'>Tax %</div>
+            <NumericInput min={7} max={15} value={tax} step={0.1} mobile onChange={this.handleChangeTax.bind(this)} />
+          </div>
+        </div>
+      </SimpleModal>
     );
   }
 }

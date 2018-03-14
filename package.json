@@ -7,7 +7,8 @@
     "start": "nodemon --watch ./server.js --watch api/",
     "clean": "rimraf ./dist/*.js && rimraf ./dist/*.map",
     "build": "NODE_ENV=production npm run clean && webpack -p",
-    "serve": "webpack-dev-server"
+    "serve": "webpack-dev-server",
+    "test": "node scripts/test.js --env=jsdom"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "html-pdf": "^2.1.0",
     "i": "^0.3.5",
     "jszip": "^2.6.1",
+    "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "mongodb": "^2.2.33",
     "nodemailer": "^4.0.1",
@@ -32,7 +34,7 @@
     "react-dom": "^15.4.0",
     "react-icons": "^2.2.7",
     "react-loading-overlay": "^0.2.8",
-    "react-modal": "^3.1.7",
+    "react-modal": "^3.3.2",
     "react-numeric-input": "^2.2.0",
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.10",
@@ -45,19 +47,25 @@
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
-    "babel-jest": "^22.0.3",
+    "babel-jest": "^22.4.1",
     "babel-loader": "^6.2.5",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-react-app": "^3.0.0",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.23.1",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-15": "^1.0.5",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "html-webpack-plugin": "^2.30.1",
     "image-webpack-loader": "^3.4.2",
+    "jest": "^22.4.2",
     "node-sass": "^4.7.2",
-    "nodemon": "^1.14.3",
+    "nodemon": "^1.17.2",
     "react-redux": "^5.0.6",
+    "react-test-renderer": "^15.4.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "rimraf": "^2.6.2",
@@ -68,6 +76,37 @@
     "webpack": "^2.2.0-rc.0",
     "webpack-dev-middleware": "^2.0.2",
     "webpack-dev-server": "^2.9.7"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js",
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.js?(x)",
+      "<rootDir>/src/**/?(*.)(spec|test).js?(x)"
+    ],
+    "testEnvironment": "node",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web"
+    }
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
   },
   "proxy": "http://localhost:8000"
 }
