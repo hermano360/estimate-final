@@ -31,7 +31,7 @@ export var configure = (initialState = {}) => {
     databaseQuoteNumbers: DatabaseQuoteNumbersReducer
   })
   initialState = {
-    page: '',
+    page: 'home',
     labor: 30,
     material: 30,
     extraWork: 40,

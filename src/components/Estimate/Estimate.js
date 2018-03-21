@@ -67,8 +67,8 @@ export class Estimate extends Component {
   }
   toggleAddProduct(){
     const {showAddProduct} = this.state
-    this.setState({
-      showAddProduct: !showAddProduct
+    this.setState( (prevState, props) => {
+      return { showAddProduct: !prevState.showAddProduct }
     })
   }
   toggleEmailFile(){

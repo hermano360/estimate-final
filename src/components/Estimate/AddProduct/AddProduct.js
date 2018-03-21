@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {Modal, Button} from 'react-bootstrap'
+import SimpleModal from '../../Common/SimpleModal'
 import actions from '../../../redux/actions/actions'
 import Loadable from 'react-loading-overlay'
 import request from 'superagent'
@@ -87,80 +87,51 @@ export class AddProduct extends Component {
     const name = 'hello'
 
     return (
-      <Modal show={show} onHide={this.handleToggle} className="c-emailfile-modal" >
-      <Loadable
-        active={loadingProduct}
-        spinner
-        text={`Obtaining Information from ${store}`}>
-        <Modal.Header closeButton>
-          <div className="c-emailfile-header">Add Product</div>
-        </Modal.Header>
-        <Modal.Body>
-
-        <div>Store Select</div>
-        <select className='c-settings-estimator' value={store} onChange={this.handleStoreChange}>
-          <option value="">-Select-</option>
-          <option value="Home Depot">Home Depot</option>
-        </select>
-        {!skuError && store!=="" && (<div>
-          <div>Search By SKU</div>
-          <input type="text" className={`c-emailfile-options-input`}
-            placeholder="SKU Number" value={sku}
-            onChange={this.handleSKUChange}/>
-        </div>)}
-
-        {/*skuError && (<div>
-          <div>Search By URL</div>
-          <input type="text" className={`c-emailfile-options-input`}
-            placeholder="Name of Recipient" value={name}
-            onChange={this.handleURLChange}/>
-          </div>)*/}
-          {Object.keys(productEntry).length > 0 && (
-            <div className="c-addproduct-body">
-              <div className="c-addproduct-pair">
-                <div className="c-addproduct-property">Supplier</div>
-                <div className="c-addproduct-value">{store} - {productEntry.brand}</div>
-              </div>
-              <div className="c-addproduct-pair">
-                <div className="c-addproduct-property">Cost</div>
-                <div className="c-addproduct-value">${productEntry.priceDollars} {productEntry.uom}</div>
-              </div>
-              <div className="c-addproduct-pair">
-                <div className="c-addproduct-property">SKU</div>
-                <div className="c-addproduct-value">{productEntry.sku}</div>
-              </div>
-              <div className="c-addproduct-pair">
-                <div className="c-addproduct-property">Model #</div>
-                <div className="c-addproduct-value">{productEntry.model}</div>
-              </div>
-              <div className="c-addproduct-pair">
-                <div className="c-addproduct-property">Internet #</div>
-                <div className="c-addproduct-value">{productEntry.internet}</div>
-              </div>
-              <div className="c-addproduct-pair">
-                <div className="c-addproduct-property full">Product Name</div>
-                <div className="c-addproduct-value full">{productEntry.title}</div>
-              </div>
-              <div className="c-addproduct-picture">
-                <img src={productEntry.mainImg} className="c-addproduct-picture-frame"/>
-              </div>
-              <div className="c-addproduct-pair">
-                <div className="c-addproduct-property">Date Accessed</div>
-                <div className="c-addproduct-value">{moment(productEntry.dateAccessed).format('MM-DD-YYYY')}</div>
-              </div>
+      <SimpleModal open={show} toggle={this.handleToggle} className="c-addproduct-modal" >
+        <Loadable
+          active={loadingProduct}
+          spinner
+          text={`Obtaining Information from ${store}`}>
+          <div className="c-addproduct-body">
+            <div className="c-addproduct-header">Add Product</div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Desired Key Code</div>
+              <input type="text" className="c-addproduct-value"/>
             </div>
-          )}
-
-
-        </Modal.Body>
-        <Modal.Footer>
-        {sku!=="" && Object.keys(productEntry).length===0 && <div className="c-addproduct-submit" onClick={this.handleSubmit}>Submit</div>}
-        {sku!=="" && Object.keys(productEntry).length>0 &&<div className="c-addproduct-submit" onClick={this.handleToggle}>Add Product</div>}
-        </Modal.Footer>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Specifications</div>
+              <input type="text" className="c-addproduct-value"/>
+            </div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Unit of Measure</div>
+              <input type="text" className="c-addproduct-value"/>
+            </div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Material Cost</div>
+              <input type="text" className="c-addproduct-value"/>
+            </div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Labor Cost</div>
+              <input type="text" className="c-addproduct-value"/>
+            </div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Add to Existing Group?</div>
+              <select className="c-addproduct-value" value={store} onChange={this.handleStoreChange}>
+                <option value="">-Select-</option>
+                <option value="Home Depot">Home Depot</option>
+              </select>
+            </div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Supplier</div>
+              <select className="c-addproduct-value" value={store} onChange={this.handleStoreChange}>
+                <option value="">-Select-</option>
+                <option value="Home Depot">Home Depot</option>
+              </select>
+            </div>
+          </div>
         </Loadable>
-      </Modal>
-
-    );
+      </SimpleModal>
+    )
   }
 }
 

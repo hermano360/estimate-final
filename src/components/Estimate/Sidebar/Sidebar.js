@@ -136,6 +136,7 @@ export class Sidebar extends Component {
     console.log(estimateReady)
     return (
       <SimpleModal open={show} toggle={this.onHideModal} >
+      <div className="c-sidebar-body">
         <div className="c-sidebar-header">Options</div>
 
         {!estimateReady && <div className="c-sidebar-item" onClick={()=>this.handleEstimate(estimateReady)}>Estimate</div>}
@@ -160,6 +161,7 @@ export class Sidebar extends Component {
         <div className="c-sidebar-item" onClick={()=>this.handleAddProduct()}>Add Product</div>
 
         <Button className="c-sidebar-close" onClick={toggleShowModal}>Close</Button>
+        </div>
       </SimpleModal>
 
     );

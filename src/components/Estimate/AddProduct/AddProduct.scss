@@ -1,64 +1,24 @@
 .c-addproduct{
   &-body {
-    margin-top: 5%;
-  }
-  &-modal {
     text-align: center;
-      .modal-header{
-        border-bottom: none;
-      }
-      .modal-body {
-        width: 90%;
-        margin-left: 5%;
-        border: 2px solid green;
-        border-radius: 10px;
-      }
-  }
-  &-pair{
-    border-bottom: 1px solid grey;
-  }
-  &-property {
-    width:30%;
-    text-align: middle;
-    display: inline-block;
-    vertical-align: top;
     font-size: 12px;
-    font-weight: bold;
-    &.full{
-      width:100%
-    }
+  }
+  &-header {
+    font-size: 16px;
+  }
+  &-prop {
+    width: 50%;
+    display: inline-block;
   }
   &-value {
-    width:70%;
-    text-align: middle;
+    width: 50%;
     display: inline-block;
-    vertical-align: top;
-    font-size: 12px;
-    &.full{
-      width:100%
-    }
+    text-align: center;
+  }
+  &-group {
+    margin: 5% 0;
   }
 
-  &-picture {
-
-    &-frame {
-      height: 200px;
-      width: 100%;
-      border: 1px solid black;
-    }
-  }
-  &-nav {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    &-opt{
-      width: 25%;
-      margin-left: 5%;
-      margin-right:5%;
-      display: inline-block;
-      border-radius: 5%;
-      font-size: 30px;
-    }
-  }
   &-remove{
     width: 30%;
     color: white;
