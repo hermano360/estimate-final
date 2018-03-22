@@ -146,10 +146,10 @@ export class Sidebar extends Component {
             estimateReady: false
           })
         }}><div className="c-sidebar-item">Download</div></a>}
-        <div className="c-sidebar-item" onClick={()=>this.handleDuplicate()}>Duplicate</div>
-        <div className="c-sidebar-item" onClick={()=>this.handleNewQuote()}>New Quote</div>
-        <div className="c-sidebar-item" onClick={()=>this.handleWorkOrder()}>Work Order</div>
-        {!shoppingListReady && <div className="c-sidebar-item" onClick={()=>this.handleShoppingList()}>Shopping List</div>}
+        <div className="c-sidebar-item" onClick={this.handleDuplicate}>Duplicate</div>
+        <div className="c-sidebar-item" onClick={this.handleNewQuote}>New Quote</div>
+        <div className="c-sidebar-item" onClick={this.handleWorkOrder}>Work Order</div>
+        {!shoppingListReady && <div className="c-sidebar-item" onClick={this.handleShoppingList}>Shopping List</div>}
         {shoppingListReady && <a href='/downloadShoppingList' onClick={() => {
           this.setState({
             shoppingListReady: false

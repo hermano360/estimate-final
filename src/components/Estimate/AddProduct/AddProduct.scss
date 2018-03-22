@@ -14,9 +14,13 @@
     width: 50%;
     display: inline-block;
     text-align: center;
+    background-color: white;
+    text-align-last:center;
   }
   &-group {
     margin: 5% 0;
+    display:flex;
+    align-items: flex-start;
   }
 
   &-remove{

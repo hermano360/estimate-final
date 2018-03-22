@@ -18,6 +18,8 @@ export class AddProduct extends Component {
       skuError: false,
       url: '',
       store: '',
+      group: '',
+      supplier:'',
       productEntry: {},
       loadingProduct: false
     }
@@ -38,9 +40,19 @@ export class AddProduct extends Component {
       url: e.target.value
     })
   }
-  handleStoreChange(e){
+  handleStoreChange = (e) => {
     this.setState({
       store: e.target.value
+    })
+  }
+  handleSupplierChange = (e) => {
+    this.setState({
+      supplier: e.target.value
+    })
+  }
+  handleGroupChange = e => {
+    this.setState({
+      group: e.target.value
     })
   }
 
@@ -80,11 +92,36 @@ export class AddProduct extends Component {
     }
   }
 
+  renderGroupOptions = () => {
+    let groups = []
+    let allProducts = JSON.parse(localStorage.getItem('products'))
+    allProducts.forEach(product => {
+    if(!groups.includes(product.group)){
+            groups.push(product.group)
+        }
+    })
+
+    return groups
+    .map(group => {
+      return group === '' ? '' : group[0].toUpperCase() + group.slice(1)
+    })
+    .filter((group,i) => {
+      return group !== '' && groups.indexOf(group) === i
+    })
+    .sort()
+    .map(group => {
+      return (
+        <option key={group }value={group}>{group}</option>
+      )
+    })
+
+
+  }
+
 
   render() {
     const {dispatch, show, toggleAddProduct} = this.props
-    const {sku, skuError, store, productEntry, loadingProduct} = this.state
-    const name = 'hello'
+    const {sku, skuError, store, productEntry, loadingProduct, supplier, group} = this.state
 
     return (
       <SimpleModal open={show} toggle={this.handleToggle} className="c-addproduct-modal" >
@@ -100,7 +137,8 @@ export class AddProduct extends Component {
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Specifications</div>
-              <input type="text" className="c-addproduct-value"/>
+              <textarea className="c-addproduct-value" rows="4" onChange={(e)=>console.log(e.target.value)}>
+              </textarea>
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Unit of Measure</div>
@@ -116,16 +154,19 @@ export class AddProduct extends Component {
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Add to Existing Group?</div>
-              <select className="c-addproduct-value" value={store} onChange={this.handleStoreChange}>
+              <select className="c-addproduct-value" value={group} onChange={this.handleGroupChange}>
                 <option value="">-Select-</option>
-                <option value="Home Depot">Home Depot</option>
+                {this.renderGroupOptions()}
               </select>
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Supplier</div>
-              <select className="c-addproduct-value" value={store} onChange={this.handleStoreChange}>
+              <select className="c-addproduct-value" value={supplier} onChange={this.handleSupplierChange}>
                 <option value="">-Select-</option>
                 <option value="Home Depot">Home Depot</option>
+                <option value="Lowes">Lowes</option>
+                <option value="Ferguson">Ferguson</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>
