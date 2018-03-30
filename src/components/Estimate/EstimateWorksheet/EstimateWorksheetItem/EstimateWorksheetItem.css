@@ -71,3 +71,7 @@
 .c-estimators-worksheet-list-item-x {
   width: 5%;
 }
+
+.Select span.Select-arrow {
+  display: none;
+}

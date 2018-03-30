@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import TiArrowLeftOutline from 'react-icons/lib/ti/arrow-left-outline'
 import TiArrowRightOutline from 'react-icons/lib/ti/arrow-right-outline'
 import {Modal, Button} from 'react-bootstrap'
+import SimpleModal from '../../Common/SimpleModal'
 import actions from '../../../redux/actions/actions'
 
 import './MaterialList.scss'
@@ -37,11 +38,11 @@ export class MaterialList extends Component {
     let renderedItem = shoppingCart[itemNumber-1]
 
     return (
-      <Modal show={show} onHide={toggleShowMaterial} className="c-materiallist-modal" >
-        <Modal.Header closeButton>
+      <SimpleModal open={show} toggle={toggleShowMaterial} className="c-materiallist-modal" >
+
           <div className="c-materiallist-header">Material/Labor Cost List</div>
-        </Modal.Header>
-        <Modal.Body>
+
+
           <div className="c-materiallist-pair">
             <div className="c-materiallist-property">Supplier</div>
             <div className="c-materiallist-value">{renderedItem.supplier}</div>
@@ -82,11 +83,10 @@ export class MaterialList extends Component {
               <TiArrowRightOutline />
             </div>
           </div>
-        </Modal.Body>
-        <Modal.Footer>
+
           <Button className="c-materiallist-close" onClick={toggleShowMaterial}>Close</Button>
-        </Modal.Footer>
-      </Modal>
+
+      </SimpleModal>
     );
   }
 }

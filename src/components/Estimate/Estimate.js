@@ -189,11 +189,7 @@ export class Estimate extends Component {
       .catch(err=> console.log(err))
   }
   saveButtonWording(databaseQuoteNumbers, quoteNumber){
-    if(databaseQuoteNumbers.indexOf(quoteNumber) === -1){
-      return 'Create'
-    } else {
-      return 'Save'
-    }
+    return 'Save'
   }
   handleChangeDate(e){
     const regex = /([0-9]{2})-([0-9]{2})-([0-9]{4})/g;

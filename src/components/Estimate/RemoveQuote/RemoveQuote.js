@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button} from 'react-bootstrap'
+import SimpleModal from '../../Common/SimpleModal'
 import actions from '../../../redux/actions/actions'
 import Loadable from 'react-loading-overlay'
 import request from 'superagent'
@@ -60,15 +61,15 @@ export class Sidebar extends Component {
         active={loadingSave}
         spinner
         text='Saving Quote Information...'>
-      <Modal show={show} onHide={toggleRemoveQuote}  className="c-remove-quote-modal" >
-        <Modal.Body className="c-remove-quote-body">
+      <SimpleModal open={show} toggle={toggleRemoveQuote}  className="c-remove-quote-modal" >
+        <div className="c-remove-quote-body">
           <div className="c-remove-quote-body-text">Are You Sure You Want to Delete this Quote?</div>
           <div className="c-remove-quote-body-options">
             <div className="c-remove-quote-body-options cancel" onClick={toggleRemoveQuote}>Cancel</div>
             <div className="c-remove-quote-body-options yes" onClick={this.removeQuoteFromDatabase}>Yes</div>
           </div>
-        </Modal.Body>
-      </Modal>
+        </div>
+      </SimpleModal>
       </Loadable>
     );
   }
