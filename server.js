@@ -33,6 +33,17 @@ app.post('/authenticate', function (req, res) {
   } else {
     res.send('invalid')
   }
+
+
+  /*
+  MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', function (err, db) {
+      db.collection('proCategories').find({}, { category: 1, products: 1, _id: 0 }).sort({category: 1}).toArray((err, categories) => {
+        res.send(categories)
+
+        db.close()
+      })
+    })
+    */
 })
 
 app.post('/generateDocument', function (req, res) {
