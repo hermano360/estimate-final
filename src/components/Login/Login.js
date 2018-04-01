@@ -15,13 +15,13 @@ export class Login extends Component {
     }
   }
 
-  handleUserName(e){
+  handleUserName = (e) => {
     this.setState({
       username: e.target.value,
       error: false
     })
   }
-  handlePassword(e){
+  handlePassword = (e) => {
     this.setState({
       password: e.target.value,
       error: false
@@ -29,18 +29,16 @@ export class Login extends Component {
   }
   handleSubmit(){
     const {username, password} = this.state
-    const {baseURL, dispatch} = this.props
+    const {dispatch} = this.props
+    const {baseURL} = this.props.data
+    const {getCompleteData} = this.props.functions
     request
-      .post(`${baseURL.url}/authenticate`)
+      .post(`${baseURL}/authenticate`)
       .send({username, password})
       .then(res=>{
-        if(res.text !== 'valid'){
-          this.setState({
-            error: true
-          })
-        } else {
-          dispatch(actions.changePage('home'))
-        }
+        localStorage.setItem('authToken', res.text)
+        getCompleteData()
+        dispatch(actions.changePage('home'))
       }) .catch(err=>{
         console.log(err)
       })

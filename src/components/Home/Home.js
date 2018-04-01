@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import logo from '../../assets/images/ezestimator_logo.png'
+import Loadable from 'react-loading-overlay'
 import GoGear from 'react-icons/lib/go/gear'
 import Settings from './Settings/Settings'
 import actions from '../../redux/actions/actions'
@@ -8,34 +9,28 @@ import { Button } from 'react-bootstrap'
 
 import './Home.scss'
 
-
-
 class Home extends Component {
-  constructor(e){
-    super(e)
-    this.state={
-      showModal: false
-    }
+  state = { showModal: false }
+
+  toggleSettingsModal = (showModal) => {
+    this.setState({showModal})
   }
 
-  toggleSettingsModal(){
-    const {showModal} = this.state
-    this.setState({
-      showModal: !showModal
-    })
-  }
   redirectToComponent(component){
-    const {dispatch} = this.props
-    this.toggleSettingsModal()
-    dispatch(actions.changePage(component))
+    this.props.dispatch(actions.changePage(component))
   }
 
   render() {
     const {showModal} = this.state
+    const {loading} = this.props.data
     return (
+      <Loadable
+        active={loading}
+        spinner
+        text={`Loading`}>
       <div className="c-home-body">
-        <Settings showModal={showModal} toggleSettingsModal={this.toggleSettingsModal.bind(this)}/>
-        <div className="c-home-gear" onClick={this.toggleSettingsModal.bind(this)}>
+        <Settings showModal={showModal} toggleSettingsModal={()=> this.toggleSettingsModal(!showModal)}/>
+        <div className="c-home-gear" onClick={()=> this.toggleSettingsModal(!showModal)}>
           <div className="c-home-gear-icon"><GoGear/></div>
           <div className="c-home-gear-text">Settings</div>
         </div>
@@ -46,6 +41,7 @@ class Home extends Component {
           <Button bsSize="large" className="c-home-button c-home-button-bottom" onClick={()=>this.redirectToComponent('phonelist')}>Phone List</Button>
         </div>
       </div>
+    </Loadable>
     );
   }
 }

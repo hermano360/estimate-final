@@ -41,7 +41,7 @@ export class Estimate extends Component {
       sendingEmail: false,
       shoppingCartInMaterialInfo: {}
     }
-    this.toggleShowModal = this.toggleShowModal.bind(this)
+
     this.toggleRemoveQuote = this.toggleRemoveQuote.bind(this)
     this.toggleShowMaterial = this.toggleShowMaterial.bind(this)
     this.toggleAddProduct = this.toggleAddProduct.bind(this)
@@ -53,12 +53,13 @@ export class Estimate extends Component {
     this.sendEmail = this.sendEmail.bind(this)
   }
 
-  toggleShowModal(){
-    const {showSidebar} = this.state
-    this.setState({
-      showSidebar: !showSidebar
-    })
+  toggleShowModal = (showSidebar) => {
+    this.setState({showSidebar})
   }
+  toggleShowSidebarModal = (showSidebar) => {
+    this.setState({showSidebar})
+  }
+
   toggleRemoveQuote(){
     const {removeQuoteModal} = this.state
     this.setState({
@@ -132,17 +133,7 @@ export class Estimate extends Component {
     })
   }
 
-  componentWillMount(){
-    const {quotes, dispatch} = this.props
-    const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
-    if(availableQuoteNumbers.length > 0) {
-      dispatch(actions.setQuoteNumber(availableQuoteNumbers[0]))
-    } else {
-      dispatch(actions.addNewQuote(1))
-      dispatch(actions.setQuoteNumber(1))
-    }
 
-  }
 
   renderCurrentQuote(quotes, quoteNumber){
     return quotes[quoteNumber]
@@ -231,8 +222,33 @@ export class Estimate extends Component {
       })
   }
 
+  // componentWillMount(){
+  //   const {quotes, dispatch} = this.props
+  //   const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
+  //   if(availableQuoteNumbers.length > 0) {
+  //     dispatch(actions.setQuoteNumber(availableQuoteNumbers[0]))
+  //   } else {
+  //     dispatch(actions.addNewQuote(1))
+  //     dispatch(actions.setQuoteNumber(1))
+  //   }
+  //
+  // }
 
-  render() {
+  render(){
+    const {showSidebar} = this.state
+    let loading = this.props.loading || true
+    return (
+      <Loadable active={false} spinner text={`Loading`}>
+        <div className="c-estimate-body">
+          <Sidebar show={showSidebar} toggleShowModal={() => this.toggleShowSidebarModal(showSidebar)} availableQuoteNumbers={[1,2,3]} toggleEmailFile={()=>console.log('test')} toggleAddProduct={()=>console.log('test')}/>
+          Estimate
+        </div>
+      </Loadable>
+        )
+    }
+
+
+  renderOld() {
     let {quoteNumber} = this.props
     const {dispatch, quotes, shoppingCartDOMNodes, databaseQuoteNumbers, retrieveProducts} = this.props
     const {showTotal, showSidebar, showMaterialInfo, loadingSave, showAddProduct,

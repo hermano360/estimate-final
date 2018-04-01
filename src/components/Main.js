@@ -6,19 +6,57 @@ import request from 'superagent'
 import Home from './Home/Home'
 import Estimate from './Estimate/Estimate'
 import Login from './Login/Login'
+
 import actions from '../redux/actions/actions'
 import baseURL from './baseURL'
 import './Main.scss'
 
-export class Main extends Component {
-  constructor(e){
-    super(e)
-    this.state = {
-      categoriesReady: false,
-      productsReady: false,
-      quotesReady:false
-    }
+class PageContainer extends Component {
+  state = {
+    categoriesLoading: true,
+    productsLoading: true,
+    quotesLoading: true,
   }
+
+  getCategories = () => {
+    const {categoriesLoading,productsLoading,quotesLoading} = this.state
+    setTimeout(()=>{
+      this.setState({'categoriesLoading': false})
+      console.log('awesome')
+      console.log(categoriesLoading && productsLoading && quotesLoading)
+    }, 5000)
+  }
+  getQuotes = () => {
+    this.setState({'quotesLoading': false})
+  }
+  getProducts = () => {
+    this.setState({'productsLoading': false})
+  }
+
+  getCompleteData = () => {
+    this.getQuotes()
+    this.getCategories()
+    this.getProducts()
+  }
+
+  render(){
+    const {categoriesLoading,productsLoading,quotesLoading} = this.state
+    const loading = categoriesLoading || productsLoading || quotesLoading
+    const data = {
+      loading,
+      baseURL
+    }
+    const functions = {
+      getCategories: this.getCategories,
+      getQuotes: this.getQuotes,
+      getProducts: this.getProducts,
+      getCompleteData: this.getCompleteData
+    }
+    return <this.props.component data={data} functions={functions} />
+  }
+}
+
+export class Main extends Component {
 
   retrieveExternalCategories(){
     const {dispatch} = this.props
@@ -50,7 +88,8 @@ export class Main extends Component {
     const timeProductsLastAccessed = localStorage.getItem('productsAccessDate')
     const oneDay = 86400000
     if(currentTime - timeProductsLastAccessed > oneDay || localStorage.getItem('products')===undefined){
-      request.get(`${baseURL.url}/products`)
+      localStorage.getItem('authToken')
+      request.post(`${baseURL.url}/products`).send({authToken})
         .then((res) => {
           console.log(res)
           localStorage.setItem('products', JSON.stringify(res.body))
@@ -86,46 +125,10 @@ export class Main extends Component {
 
   }
 
-  componentDidMount(){
-    this.retrieveExternalCategories()
-    this.retrieveExternalProducts()
-    this.retrieveExternalQuotes()
-  }
-
-  renderCorrectPage(){
-    const {page} = this.props
-    switch(page){
-      case "estimate":
-        return <Estimate retrieveProducts={this.retrieveExternalProducts} />
-        break
-      case "phonelist":
-        return (<div>Phonelist</div>)
-        break
-      case "products":
-        return (<div>Products</div>)
-        break
-        case "home":
-          return (<Home/>)
-          break
-      default:
-          return (<Login baseURL={baseURL}/>)
-    }
-
-  }
   render () {
-    const {quotesReady, productsReady, categoriesReady} = this.state
-    const stillLoading = !(quotesReady && productsReady && categoriesReady)
-    return (
-      <div>
-      <Loadable
-        active={stillLoading}
-        spinner
-        text='Loading your content...'>
-        <div>{this.renderCorrectPage()}</div>
-      </Loadable>
-
-      </div>
-    )
+    const {pageOptions} = this.props
+    const {page} = this.props
+    return (<PageContainer component={pageOptions[page]} />)
   }
 }
 
