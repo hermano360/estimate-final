@@ -133,7 +133,6 @@ export class Sidebar extends Component {
   render() {
     const {toggleShowModal, show} = this.props
     const {estimateReady, shoppingListReady} = this.state
-    console.log(estimateReady)
     return (
       <SimpleModal open={show} toggle={this.onHideModal} >
       <div className="c-sidebar-body">

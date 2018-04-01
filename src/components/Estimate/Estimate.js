@@ -53,12 +53,71 @@ export class Estimate extends Component {
     this.sendEmail = this.sendEmail.bind(this)
   }
 
-  toggleShowModal = (showSidebar) => {
-    this.setState({showSidebar})
-  }
   toggleShowSidebarModal = (showSidebar) => {
     this.setState({showSidebar})
   }
+
+  findAvailableQuoteNumbers = (quotes) => {
+    if(quotes){
+        return Object.keys(quotes).map(quote=>Number(quote)).sort((a, b) => a - b)
+    }
+    return []
+  }
+
+
+  // componentWillMount(){
+  //   const {quotes, dispatch} = this.props
+  //   const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
+  //   if(availableQuoteNumbers.length > 0) {
+  //     dispatch(actions.setQuoteNumber(availableQuoteNumbers[0]))
+  //   } else {
+  //     dispatch(actions.addNewQuote(1))
+  //     dispatch(actions.setQuoteNumber(1))
+  //   }
+  //
+  // }
+
+  render(){
+    const {showSidebar, removeQuoteModal, showTotal} = this.state
+    const {quotes} = this.props
+    const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
+    let loading = this.props.loading || true
+    return (
+      <Loadable active={false} spinner text={`Loading`}>
+        <div className="c-estimate-body">
+          <Sidebar show={showSidebar} toggleShowModal={() => this.toggleShowSidebarModal(!showSidebar)} availableQuoteNumbers={[1,2,3]} toggleEmailFile={()=>console.log('test')} toggleAddProduct={()=>console.log('test')}/>
+          <RemoveQuote show={removeQuoteModal} toggleRemoveQuote={this.toggleRemoveQuote} />
+          <div className="c-estimate-action-button c-estimate-sidebar"
+            onClick={() => this.toggleShowSidebarModal(!showSidebar)}>
+            <MdMenu/>
+          </div>
+
+          <div className="c-estimate-header">
+            <div className="c-estimate-next-quote">
+              <TiArrowLeftOutline onClick={this.decrementQuoteNumber} />
+              <div className="c-estimate-next-quote-page">#{5}</div>
+              <TiArrowRightOutline onClick={this.incrementQuoteNumber}/>
+            </div>
+            <div className="c-estimate-remove-quote" onClick={this.toggleRemoveQuote}>Remove Quote</div>
+            <div className="c-estimate-logo-container">
+              <img src={logo} alt='Estimate Logo' className="c-estimate-logo"/>
+            </div>
+            <ToggleButton className="c-estimate-show-total" checked={showTotal}
+              icons={{checked: null, unchecked: null}}
+              onChange={() => this.setState({showTotal: !showTotal})} />
+          </div>
+
+        </div>
+      </Loadable>
+        )
+    }
+
+
+
+  toggleShowModal = (showSidebar) => {
+    this.setState({showSidebar})
+  }
+
 
   toggleRemoveQuote(){
     const {removeQuoteModal} = this.state
@@ -96,12 +155,7 @@ export class Estimate extends Component {
     return total
   }
 
-  findAvailableQuoteNumbers(quotes){
-    if(quotes){
-        return Object.keys(quotes).map(quote=>Number(quote)).sort((a, b) => a - b)
-    }
-    return []
-  }
+
 
   findNextAvailableQuoteNumber(quotes){
     const availableQuoteNumbers = Object.keys(quotes).sort()
@@ -222,30 +276,7 @@ export class Estimate extends Component {
       })
   }
 
-  // componentWillMount(){
-  //   const {quotes, dispatch} = this.props
-  //   const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
-  //   if(availableQuoteNumbers.length > 0) {
-  //     dispatch(actions.setQuoteNumber(availableQuoteNumbers[0]))
-  //   } else {
-  //     dispatch(actions.addNewQuote(1))
-  //     dispatch(actions.setQuoteNumber(1))
-  //   }
-  //
-  // }
 
-  render(){
-    const {showSidebar} = this.state
-    let loading = this.props.loading || true
-    return (
-      <Loadable active={false} spinner text={`Loading`}>
-        <div className="c-estimate-body">
-          <Sidebar show={showSidebar} toggleShowModal={() => this.toggleShowSidebarModal(showSidebar)} availableQuoteNumbers={[1,2,3]} toggleEmailFile={()=>console.log('test')} toggleAddProduct={()=>console.log('test')}/>
-          Estimate
-        </div>
-      </Loadable>
-        )
-    }
 
 
   renderOld() {
@@ -296,10 +327,12 @@ export class Estimate extends Component {
         <EmailFile show={showEmailFile} sendEmail={this.sendEmail} toggleEmailFile={this.toggleEmailFile} name={`${currentQuote.customerFirstName} ${currentQuote.customerLastName}`}/>
         <AddProduct show={showAddProduct} toggleAddProduct={this.toggleAddProduct}/>
         <SignatureBox />
+
         <div className="c-estimate-action-button c-estimate-sidebar"
           onClick={this.toggleShowModal}>
           <MdMenu/>
         </div>
+
         <div className="c-estimate-header">
           <div className="c-estimate-next-quote">
             <TiArrowLeftOutline onClick={this.decrementQuoteNumber} />

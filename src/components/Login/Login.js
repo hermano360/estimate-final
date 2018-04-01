@@ -7,12 +7,10 @@ import actions from '../../redux/actions/actions'
 import logo from '../../assets/images/ezestimator_logo.png'
 
 export class Login extends Component {
-  constructor(e){
-    super(e)
-    this.state = {
-      username: '',
-      password: ''
-    }
+
+  state = {
+    username: '',
+    password: ''
   }
 
   handleUserName = (e) => {
@@ -21,27 +19,39 @@ export class Login extends Component {
       error: false
     })
   }
+
   handlePassword = (e) => {
     this.setState({
       password: e.target.value,
       error: false
     })
   }
-  handleSubmit(){
+
+  handleSubmit = () => {
     const {username, password} = this.state
-    const {dispatch} = this.props
+    const {dispatch} = this.props.functions
     const {baseURL} = this.props.data
-    const {getCompleteData} = this.props.functions
-    request
-      .post(`${baseURL}/authenticate`)
-      .send({username, password})
+
+    request.post(`${baseURL}/authenticate`).send({username, password})
       .then(res=>{
-        localStorage.setItem('authToken', res.text)
-        getCompleteData()
-        dispatch(actions.changePage('home'))
-      }) .catch(err=>{
+        localStorage.setItem('authToken', JSON.parse(res.text))
+        this.redirectToHome()
+      }).catch(err => {
         console.log(err)
       })
+  }
+
+  redirectToHome = () => {
+    const {getCompleteData, dispatch} = this.props.functions
+    getCompleteData()
+    dispatch(actions.changePage('home'))
+  }
+
+  componentDidMount(){
+    const {dispatch} = this.props.functions
+    if(localStorage.getItem('authToken') !== null){
+      this.redirectToHome()
+    }
   }
 
   render(){
@@ -51,11 +61,11 @@ export class Login extends Component {
         <img src={logo} alt='Estimate Logo' className="c-home-logo"/>
         <form>
           <ControlLabel>Name</ControlLabel>
-          <FormControl value={username} onChange={this.handleUserName.bind(this)} style={{textAlign: 'center'}}/>
+          <FormControl value={username} onChange={this.handleUserName} style={{textAlign: 'center'}}/>
           <ControlLabel>Password</ControlLabel>
-          <FormControl value={password} type="password" onChange={this.handlePassword.bind(this)} style={{textAlign: 'center'}}/>
+          <FormControl value={password} type="password" onChange={this.handlePassword} style={{textAlign: 'center'}}/>
           {error && <div style={{color: 'red'}}>error</div>}
-        <Button onClick={this.handleSubmit.bind(this)}>Submit</Button>
+        <Button onClick={this.handleSubmit}>Submit</Button>
       </form>
       </div>
     )

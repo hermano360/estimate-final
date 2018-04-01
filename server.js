@@ -27,18 +27,39 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.post('/authenticate', function (req, res) {
+app.post('/authenticate', async (req, res) => {
+  const db = await MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark');
+  try {
+    const cursor = await db.collection('proAccounts').find({username:req.body.username, password: req.body.password}, { _id: 1 })
+    const userID = await cursor.next()
+    res.send(userID._id)
+    db.close()
+  } catch(err) {
+
+    //handle errors correctly
+    res.status(400).send('Not Today')
+  }
+
+})
+
+// app.post('/authenticate', function (req, res) {
+//   if(req.body.username === 'admin' && req.body.password === 'password') {
+//     res.send('valid')
+//   } else {
+//     res.send('invalid')
+//   }
+
+
+  /*
   MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', function (err, db) {
-      db.collection('proAccounts').find({username: req.body.username, password: req.body.password}, { authCode: 1, _id: 0 }).toArray((err, user) => {
-        if(user.length === 0) {
-          res.status(400).send('Invalid Username')
-        } else {
-          res.send(user[0].authCode)
-        }
+      db.collection('proCategories').find({}, { category: 1, products: 1, _id: 0 }).sort({category: 1}).toArray((err, categories) => {
+        res.send(categories)
+
         db.close()
       })
     })
-})
+    */
+// })
 
 app.post('/generateDocument', function (req, res) {
   wordDoc.generateWord(req.body.total, req.body.quoteInformation, (response) => {
@@ -61,7 +82,6 @@ app.get('/categories', (req, res) => {
   MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', function (err, db) {
     db.collection('proCategories').find({}, { category: 1, products: 1, _id: 0 }).sort({category: 1}).toArray((err, categories) => {
       res.send(categories)
-
       db.close()
     })
   })
@@ -79,20 +99,11 @@ app.post('/categoryGroups', (req, res) => {
   })
 })
 
-app.post('/products', (req, res) => {
-  res.send('hi')
-  // MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', (err, db) => {
-  //   db.collection('proProducts').find({}, { _id: 0, updated: 0, misc: 0, materialCost: 0 }).sort({ keycode: 1 }).toArray((err, products) => {
-  //     db.collection('proAccounts').find({authToken: req.body.authToken}, { customProducts:1 ,password: 0, username: 0, _id: 0 }).toArray((err, customProducts) => {
-  //       console.log(customProducts)
-  //       //res.send(products, customProducts)
-  //       db.close()
-  //     })
-  //
-  //     res.send(products)
-  //     db.close()
-  //   })
-  // })
+app.post('/getProducts', async (req, res) => {
+  const db = await MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark');
+  const products = await db.collection('proProducts').find({}, { _id: 0, updated: 0, misc: 0, materialCost: 0 }).sort({ keycode: 1 }).toArray()
+  res.send(products)
+  db.close()
 })
 
 app.get('/quotes', (req, res) => {
@@ -105,18 +116,17 @@ app.get('/quotes', (req, res) => {
 })
 
 app.post('/quotes', (req, res) => {
-  res.send(true)
-  // MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', (err, db) => {
-  //   db.collection('proQuotes').update({quoteNumber: req.body.quoteNumber }, req.body ,{ upsert: true })
-  //     .then(
-  //       db.collection('proQuotes').find({}, { _id: 0}).sort({ quoteNumber: 1 }).toArray((err, quotes) => {
-  //         res.send(quotes)
-  //         db.close()
-  //       })
-  //     )
-  //     .catch(err=>res.send(err))
-  //     db.close()
-  // })
+  MongoClient.connect('mongodb://hermano360:f00tball@ds137090.mlab.com:37090/meadowlark', (err, db) => {
+    db.collection('proQuotes').update({quoteNumber: req.body.quoteNumber }, req.body ,{ upsert: true })
+      .then(
+        db.collection('proQuotes').find({}, { _id: 0}).sort({ quoteNumber: 1 }).toArray((err, quotes) => {
+          res.send(quotes)
+          db.close()
+        })
+      )
+      .catch(err=>res.send(err))
+      db.close()
+  })
 })
 
 app.post('/remove-quote', (req, res) => {
