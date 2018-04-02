@@ -101,33 +101,6 @@ class EstimateWorksheet extends Component {
     dispatch(actions.addToShoppingCart(shoppingCartItem, quoteNumber, ""))
   }
 
-
-
-  retrieveExternalProducts(){
-    const {dispatch} = this.props
-    const currentTime = new Date().getTime()
-    const timeProductsLastAccessed = localStorage.getItem('productsAccessDate')
-    const oneDay = 86400000
-    if(currentTime - timeProductsLastAccessed > oneDay || localStorage.getItem('products')===undefined){
-      request.get(`${baseURL.url}/products`)
-        .then((res) => {
-          console.log(res)
-          localStorage.setItem('products', JSON.stringify(res.body))
-          localStorage.setItem('productsAccessDate',new Date().getTime())
-          dispatch(actions.loadProducts(res.body))
-          this.setState({
-            productsReady: true
-          })
-        }).catch((err) => { console.log(err) })
-    } else {
-      dispatch(actions.loadProducts(JSON.parse(localStorage.getItem('products'))))
-    }
-  }
-
-  componentWillMount(){
-    this.retrieveExternalProducts()
-  }
-
   render() {
     const {categories, products, shoppingCart, toggleShowMaterial, showMaterialInfo} = this.props
     return (

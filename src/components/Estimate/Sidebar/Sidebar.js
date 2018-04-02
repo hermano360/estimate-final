@@ -15,18 +15,10 @@ export class Sidebar extends Component {
       estimateReady: false,
       shoppingListReady: false,
     }
-    this.handleEstimate = this.handleEstimate.bind(this)
-    this.handleShoppingList = this.handleShoppingList.bind(this)
     this.onHideModal = this.onHideModal.bind(this)
     this.handleAddProduct = this.handleAddProduct.bind(this)
   }
-  generateTotal(quote){
-    let total = 0
-    quote.shoppingCart.forEach((item)=>{
-      total += item.quantity *  parseFloat(item.labor.substr(1)) + item.quantity *  parseFloat(item.totalMaterial.substr(1))
-    })
-    return total.toFixed(2).toString()
-  }
+
   removeEmptyItems(quote){
     return {
       ...quote,
@@ -35,17 +27,18 @@ export class Sidebar extends Component {
       })
     }
   }
-  handleEstimate(estimateReady){
-    const {quotes, quoteNumber, toggleShowModal} = this.props
+
+  handleEstimate = (estimateReady) => {
+    const {quotes, quoteNumber, toggleShowModal, grandTotal} = this.props
     const quoteInformation = this.removeEmptyItems(quotes[quoteNumber])
-    const total = this.generateTotal(quotes[quoteNumber])
+
     if(quoteInformation.shoppingCart.length > 0) {
       request
-        .post(`${baseURL.url}/generateDocument`)
+        .post(`${baseURL}/assets/estimate`)
         .set('Content-Type', 'application/json')
         .send({
           quoteInformation,
-          total
+          total: grandTotal
         }).then(res=>{
           this.setState({
             estimateReady: !estimateReady
@@ -59,11 +52,10 @@ export class Sidebar extends Component {
       }
   }
 
-  handleShoppingList(){
-    const {quotes, quoteNumber} = this.props
+  handleShoppingList = () => {
+    const {quotes, quoteNumber, grandTotal} = this.props
     const {shoppingListReady} = this.state
 
-    const total = this.generateTotal(quotes[quoteNumber])
     if(quotes[quoteNumber].shoppingCart.length > 0){
       request
         .post(`${baseURL.url}/shopping-list`)
@@ -71,7 +63,7 @@ export class Sidebar extends Component {
         .send({
           shoppingList: quotes[quoteNumber].shoppingCart,
           quoteNumber,
-          total
+          total: grandTotal
           }).then(res=>{
           this.setState({
             shoppingListReady: !shoppingListReady
@@ -85,16 +77,15 @@ export class Sidebar extends Component {
     }
 
   }
-  handleDuplicate(){
+  handleDuplicate = () => {
     const {quotes, quoteNumber, availableQuoteNumbers, dispatch, toggleShowModal} = this.props
     const nextAvailableQuoteNumber = availableQuoteNumbers[availableQuoteNumbers.length-1]+1
     dispatch(actions.duplicateQuote(quotes[quoteNumber], nextAvailableQuoteNumber))
     dispatch(actions.setQuoteNumber(nextAvailableQuoteNumber))
     toggleShowModal()
   }
-  handleNewQuote(){
+  handleNewQuote = () => {
     const {dispatch, availableQuoteNumbers, toggleShowModal} = this.props
-    console.log(availableQuoteNumbers)
     let nextAvailableQuoteNumber = 1
     if(availableQuoteNumbers[0] !== undefined){
       nextAvailableQuoteNumber = availableQuoteNumbers[availableQuoteNumbers.length-1]+1
@@ -131,7 +122,7 @@ export class Sidebar extends Component {
   }
 
   render() {
-    const {toggleShowModal, show} = this.props
+    const {toggleShowModal, show, baseURL} = this.props
     const {estimateReady, shoppingListReady} = this.state
     return (
       <SimpleModal open={show} toggle={this.onHideModal} >
@@ -139,8 +130,7 @@ export class Sidebar extends Component {
         <div className="c-sidebar-header">Options</div>
 
         {!estimateReady && <div className="c-sidebar-item" onClick={()=>this.handleEstimate(estimateReady)}>Estimate</div>}
-        {estimateReady && <a href='/downloadWordDocument' onClick={() => {
-          console.log('herminio')
+        {estimateReady && <a href={`${baseURL}/assets/estimate`} onClick={() => {
           this.setState({
             estimateReady: false
           })
@@ -158,6 +148,7 @@ export class Sidebar extends Component {
 
         <div className="c-sidebar-item" onClick={()=>this.handleEmailBid()}>Email Bid</div>
         <div className="c-sidebar-item" onClick={()=>this.handleAddProduct()}>Add Product</div>
+        <div className="c-sidebar-item" onClick={()=>console.log('template')}>Add Template</div>
 
         <Button className="c-sidebar-close" onClick={toggleShowModal}>Close</Button>
         </div>
@@ -171,7 +162,10 @@ export default connect(
   (state)=>{
     return {
       quotes: state.quotes,
-      quoteNumber: state.quoteNumber
+      quoteNumber: state.quoteNumber,
+      tax: state.tax,
+      labor: state.labor,
+      material: state.material
     }
   }
 )(Sidebar)

@@ -61,7 +61,7 @@ class PageContainer extends Component {
     this.setState({'categoriesLoading': false})
 
   }
-  
+
   getQuotes = () => {
     const {functions, data} = this.props
     const authToken = localStorage.getItem('authToken')
@@ -137,11 +137,8 @@ class PageContainer extends Component {
     const {dispatch} = this.props.functions
     const {baseURL} = this.props.data
     const loading = categoriesLoading || productsLoading || quotesLoading
-    const data = {
-      loading,
-      baseURL,
-      authToken
-    }
+
+    const data = { loading, baseURL, authToken }
     const functions = {
       getCategories: this.getCategories,
       getQuotes: this.getQuotes,
@@ -153,93 +150,17 @@ class PageContainer extends Component {
   }
 }
 
-export class Main extends Component {
 
-  retrieveExternalCategories(){
-    const {dispatch} = this.props
-    const currentTime = new Date().getTime()
-    const timeCategoriesLastAccessed = JSON.parse(localStorage.getItem('categoriesAccessDate'))
-    const oneDay = 86400000
 
-    if(currentTime - timeCategoriesLastAccessed < oneDay && localStorage.getItem('categories')){
-      dispatch(actions.loadCategories(JSON.parse(localStorage.getItem('categories'))))
-      this.setState({
-        categoriesReady: true
-      })
-    } else {
-      request.get(`${baseURL.url}/categories`)
-        .then((res) => {
-          localStorage.setItem('categories', JSON.stringify(res.body))
-          localStorage.setItem('categoriesAccessDate',new Date().getTime())
-          dispatch(actions.loadCategories(res.body))
-          this.setState({
-            categoriesReady: true
-          })
-        }).catch((err) => { console.log(err) })
-    }
-  }
-
-  retrieveExternalProducts(){
-    const {dispatch} = this.props
-    const currentTime = new Date().getTime()
-    const timeProductsLastAccessed = localStorage.getItem('productsAccessDate')
-    const oneDay = 86400000
-    if(currentTime - timeProductsLastAccessed > oneDay || localStorage.getItem('products')===undefined){
-      localStorage.getItem('authToken')
-      request.post(`${baseURL.url}/getProducts/`).send({authToken})
-        .then((res) => {
-          console.log(res)
-          localStorage.setItem('products', JSON.stringify(res.body))
-          localStorage.setItem('productsAccessDate',new Date().getTime())
-          dispatch(actions.loadProducts(res.body))
-          this.setState({
-            productsReady: true
-          })
-        }).catch((err) => { console.log(err) })
-    } else {
-      dispatch(actions.loadProducts(JSON.parse(localStorage.getItem('products'))))
-      this.setState({
-        productsReady: true
-      })
-    }
-  }
-
-  retrieveExternalQuotes(){
-    const {dispatch} = this.props
-    const currentTime = new Date().getTime()
-    const timeProductsLastAccessed = localStorage.getItem('quotesAccessDate')
-    const oneDay = 86400000
-    request.get(`${baseURL.url}/quotes`)
-      .then((res) => {
-        localStorage.setItem('quotes', JSON.stringify(res.body))
-        localStorage.setItem('quotesAccessDate',new Date().getTime())
-        dispatch(actions.loadQuotes(res.body))
-        dispatch(actions.loadDatabaseQuoteNumbers(res.body.map(quote=>quote.quoteNumber)))
-        this.setState({
-          quotesReady: true
-        })
-      }).catch((err) => { console.log(err) })
-
-  }
-
-  render () {
-    const {pageOptions} = this.props
-    const {page, baseURL, authToken, dispatch} = this.props
-    const data = {
-      baseURL,
-      pageOptions
-    }
-    const functions = {
-      dispatch
-    }
-    return (<PageContainer component={pageOptions[page]} data={data} functions={functions}/>)
-  }
+export const Main = (props) =>  {
+  const { page, baseURL, dispatch, pageOptions } = props
+  const data = { baseURL,pageOptions }
+  const functions = { dispatch }
+  return (<PageContainer component={pageOptions[page]} data={data} functions={functions}/>)
 }
 
 export default connect(
   (state)=>{
-    return {
-      page: state.page
-    }
+    return { page: state.page }
   }
 )(Main)
