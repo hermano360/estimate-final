@@ -43,9 +43,7 @@ export class Estimate extends Component {
   toggleShowSidebarModal = showSidebar => this.setState({showSidebar})
   toggleShowModal = showSidebar => this.setState({showSidebar})
   toggleRemoveQuote = removeQuoteModal => this.setState({removeQuoteModal})
-  toggleAddProduct = () => this.setState(({showAddProduct}) => {
-      return { showAddProduct: !showAddProduct }
-  })
+  toggleAddProduct = showAddProduct => this.setState({showAddProduct})
 
   generateTotal(quote){
     const {labor, material, tax} = this.props

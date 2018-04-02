@@ -16,7 +16,6 @@ export class Sidebar extends Component {
       shoppingListReady: false,
     }
     this.onHideModal = this.onHideModal.bind(this)
-    this.handleAddProduct = this.handleAddProduct.bind(this)
   }
 
   removeEmptyItems(quote){
@@ -115,10 +114,10 @@ export class Sidebar extends Component {
       estimateReady: false
     })
   }
-  handleAddProduct(){
+  handleAddProduct = () => {
     const {toggleAddProduct, toggleShowModal} = this.props
     toggleShowModal()
-    toggleAddProduct()
+    toggleAddProduct(true)
   }
 
   render() {
