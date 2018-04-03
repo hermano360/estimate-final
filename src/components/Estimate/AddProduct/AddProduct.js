@@ -4,91 +4,114 @@ import SimpleModal from '../../Common/SimpleModal'
 import actions from '../../../redux/actions/actions'
 import Loadable from 'react-loading-overlay'
 import request from 'superagent'
-import moment from 'moment'
 
 import baseURL from '../../baseURL'
 
 import './AddProduct.scss'
 
 export class AddProduct extends Component {
-  constructor(e){
-    super(e)
-    this.state = {
-      sku: '',
-      skuError: false,
-      url: '',
-      store: '',
-      group: '',
-      supplier:'',
-      productEntry: {},
-      loadingProduct: false
+  state = {
+    loadingProduct: false,
+    group: '',
+    supplier: '',
+    keycode: '',
+    specifications: '',
+    sku: '',
+    totalMaterial: '',
+    labor: '',
+    sortOrder: '',
+    uom: '',
+    'keycodeError': false,
+    'specificationsError': false,
+    'totalMaterialError': false,
+    'laborError': false
+  }
+
+  cleanState = {
+    group: '',
+    supplier: '',
+    keycode: '',
+    specifications: '',
+    sku: '',
+    totalMaterial: '',
+    labor: '',
+    sortOrder: '',
+    uom: '',
+    'keycodeError': false,
+    'specificationsError': false,
+    'totalMaterialError': false,
+    'laborError': false
+  }
+
+  updateProductProperty = (property, e) => {
+    const newState = { [property]: e.target.value }
+
+    if(['keycode', 'specifications','totalMaterial','labor'].includes(property)){
+      newState[`${property}Error`] = false
     }
-    this.handleSKUChange = this.handleSKUChange.bind(this)
-    this.handleURLChange = this.handleURLChange.bind(this)
-    this.handleStoreChange = this.handleStoreChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleToggle = this.handleToggle.bind(this)
+    this.setState(newState)
   }
 
-  handleSKUChange(e){
-    this.setState({
-      sku: e.target.value
-    })
-  }
-  handleURLChange(e){
-    this.setState({
-      url: e.target.value
-    })
-  }
-  handleStoreChange = (e) => {
-    this.setState({
-      store: e.target.value
-    })
-  }
-  handleSupplierChange = (e) => {
-    this.setState({
-      supplier: e.target.value
-    })
-  }
-  handleGroupChange = e => {
-    this.setState({
-      group: e.target.value
-    })
+  formateDate = (date) => {
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
   }
 
-  handleToggle(){
+
+
+  handleToggle = () => {
     const {toggleAddProduct} = this.props
-    this.setState({
-      sku: '',
-      skuError: false,
-      url: '',
-      store: '',
-      productEntry: {},
-      loadingProduct: false
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        ...this.cleanState
+      }
     })
     toggleAddProduct()
   }
+  validateSubmissionValues = (keycode,specifications,sku,uom,totalMaterial,labor) => {
+    let errorObject = []
+    if(keycode ==='') errorObject['keycodeError'] = true
+    if(specifications ==='') errorObject['specificationsError'] = true
+    if(totalMaterial ==='') errorObject['totalMaterialError'] = true
+    if(labor==='') errorObject['laborError'] = true
 
-
-  handleSubmit(){
-    const {sku, url, store} = this.state
-    this.setState({
-      loadingProduct: true
-    })
-
-    if(sku !== "") {
+    return errorObject
+  }
+  handleSubmit = () => {
+    const {baseURL, authToken} = this.props
+    const {group,supplier,keycode,specifications,sku,uom,totalMaterial,labor,sortOrder} = this.state
+    const validationErrors = this.validateSubmissionValues(keycode,specifications,sku,uom,totalMaterial,labor)
+    if(Object.keys(validationErrors).length === 0){
+      this.setState({loadingProduct: true})
       request
-      .post(`${baseURL.url}/searchSKU`)
-      .send({sku, url, store})
-      .then(res => {
-      console.log(res.body)
+      .post(`${baseURL}/products/add`)
+      .send({
+        authToken,
+        product : {
+          updated: this.formateDate(new Date),
+          misc: '$0.00',
+          group,
+          supplier,
+          keycode,
+          specifications,
+          sku,
+          uom: uom ==='' ? 'each' : uom,
+          materialCost: `$${Number(totalMaterial).toFixed(2)}`,
+          totalMaterial: `$${Number(totalMaterial).toFixed(2)}`,
+          labor: `$${Number(labor).toFixed(2)}`,
+          sortOrder
+        }
+      })
+      .then(res =>{
+        this.setState({loadingProduct: false})
+        this.handleToggle()
+      }).catch(err => {
+        console.log(err)
+      })
+    } else {
       this.setState({
-        productEntry: res.body,
-        loadingProduct: false
-      }, ()=>{console.log(this.state)})
-    }
-    )
-      .catch(err => console.log(err))
+        ...validationErrors
+      })
     }
   }
 
@@ -114,60 +137,73 @@ export class AddProduct extends Component {
         <option key={group }value={group}>{group}</option>
       )
     })
-
-
   }
 
 
   render() {
-    const {dispatch, show, toggleAddProduct} = this.props
-    const {sku, skuError, store, productEntry, loadingProduct, supplier, group} = this.state
-
+    const {show, toggleAddProduct, getProducts} = this.props
+    const {
+      loadingProduct, group, supplier, keycode,
+      specifications, sku, uom, totalMaterial,
+      labor, sortOrder, laborError, keycodeError,
+      totalMaterialError, specificationsError} = this.state
     return (
       <SimpleModal open={show} toggle={this.handleToggle} className="c-addproduct-modal" >
         <Loadable
           active={loadingProduct}
           spinner
-          text={`Obtaining Information from ${store}`}>
+          text={`Updating Product Info`}>
           <div className="c-addproduct-body">
             <div className="c-addproduct-header">Add Product</div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Desired Key Code</div>
-              <input type="text" className="c-addproduct-value"/>
+              <input type="text" className={`c-addproduct-value ${keycodeError ? 'error' : ''}`} value={keycode} onChange={ e => this.updateProductProperty('keycode', e)}/>
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Specifications</div>
-              <textarea className="c-addproduct-value" rows="4" onChange={(e)=>console.log(e.target.value)}>
+              <textarea className={`c-addproduct-value ${specificationsError ? 'error' : ''}`} rows="4" value={specifications} onChange={ e => this.updateProductProperty('specifications', e)}>
               </textarea>
             </div>
             <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">SKU</div>
+              <input type="text" className="c-addproduct-value" value={sku} onChange={ e => this.updateProductProperty('sku', e)}/>
+            </div>
+            <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Unit of Measure</div>
-              <input type="text" className="c-addproduct-value"/>
+              <input type="text" className="c-addproduct-value" value={uom} onChange={ e => this.updateProductProperty('uom', e)}/>
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Material Cost</div>
-              <input type="text" className="c-addproduct-value"/>
+              <input type="number" className={`c-addproduct-value ${totalMaterialError ? 'error' : ''}`} value={totalMaterial} onChange={ e => this.updateProductProperty('totalMaterial', e)}/>
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Labor Cost</div>
-              <input type="text" className="c-addproduct-value"/>
+              <input type="number" className={`c-addproduct-value ${laborError ? 'error' : ''}`} value={labor} onChange={ e => this.updateProductProperty('labor', e)}/>
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Add to Existing Group?</div>
-              <select className="c-addproduct-value" value={group} onChange={this.handleGroupChange}>
+              <select className="c-addproduct-value" value={group} onChange={ e => this.updateProductProperty('group', e)}>
                 <option value="">-Select-</option>
                 {this.renderGroupOptions()}
+                <option value="other">Other</option>
               </select>
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Supplier</div>
-              <select className="c-addproduct-value" value={supplier} onChange={this.handleSupplierChange}>
+              <select className="c-addproduct-value" value={supplier} onChange={ e => this.updateProductProperty('supplier', e)}>
                 <option value="">-Select-</option>
                 <option value="Home Depot">Home Depot</option>
                 <option value="Lowes">Lowes</option>
                 <option value="Ferguson">Ferguson</option>
                 <option value="Other">Other</option>
               </select>
+            </div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Sort Order</div>
+              <input type="number" className="c-addproduct-value" value={sortOrder} onChange={ e => this.updateProductProperty('sortOrder', e)}/>
+            </div>
+            <div className="c-addproduct-submit" onClick={this.handleSubmit}>
+              Submit
             </div>
           </div>
         </Loadable>
@@ -176,10 +212,4 @@ export class AddProduct extends Component {
   }
 }
 
-export default connect(
-  (state)=>{
-    return {
-      quoteNumber: state.quoteNumber
-    }
-  }
-)(AddProduct)
+export default AddProduct

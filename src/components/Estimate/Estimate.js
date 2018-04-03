@@ -118,8 +118,8 @@ export class Estimate extends Component {
   }
 
   render(){
-    const {showSidebar, removeQuoteModal, showTotal, showMaterialInfo, loadingSave} = this.state
-    const {quotes, shoppingCartDOMNodes, dispatch, data, databaseQuoteNumbers} = this.props
+    const {showSidebar, removeQuoteModal, showTotal, showMaterialInfo, loadingSave, showAddProduct} = this.state
+    const {quotes, shoppingCartDOMNodes, dispatch, data, databaseQuoteNumbers, functions} = this.props
     const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     const quoteNumber = this.props.quoteNumber || availableQuoteNumbers[0]
     const currentQuote = quotes[quoteNumber]
@@ -133,8 +133,27 @@ export class Estimate extends Component {
     return (
       <Loadable active={loading} spinner text={`Loading`}>
         <div className="c-estimate-body">
-          <Sidebar grandTotal={grandTotal} show={showSidebar} toggleShowModal={() => this.toggleShowSidebarModal(!showSidebar)} availableQuoteNumbers={availableQuoteNumbers} toggleEmailFile={this.toggleEmailFile} toggleAddProduct={this.toggleAddProduct} baseURL={data.baseURL}/>
+          <Sidebar
+            grandTotal={grandTotal}
+            show={showSidebar}
+            toggleShowModal={() => this.toggleShowSidebarModal(!showSidebar)}
+            availableQuoteNumbers={availableQuoteNumbers}
+            toggleEmailFile={this.toggleEmailFile}
+            toggleAddProduct={this.toggleAddProduct}
+            baseURL={data.baseURL}
+            authToken={data.authToken}
+          />
           <RemoveQuote show={removeQuoteModal} toggleRemoveQuote={()=> this.toggleRemoveQuote(!removeQuoteModal)} />
+
+          {/* <EmailFile show={showEmailFile} sendEmail={this.sendEmail} toggleEmailFile={this.toggleEmailFile} name={`${currentQuote.customerFirstName} ${currentQuote.customerLastName}`}/> */}
+          <AddProduct
+            show={showAddProduct}
+            toggleAddProduct={()=> this.toggleAddProduct(!showAddProduct)}
+            getProducts={functions.getProducts}
+            baseURL={data.baseURL}
+            authToken={data.authToken}
+          />
+          {/* <SignatureBox /> */}
           <div className="c-estimate-action-button c-estimate-sidebar"
             onClick={() => this.toggleShowSidebarModal(!showSidebar)}>
             <MdMenu/>

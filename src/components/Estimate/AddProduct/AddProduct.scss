@@ -16,6 +16,9 @@
     text-align: center;
     background-color: white;
     text-align-last:center;
+    &.error{
+      border: 2px solid red;
+    }
   }
   &-group {
     margin: 5% 0;
@@ -38,5 +41,7 @@
     background-color: rgb(180, 228, 28);
     border: 1px solid black;
     color: black;
+    line-height: 2rem;
+    cursor: pointer;
   }
 }
