@@ -47,8 +47,11 @@
   &-nav {
     margin-top: 10px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
     &-opt{
-      width: 25%;
+      text-align: center;
+      width: 40%;
       margin-left: 5%;
       margin-right:5%;
       display: inline-block;

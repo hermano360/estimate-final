@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TiArrowLeftOutline from 'react-icons/lib/ti/arrow-left-outline'
 import TiArrowRightOutline from 'react-icons/lib/ti/arrow-right-outline'
-import {Modal, Button} from 'react-bootstrap'
+import Loadable from 'react-loading-overlay'
 import actions from '../../../redux/actions/actions'
+import SimpleModal from '../../Common/SimpleModal'
+import request from 'superagent'
 
 import './EmailFile.scss'
 
@@ -16,7 +18,8 @@ export class EmailFile extends Component {
       recipientEmail: '',
       nameError: false,
       emailError: false,
-      fileError: false
+      fileError: false,
+      loadingEmail: false
     }
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
@@ -44,7 +47,7 @@ export class EmailFile extends Component {
 
   handleSubmit(){
     const {fileToBeSent, recipientName, recipientEmail} = this.state
-    const {name, sendEmail} = this.props
+    const {name, baseURL, toggleLoading, toggleEmailFile} = this.props
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     let errorObject = {}
     let finalName = recipientName === '' ? name : recipientName
@@ -61,16 +64,36 @@ export class EmailFile extends Component {
     if(Object.keys(errorObject).length > 0){
       this.setState(errorObject)
     } else {
-      sendEmail(fileToBeSent,finalName, recipientEmail)
-      this.setState({
-        fileToBeSent: '',
-        recipientName: '',
-        recipientEmail: ''
+
+    toggleLoading()
+
+    request
+      .post(`${baseURL}/email/estimate`)
+      .set('Content-Type', 'application/json')
+      .send({
+        name: finalName,
+        email: recipientEmail
+      }).then(res=>{
+        toggleLoading()
+        toggleEmailFile()
+          console.log(res)
+          this.setState({
+            fileToBeSent: '',
+            recipientName: '',
+            recipientEmail: '',
+            loadingEmail: false
+          })
       })
+      .catch(err=>{
+        toggleLoading()
+        console.log(err)
+      })
+
     }
   }
 
   render() {
+    const {loadingEmail}  = this.state
     const {dispatch, show, toggleEmailFile} = this.props
     let name = this.props.name.trim()
     const {recipientName, recipientEmail,fileToBeSent, fileError, nameError, emailError} = this.state
@@ -80,35 +103,31 @@ export class EmailFile extends Component {
     }
 
     return (
-      <Modal show={show} onHide={toggleEmailFile} className="c-emailfile-modal" >
-        <Modal.Header closeButton>
-          <div className="c-emailfile-header">Email File</div>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="c-emailfile-options-files-title">Which File?</div>
-          <div className="c-emailfile-options-files">
-            <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''} ${fileToBeSent === 'estimate' ? 'selected' : ''}`}
-              onClick={()=>this.handleFileSelect('estimate')}>
-              Estimate
+
+      <SimpleModal open={show} toggle={toggleEmailFile} className="c-emailfile-modal" >
+            <div className="c-emailfile-header">Email File</div>
+
+            <div className="c-emailfile-options-files-title">Which File?</div>
+            <div className="c-emailfile-options-files">
+              <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''} ${fileToBeSent === 'estimate' ? 'selected' : ''}`}
+                onClick={()=>this.handleFileSelect('estimate')}>
+                Estimate
+              </div>
+              {/* <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''} ${fileToBeSent === 'shoppinglist' ? 'selected' : ''}`}
+                onClick={()=>this.handleFileSelect('shoppinglist')}>
+                Shopping List
+              </div> */}
             </div>
-            <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''} ${fileToBeSent === 'shoppinglist' ? 'selected' : ''}`}
-              onClick={()=>this.handleFileSelect('shoppinglist')}>
-              Shopping List
-            </div>
-          </div>
-          <div className="c-emailfile-options-files-title">Name</div>
-          <input type="text" className={`c-emailfile-options-input ${nameError ? 'invalid' : ''}`}
-            placeholder="Name of Recipient" value={name}
-            onChange={(e)=>this.handleNameChange(e.target.value)}/>
-          <div className="c-emailfile-options-files-title">Email</div>
-          <input type="text" className={`c-emailfile-options-input ${emailError ? 'invalid' : ''}`}
-            placeholder="Email of Recipient" value={recipientEmail}
-              onChange={(e)=>this.handleEmailChange(e.target.value)}/>
-          <div className="c-emailfile-options-send" onClick={this.handleSubmit}>Send</div>
-        </Modal.Body>
-        <Modal.Footer>
-        </Modal.Footer>
-      </Modal>
+            <div className="c-emailfile-options-files-title">Name</div>
+            <input type="text" className={`c-emailfile-options-input ${nameError ? 'invalid' : ''}`}
+              placeholder="Name of Recipient" value={name}
+              onChange={(e)=>this.handleNameChange(e.target.value)}/>
+            <div className="c-emailfile-options-files-title">Email</div>
+            <input type="text" className={`c-emailfile-options-input ${emailError ? 'invalid' : ''}`}
+              placeholder="Email of Recipient" value={recipientEmail}
+                onChange={(e)=>this.handleEmailChange(e.target.value)}/>
+            <div className="c-emailfile-options-send" onClick={this.handleSubmit}>Send</div>
+      </SimpleModal>
     );
   }
 }

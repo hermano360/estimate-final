@@ -99,6 +99,14 @@ export class Estimate extends Component {
     })
   }
 
+  toggleLoading = () => {
+    this.setState((prevState) => {
+      return {
+        loadingSave: !prevState.loadingSave
+      }
+    })
+  }
+
 
 
   redirectToComponent(component){
@@ -118,7 +126,7 @@ export class Estimate extends Component {
   }
 
   render(){
-    const {showSidebar, removeQuoteModal, showTotal, showMaterialInfo, loadingSave, showAddProduct} = this.state
+    const {showSidebar, removeQuoteModal, showTotal, showMaterialInfo, loadingSave, showAddProduct, showEmailFile} = this.state
     const {quotes, shoppingCartDOMNodes, dispatch, data, databaseQuoteNumbers, functions} = this.props
     const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     const quoteNumber = this.props.quoteNumber || availableQuoteNumbers[0]
@@ -145,7 +153,14 @@ export class Estimate extends Component {
           />
           <RemoveQuote show={removeQuoteModal} toggleRemoveQuote={()=> this.toggleRemoveQuote(!removeQuoteModal)} />
 
-          {/* <EmailFile show={showEmailFile} sendEmail={this.sendEmail} toggleEmailFile={this.toggleEmailFile} name={`${currentQuote.customerFirstName} ${currentQuote.customerLastName}`}/> */}
+          <EmailFile
+            show={showEmailFile}
+            toggleEmailFile={this.toggleEmailFile}
+            name={`${currentQuote.customerFirstName} ${currentQuote.customerLastName}`}
+            baseURL={data.baseURL}
+            toggleLoading={this.toggleLoading}
+          />
+
           <AddProduct
             show={showAddProduct}
             toggleAddProduct={()=> this.toggleAddProduct(!showAddProduct)}
@@ -330,32 +345,7 @@ export class Estimate extends Component {
 
 
 
-  sendEmail(fileToBeSent, finalName, recipientEmail){
-    this.toggleEmailFile()
-    this.setState({
-      loadingSave: true,
-      sendingEmail: true
-    })
-    const fileName = fileToBeSent === 'estimate' ? `ProBuildersEstimate.docx` : `ProBuildersShoppingList.docx`
 
-    request
-      .post(`${baseURL.url}/emailFile`)
-      .set('Content-Type', 'application/json')
-      .send({
-        dirPath: fileName,
-        name: finalName,
-        email: recipientEmail
-      }).then(res=>{
-          console.log(res)
-          this.setState({
-            loadingSave: false,
-            sendingEmail: false
-          })
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-  }
 
 }
 

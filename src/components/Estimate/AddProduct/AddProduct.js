@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import SimpleModal from '../../Common/SimpleModal'
 import actions from '../../../redux/actions/actions'
 import Loadable from 'react-loading-overlay'

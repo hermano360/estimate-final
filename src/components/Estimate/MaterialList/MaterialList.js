@@ -40,8 +40,18 @@ export class MaterialList extends Component {
     return (
       <SimpleModal open={show} toggle={toggleShowMaterial} className="c-materiallist-modal" >
 
+
           <div className="c-materiallist-header">Material/Labor Cost List</div>
 
+          <div className="c-materiallist-nav">
+            <div className="c-materiallist-nav-opt prev" onClick={()=>this.decrementItemNumber(shoppingCart, itemNumber)}>
+              <TiArrowLeftOutline />
+            </div>
+            <div></div>
+            <div className="c-materiallist-nav-opt next" onClick={()=>this.incrementItemNumber(shoppingCart, itemNumber)}>
+              <TiArrowRightOutline />
+            </div>
+          </div>
 
           <div className="c-materiallist-pair">
             <div className="c-materiallist-property">Supplier</div>
@@ -75,16 +85,8 @@ export class MaterialList extends Component {
             <div className="c-materiallist-picture-frame"></div>
           </div>
           <div className="c-materiallist-nav">
-            <div className="c-materiallist-nav-opt prev" onClick={()=>this.decrementItemNumber(shoppingCart, itemNumber)}>
-              <TiArrowLeftOutline />
-            </div>
             <div className="c-materiallist-remove" onClick={()=>this.removeItemNumber(itemNumber, shoppingCart)}>Remove</div>
-            <div className="c-materiallist-nav-opt next" onClick={()=>this.incrementItemNumber(shoppingCart, itemNumber)}>
-              <TiArrowRightOutline />
-            </div>
           </div>
-
-          <Button className="c-materiallist-close" onClick={toggleShowMaterial}>Close</Button>
 
       </SimpleModal>
     );
