@@ -78,7 +78,7 @@ export class AddProduct extends Component {
     return errorObject
   }
   handleSubmit = () => {
-    const {baseURL, authToken} = this.props
+    const {baseURL, authToken, getProducts} = this.props
     const {group,supplier,keycode,specifications,sku,uom,totalMaterial,labor,sortOrder} = this.state
     const validationErrors = this.validateSubmissionValues(keycode,specifications,sku,uom,totalMaterial,labor)
     if(Object.keys(validationErrors).length === 0){
@@ -105,6 +105,7 @@ export class AddProduct extends Component {
       .then(res =>{
         this.setState({loadingProduct: false})
         this.handleToggle()
+        getProducts()
       }).catch(err => {
         console.log(err)
       })
