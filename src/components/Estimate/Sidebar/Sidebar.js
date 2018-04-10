@@ -57,7 +57,7 @@ export class Sidebar extends Component {
 
     if(quotes[quoteNumber].shoppingCart.length > 0){
       request
-        .post(`${baseURL.url}/shopping-list`)
+        .post(`${baseURL}/assets/shopping-list`)
         .set('Content-Type', 'application/json')
         .send({
           shoppingList: quotes[quoteNumber].shoppingCart,
@@ -138,7 +138,7 @@ export class Sidebar extends Component {
         <div className="c-sidebar-item" onClick={this.handleNewQuote}>New Quote</div>
         <div className="c-sidebar-item" onClick={this.handleWorkOrder}>Work Order</div>
         {!shoppingListReady && <div className="c-sidebar-item" onClick={this.handleShoppingList}>Shopping List</div>}
-        {shoppingListReady && <a href='/downloadShoppingList' onClick={() => {
+        {shoppingListReady && <a href={`${baseURL}/assets/shopping-list`} onClick={() => {
           this.setState({
             shoppingListReady: false
           })

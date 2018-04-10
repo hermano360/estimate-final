@@ -169,9 +169,11 @@ export class Estimate extends Component {
             authToken={data.authToken}
           />
           {/* <SignatureBox /> */}
-          <div className="c-estimate-action-button c-estimate-sidebar"
-            onClick={() => this.toggleShowSidebarModal(!showSidebar)}>
-            <MdMenu/>
+          <div className="c-estimate-sidebar-container">
+            <div className="c-estimate-action-button c-estimate-sidebar"
+              onClick={() => this.toggleShowSidebarModal(!showSidebar)}>
+              <MdMenu/>
+            </div>
           </div>
           <div className="c-estimate-header">
             <div className="c-estimate-next-quote">
@@ -252,15 +254,20 @@ export class Estimate extends Component {
               onKeyPress={e =>  {if(e.charCode === 13)  {shoppingCartDOMNodes['products'][1]===undefined ? shoppingCartDOMNodes['firstName'].focus() : shoppingCartDOMNodes['products'][1].focus()}} }/>
           </div>
           <EstimateWorksheet retrieveProducts={()=>console.log('idk')} showMaterialInfo={showMaterialInfo} toggleShowMaterial={() => this.toggleShowMaterial(!showMaterialInfo)} shoppingCart={currentQuote.shoppingCart} renderMaterialInfo={this.renderMaterialInfo}/>
-          <div className="c-estimate-action-button c-estimate-back" onClick={()=>this.redirectToComponent('home')}>Back</div>
-          <div className="c-estimate-action-button c-estimate-save"
-            onClick={()=> this.saveQuoteToDatabase(currentDate, estimator)}
-          >Save</div>
-          <div className={`c-estimate-action-button c-estimate-total ${showTotal ? '' : 'hidden'}`} >
-          Total
-          <br/>
-          ${grandTotal}
+
+          <div className="c-estimate-action-button-container">
+            <div className="c-estimate-action-button c-estimate-back" onClick={()=>this.redirectToComponent('home')}>Back</div>
+            <div className="c-estimate-action-button c-estimate-save"
+              onClick={()=> this.saveQuoteToDatabase(currentDate, estimator)}
+            >Save</div>
+            <div className={`c-estimate-action-button c-estimate-total ${showTotal ? '' : 'hidden'}`} >
+            Total
+            <br/>
+            ${grandTotal}
+            </div>
           </div>
+
+
         </div>
       </Loadable>
         )

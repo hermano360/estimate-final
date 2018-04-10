@@ -1,6 +1,7 @@
 .c-estimators-worksheet-body{
   width: 88%;
   margin-left: 6%;
+  margin-bottom: 50px;
 }
 
 .c-estimators-worksheet-title{
@@ -41,7 +42,6 @@
 .c-estimators-worksheet-list{
   margin-top: 0px;
   background-color: white;
-  margin-bottom: 100px;
 }
 .c-estimators-worksheet-list-title{
     height: 100%;
