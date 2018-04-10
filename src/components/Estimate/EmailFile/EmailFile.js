@@ -68,7 +68,7 @@ export class EmailFile extends Component {
     toggleLoading()
 
     request
-      .post(`${baseURL}/email/estimate`)
+      .post(`${baseURL}/email/${fileToBeSent}`)
       .set('Content-Type', 'application/json')
       .send({
         name: finalName,
@@ -113,10 +113,10 @@ export class EmailFile extends Component {
                 onClick={()=>this.handleFileSelect('estimate')}>
                 Estimate
               </div>
-              {/* <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''} ${fileToBeSent === 'shoppinglist' ? 'selected' : ''}`}
+               <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''} ${fileToBeSent === 'shoppinglist' ? 'selected' : ''}`}
                 onClick={()=>this.handleFileSelect('shoppinglist')}>
                 Shopping List
-              </div> */}
+              </div>
             </div>
             <div className="c-emailfile-options-files-title">Name</div>
             <input type="text" className={`c-emailfile-options-input ${nameError ? 'invalid' : ''}`}
