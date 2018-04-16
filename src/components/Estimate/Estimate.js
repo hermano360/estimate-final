@@ -12,6 +12,8 @@ import EstimateWorksheet from './EstimateWorksheet/EstimateWorksheet'
 
 import EmailFile from './EmailFile/EmailFile'
 import AddProduct from './AddProduct/AddProduct'
+import AddTemplate from './AddTemplate/AddTemplate'
+
 import RemoveQuote from './RemoveQuote/RemoveQuote'
 import Sidebar from './Sidebar/Sidebar'
 import SignatureBox from './SignatureBox/SignatureBox'
@@ -32,6 +34,7 @@ export class Estimate extends Component {
       removeQuoteModal: false,
       showEmailFile: false,
       showAddProduct: false,
+      showAddTemplate: false,
       availableQuoteNumbers: [],
       currentDate: "",
       loadingSave: false,
@@ -44,6 +47,7 @@ export class Estimate extends Component {
   toggleShowModal = showSidebar => this.setState({showSidebar})
   toggleRemoveQuote = removeQuoteModal => this.setState({removeQuoteModal})
   toggleAddProduct = showAddProduct => this.setState({showAddProduct})
+  toggleAddTemplate = showAddTemplate => this.setState({showAddTemplate})
 
   generateTotal(quote){
     const {labor, material, tax} = this.props
@@ -126,7 +130,7 @@ export class Estimate extends Component {
   }
 
   render(){
-    const {showSidebar, removeQuoteModal, showTotal, showMaterialInfo, loadingSave, showAddProduct, showEmailFile} = this.state
+    const {showSidebar, removeQuoteModal, showTotal, showMaterialInfo, loadingSave, showAddProduct, showAddTemplate, showEmailFile} = this.state
     const {quotes, shoppingCartDOMNodes, dispatch, data, databaseQuoteNumbers, functions} = this.props
     const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     const quoteNumber = this.props.quoteNumber || availableQuoteNumbers[0]
@@ -148,6 +152,7 @@ export class Estimate extends Component {
             availableQuoteNumbers={availableQuoteNumbers}
             toggleEmailFile={this.toggleEmailFile}
             toggleAddProduct={this.toggleAddProduct}
+            toggleAddTemplate={this.toggleAddTemplate}
             baseURL={data.baseURL}
             authToken={data.authToken}
           />
@@ -165,6 +170,13 @@ export class Estimate extends Component {
             show={showAddProduct}
             toggleAddProduct={()=> this.toggleAddProduct(!showAddProduct)}
             getProducts={functions.getProducts}
+            baseURL={data.baseURL}
+            authToken={data.authToken}
+          />
+          <AddTemplate
+            show={showAddTemplate}
+            toggleAddTemplate={()=> this.toggleAddTemplate(!showAddTemplate)}
+            getCategories={functions.getCategories}
             baseURL={data.baseURL}
             authToken={data.authToken}
           />

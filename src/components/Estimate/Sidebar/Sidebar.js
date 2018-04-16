@@ -119,6 +119,10 @@ export class Sidebar extends Component {
     toggleShowModal()
     toggleAddProduct(true)
   }
+  handleAddTemplate = () => {
+    this.props.toggleShowModal()
+    this.props.toggleAddTemplate(true)
+  }
 
   render() {
     const {toggleShowModal, show, baseURL} = this.props
@@ -147,7 +151,7 @@ export class Sidebar extends Component {
 
         <div className="c-sidebar-item" onClick={()=>this.handleEmailBid()}>Email Bid</div>
         <div className="c-sidebar-item" onClick={()=>this.handleAddProduct()}>Add Product</div>
-        <div className="c-sidebar-item" onClick={()=>console.log('template')}>Add Template</div>
+        <div className="c-sidebar-item" onClick={this.handleAddTemplate}>Add Template</div>
 
         <Button className="c-sidebar-close" onClick={toggleShowModal}>Close</Button>
         </div>
