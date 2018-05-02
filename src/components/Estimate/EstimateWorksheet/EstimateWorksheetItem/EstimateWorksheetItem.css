@@ -15,9 +15,31 @@
   text-align: center;
 }
 
+
+.Select-placeholder, .Select--single > .Select-control .Select-value {
+  padding: 0;
+}
+
+@media screen and (min-device-width : 500px) {
+  .c-estimators-worksheet-list-item {
+    font-size: 10px;
+  }
+  .c-estimators-worksheet-items {
+      height: 40px;
+  }
+}
+
+@media screen and (min-device-width : 700px) {
+  .c-estimators-worksheet-list-item {
+    font-size: 12px;
+  }
+  .c-estimators-worksheet-items {
+      height: 50px;
+  }
+}
+
 .c-estimators-worksheet-list-item-no {
   width: 5%;
-
 }
 
 .c-estimators-worksheet-list-item-no-button {

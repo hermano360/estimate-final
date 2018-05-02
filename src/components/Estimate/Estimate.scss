@@ -59,9 +59,11 @@ $application-background: #F2E1B2;
     padding: 5px;
     min-width: 50px;
     font-size: 12px;
-
     color: black;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     &-container {
       display: flex;
       flex-direction: row;

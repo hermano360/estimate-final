@@ -132,7 +132,6 @@ class PageContainer extends Component {
 
   render(){
     const authToken = localStorage.getItem('authToken')
-
     const {categoriesLoading,productsLoading,quotesLoading} = this.state
     const {dispatch} = this.props.functions
     const {baseURL} = this.props.data

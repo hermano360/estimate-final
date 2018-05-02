@@ -65,6 +65,7 @@ export class Estimate extends Component {
 
 
   componentWillMount(){
+
     const {quotes, dispatch} = this.props
     const availableQuoteNumbers = this.findAvailableQuoteNumbers(quotes)
     if(availableQuoteNumbers.length > 0) {
