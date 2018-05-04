@@ -108,7 +108,6 @@ export class EmailFile extends Component {
       <SimpleModal open={show} toggle={toggleEmailFile} className="c-emailfile-modal" >
             <div className="c-emailfile-header">Email File</div>
 
-            <div className="c-emailfile-options-files-title">Which File?</div>
             <div className="c-emailfile-options-files">
               <div className="c-emailfile-option">
                 <div className={`c-emailfile-option-checkbox ${fileToBeSent === 'estimate' ? 'selected' : ''}`} onClick={()=>this.handleFileSelect('estimate')} />

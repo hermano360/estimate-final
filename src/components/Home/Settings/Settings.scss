@@ -42,7 +42,22 @@
   text-align-last: center;
 }
 
-.c-settings-label {
-  font-size: 20px;
-  margin-top: 10px;
+
+
+.c-settings{
+  &-box-image-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &-label {
+    font-size: 16px;
+    margin: 10px;
+    flex:1;
+  }
+  &-input {
+    font-size: 16px;
+    margin: 10px;
+    flex:2;
+  }
 }

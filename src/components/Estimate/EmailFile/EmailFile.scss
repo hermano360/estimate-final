@@ -54,13 +54,16 @@
   &-send {
     width: 50%;
     margin-left: 25%;
-    background-color: #b4e41c;
+    background-color: white;
     border: 1px solid black;
     padding-top: 5%;
     padding-bottom: 5%;
     cursor: pointer;
     margin-top: 10%;
     font-size: 16px;
+    text-align: center;
+    color: #006600;
+    border-radius: 15px;
   }
 }
 
