@@ -101,6 +101,7 @@ export class EmailFile extends Component {
     if(recipientName !==''){
       name = recipientName
     }
+    console.log(fileToBeSent)
 
     return (
 
@@ -109,13 +110,17 @@ export class EmailFile extends Component {
 
             <div className="c-emailfile-options-files-title">Which File?</div>
             <div className="c-emailfile-options-files">
-              <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''} ${fileToBeSent === 'estimate' ? 'selected' : ''}`}
-                onClick={()=>this.handleFileSelect('estimate')}>
-                Estimate
+              <div className="c-emailfile-option">
+                <div className={`c-emailfile-option-checkbox ${fileToBeSent === 'estimate' ? 'selected' : ''}`} onClick={()=>this.handleFileSelect('estimate')} />
+                <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''}`}>
+                  Estimate
+                </div>
               </div>
-               <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''} ${fileToBeSent === 'shoppinglist' ? 'selected' : ''}`}
-                onClick={()=>this.handleFileSelect('shoppinglist')}>
-                Shopping List
+              <div className="c-emailfile-option">
+                <div className={`c-emailfile-option-checkbox ${fileToBeSent === 'shoppinglist' ? 'selected' : ''}`} onClick={()=>this.handleFileSelect('shoppinglist')} />
+                <div className={`c-emailfile-options-files-opt ${fileError ? 'invalid' : ''}`}>
+                  Shopping List
+                </div>
               </div>
             </div>
             <div className="c-emailfile-options-files-title">Name</div>
@@ -123,7 +128,7 @@ export class EmailFile extends Component {
               placeholder="Name of Recipient" value={name}
               onChange={(e)=>this.handleNameChange(e.target.value)}/>
             <div className="c-emailfile-options-files-title">Email</div>
-            <input type="text" className={`c-emailfile-options-input ${emailError ? 'invalid' : ''}`}
+            <input type="email" className={`c-emailfile-options-input ${emailError ? 'invalid' : ''}`}
               placeholder="Email of Recipient" value={recipientEmail}
                 onChange={(e)=>this.handleEmailChange(e.target.value)}/>
             <div className="c-emailfile-options-send" onClick={this.handleSubmit}>Send</div>
