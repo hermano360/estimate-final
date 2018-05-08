@@ -38,6 +38,15 @@
   }
 }
 
+@media screen and (min-device-width : 900px) {
+  .c-estimators-worksheet-list-item {
+    font-size: 14px;
+  }
+  .c-estimators-worksheet-items {
+      height: 60px;
+  }
+}
+
 .c-estimators-worksheet-list-item-no {
   width: 5%;
 }
