@@ -9,6 +9,9 @@ import './Settings.scss'
 
 
 class Settings extends Component {
+  state = {
+    fontSize: "small"
+  }
 
   componentWillMount(){
     const {dispatch} = this.props
@@ -62,9 +65,13 @@ class Settings extends Component {
     localStorage.setItem('estimator', value.target.value)
     dispatch(actions.changeEstimator(value.target.value))
   }
+  updateFontSize = e => {
+    this.setState({fontSize: e.target.value})
+  }
 
   render() {
     const {labor, tax, extraWork, showModal, estimator, toggleSettingsModal, dispatch, material} = this.props
+    const {fontSize} = this.state
     return (
       <LargeModal open={showModal} toggle={toggleSettingsModal}>
         <div className="c-settings-box">
@@ -120,6 +127,17 @@ class Settings extends Component {
             <div className="c-settings-box-image-item">
               <div className='c-settings-label'>Tax %</div>
               <NumericInput min={7} max={15} value={tax} step={0.1} mobile onChange={this.handleChangeTax.bind(this)} />
+            </div>
+            <div className="c-settings-box-image-item">
+              <div className='c-settings-label'>Font Size</div>
+              <div className='c-settings-font-size'>
+                <div className='c-settings-font-size-label small'>A</div>
+                <input type="radio" value="small" className='c-settings-input' checked={fontSize === 'small'} onChange={this.updateFontSize}/>
+                <div className='c-settings-font-size-label medium'>A</div>
+                <input type="radio" value="medium" className='c-settings-input' checked={fontSize === 'medium'} onChange={this.updateFontSize}/>
+                <div className='c-settings-font-size-label large'>A</div>
+                <input type="radio" value="large" className='c-settings-input' checked={fontSize === 'large'} onChange={this.updateFontSize}/>
+              </div>
             </div>
           </div>
         </div>

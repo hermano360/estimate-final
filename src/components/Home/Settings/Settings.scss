@@ -60,4 +60,19 @@
     margin: 10px;
     flex:2;
   }
+  &-font-size{
+    display: flex;
+    align-items: center;
+    &-label{
+      &.small{
+        font-size: 16px;
+      }
+      &.medium{
+        font-size: 18px;
+      }
+      &.large{
+        font-size: 20px;
+      }
+    }
+  }
 }

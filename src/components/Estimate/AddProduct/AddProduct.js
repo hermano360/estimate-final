@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import SimpleModal from '../../Common/SimpleModal'
+import {LargeModal} from '../../Common/SimpleModal'
 import actions from '../../../redux/actions/actions'
 import Loadable from 'react-loading-overlay'
 import request from 'superagent'
@@ -24,7 +24,8 @@ export class AddProduct extends Component {
     'keycodeError': false,
     'specificationsError': false,
     'totalMaterialError': false,
-    'laborError': false
+    'laborError': false,
+    'photo': null
   }
 
   cleanState = {
@@ -40,7 +41,8 @@ export class AddProduct extends Component {
     'keycodeError': false,
     'specificationsError': false,
     'totalMaterialError': false,
-    'laborError': false
+    'laborError': false,
+    'photo': null
   }
 
   updateProductProperty = (property, e) => {
@@ -147,9 +149,9 @@ export class AddProduct extends Component {
       loadingProduct, group, supplier, keycode,
       specifications, sku, uom, totalMaterial,
       labor, sortOrder, laborError, keycodeError,
-      totalMaterialError, specificationsError} = this.state
+      totalMaterialError, specificationsError, photo} = this.state
     return (
-      <SimpleModal open={show} toggle={this.handleToggle} className="c-addproduct-modal" >
+      <LargeModal open={show} toggle={this.handleToggle} className="c-addproduct-modal" >
         <Loadable
           active={loadingProduct}
           spinner
@@ -159,6 +161,11 @@ export class AddProduct extends Component {
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Desired Key Code</div>
               <input type="text" className={`c-addproduct-value ${keycodeError ? 'error' : ''}`} value={keycode} onChange={ e => this.updateProductProperty('keycode', e)}/>
+            </div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Photo</div>
+              <label htmlFor="product-photo" className={`c-addproduct-prop photo-label ${photo ? 'uploaded': ''}`}>{photo ? 'Uploaded':'Upload...'}</label>
+              <input type="file" accept="image/*" id="product-photo" onChange={e=>this.setState({photo: e.target.files[0]})}/>
             </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Specifications</div>
@@ -208,7 +215,7 @@ export class AddProduct extends Component {
             </div>
           </div>
         </Loadable>
-      </SimpleModal>
+      </LargeModal>
     )
   }
 }

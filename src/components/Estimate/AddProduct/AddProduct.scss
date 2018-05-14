@@ -9,6 +9,7 @@
   &-prop {
     width: 50%;
     display: inline-block;
+
   }
   &-value {
     width: 50%;
@@ -38,10 +39,22 @@
     width: 40%;
     margin-left: 30%;
     text-align: center;
-    background-color: rgb(180, 228, 28);
+    background-color: white;
     border: 1px solid black;
     color: black;
     line-height: 2rem;
     cursor: pointer;
+  }
+}
+#product-photo{
+  display: none;
+}
+
+.photo-label{
+  border: 1px solid black;
+  background-color: white;
+  &.uploaded{
+    color: green;
+    border: 1px solid green;
   }
 }

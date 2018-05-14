@@ -18,6 +18,10 @@
   width: 50%;
   display: inline-block;
 }
+
+.c-estimators-worksheet-select-container .c-estimators-worksheet-categories-select .Select-control .Select-multi-value-wrapper .Select-input input{
+  color: white;
+}
 .c-estimators-worksheet-select {
   width: 100%;
   font-size: 10px;
@@ -30,7 +34,7 @@
 
 .c-estimators-worksheet-categories-select .Select-control {
   background-color: black;
-  color: black;
+  color: white;
   border: 1px solid rgb(166, 166, 166);
 }
 
@@ -38,6 +42,8 @@
   background-color: black;
   color: white
 }
+
+
 
 .c-estimators-worksheet-list{
   margin-top: 0px;
