@@ -113,5 +113,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "engines": {
+    "node": "10.15.3"
   }
 }
