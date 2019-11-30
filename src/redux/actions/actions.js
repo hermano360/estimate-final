@@ -1,105 +1,107 @@
 // separate actions according to redux key and combine using object destructuring
 
 export const PageActions = {
-  changePage : (page) => {
+  changePage: page => {
     return {
-      type: 'CHANGE_PAGE',
-      page
-    }
+      type: "CHANGE_PAGE",
+      payload: {
+        page
+      }
+    };
   }
-}
+};
 
 export const TaxActions = {
-  changeTax : (tax) => {
+  changeTax: tax => {
     return {
-      type: 'CHANGE_TAX',
+      type: "CHANGE_TAX",
       tax
-    }
+    };
   }
-}
+};
 
 export const LaborActions = {
-  changeLabor : (labor) => {
+  changeLabor: labor => {
     return {
-      type: 'CHANGE_LABOR',
+      type: "CHANGE_LABOR",
       labor
-    }
+    };
   }
-}
+};
 
 export const MaterialActions = {
-  changeMaterial : (material) => {
+  changeMaterial: material => {
     return {
-      type: 'CHANGE_MATERIAL',
+      type: "CHANGE_MATERIAL",
       material
-    }
+    };
   }
-}
+};
 
 export const ExtraWorkActions = {
-  changeExtraWork : (extraWork) => {
+  changeExtraWork: extraWork => {
     return {
-      type: 'CHANGE_EXTRA_WORK',
+      type: "CHANGE_EXTRA_WORK",
       extraWork
-    }
+    };
   }
-}
+};
 
 export const EstimatorActions = {
-  changeEstimator : (estimator) => {
+  changeEstimator: estimator => {
     return {
-      type: 'CHANGE_ESTIMATOR',
+      type: "CHANGE_ESTIMATOR",
       estimator
-    }
+    };
   }
-}
+};
 
 export const CategoryActions = {
-  loadCategories : (categories) => {
+  loadCategories: categories => {
     return {
-      type: 'LOAD_CATEGORIES',
+      type: "LOAD_CATEGORIES",
       categories
-    }
+    };
   }
-}
+};
 
 export const ProductActions = {
-  loadProducts : (products) => {
+  loadProducts: products => {
     return {
-      type: 'LOAD_PRODUCTS',
+      type: "LOAD_PRODUCTS",
       products
-    }
+    };
   }
-}
+};
 
 export const QuoteNumberActions = {
-  setQuoteNumber : (quoteNumber) => {
+  setQuoteNumber: quoteNumber => {
     return {
-      type: 'SET_QUOTE_NUMBER',
+      type: "SET_QUOTE_NUMBER",
       quoteNumber
-    }
+    };
   }
-}
+};
 
 export const QuoteActions = {
-  loadQuotes : (quotes) => {
+  loadQuotes: quotes => {
     return {
-      type: 'LOAD_QUOTES',
+      type: "LOAD_QUOTES",
       quotes
-    }
+    };
   },
   duplicateQuote: (quote, number) => {
     return {
-      type: 'DUPLICATE_QUOTE',
+      type: "DUPLICATE_QUOTE",
       quote,
       number
-    }
+    };
   },
-  addNewQuote: (number) => {
+  addNewQuote: number => {
     return {
-      type: 'ADD_NEW_QUOTE',
+      type: "ADD_NEW_QUOTE",
       number
-    }
+    };
   },
   addToShoppingCart: (shoppingCart, quoteNumber, template) => {
     return {
@@ -107,14 +109,14 @@ export const QuoteActions = {
       shoppingCart,
       quoteNumber,
       template
-    }
+    };
   },
   removeFromShoppingCart: (itemNumber, quoteNumber) => {
     return {
       type: "REMOVE_FROM_SHOPPING_CART",
       itemNumber,
       quoteNumber
-    }
+    };
   },
   updateItemQuantity: (itemNumber, quoteNumber, quantity) => {
     return {
@@ -122,7 +124,7 @@ export const QuoteActions = {
       itemNumber,
       quoteNumber,
       quantity
-    }
+    };
   },
   updateItemKeyCode: (itemNumber, quoteNumber, product) => {
     return {
@@ -130,7 +132,7 @@ export const QuoteActions = {
       itemNumber,
       quoteNumber,
       product
-    }
+    };
   },
   editQuoteAttribute: (quoteNumber, attribute, value) => {
     return {
@@ -138,40 +140,40 @@ export const QuoteActions = {
       quoteNumber,
       attribute,
       value
-    }
+    };
   }
-}
+};
 
 export const DOMNodesActions = {
   setShoppingCartNode: (key, node) => {
     return {
-      type: 'SET_SHOPPING_CART_NODE',
+      type: "SET_SHOPPING_CART_NODE",
       key,
       node
-    }
+    };
   },
   setProductShoppingCartNode: (itemNumber, node) => {
     return {
-      type: 'SET_PRODUCT_SHOPPING_CART_NODE',
+      type: "SET_PRODUCT_SHOPPING_CART_NODE",
       itemNumber,
       node
-    }
+    };
   },
   clearShoppingCartNode: () => {
     return {
-      type: 'CLEAR_SHOPPING_CART_NODE'
-    }
+      type: "CLEAR_SHOPPING_CART_NODE"
+    };
   }
-}
+};
 
 export const DatabaseQuoteNumberActions = {
-  loadDatabaseQuoteNumbers: (databaseQuotes) => {
+  loadDatabaseQuoteNumbers: databaseQuotes => {
     return {
-      type: 'LOAD_DATABASE_QUOTE_NUMBERS',
+      type: "LOAD_DATABASE_QUOTE_NUMBERS",
       databaseQuotes
-    }
+    };
   }
-}
+};
 
 const actions = {
   ...PageActions,
@@ -186,6 +188,6 @@ const actions = {
   ...QuoteActions,
   ...DOMNodesActions,
   ...DatabaseQuoteNumberActions
-}
+};
 
-export default actions
+export default actions;

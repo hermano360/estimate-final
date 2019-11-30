@@ -297,6 +297,9 @@ export class AddProduct extends Component {
                 onChange={e => this.updateProductProperty("supplier", e)}
               >
                 <option value="">-Select-</option>
+                <option value="Walters Wholesale Electrical">
+                  Walters Wholesale Electrical
+                </option>
                 <option value="Home Depot">Home Depot</option>
                 <option value="Lowes">Lowes</option>
                 <option value="Ferguson">Ferguson</option>

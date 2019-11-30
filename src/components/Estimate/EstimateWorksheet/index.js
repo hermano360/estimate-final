@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import * as R from "ramda";
 import Select from "react-select";
 import actions from "../../../redux/actions/actions";
 import "react-select/dist/react-select.css";
 
+import enhance from "./enhance";
 import EstimateWorksheetItem from "./EstimateWorksheetItem/EstimateWorksheetItem";
 import MaterialList from "../MaterialList/MaterialList";
 import "./EstimateWorksheet.css";
@@ -27,7 +28,7 @@ class EstimateWorksheet extends Component {
       showMaterialInfo
     } = this.props;
     const { itemNumber } = this.state;
-    let { shoppingCart } = quotes[quoteNumber];
+    let shoppingCart = R.pathOr([], [quoteNumber, "shoppingCart"], quotes);
     if (itemNumber === 0 || shoppingCart.length === 0) {
       return <div />;
     } else {
@@ -190,11 +191,4 @@ class EstimateWorksheet extends Component {
   }
 }
 
-export default connect(state => {
-  return {
-    categories: state.categories,
-    products: state.products,
-    quotes: state.quotes,
-    quoteNumber: state.quoteNumber
-  };
-})(EstimateWorksheet);
+export default enhance(EstimateWorksheet);
