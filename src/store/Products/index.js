@@ -15,7 +15,9 @@ const initialState = {
   customProducts: []
 };
 
-export const findProducts = searchTerms;
+export const findProducts = searchTerms => {
+  return searchTerms;
+};
 
 export const fetchProducts = authToken => ({
   [RSAA]: {
