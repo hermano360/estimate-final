@@ -18,6 +18,7 @@ import Categories from "../store/Categories";
 import Quotes from "../store/Quotes";
 import Login from "../store/Login";
 import Products from "../store/Products";
+import Email from "../store/Email";
 
 export var configure = (initialState = {}) => {
   var reducer = combineReducers({
@@ -26,6 +27,7 @@ export var configure = (initialState = {}) => {
     Login,
     Quotes,
     Products,
+    Email,
     tax: TaxReducer,
     labor: LaborReducer,
     material: MaterialReducer,

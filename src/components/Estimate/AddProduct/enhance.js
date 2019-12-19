@@ -5,7 +5,6 @@ import { findProducts } from "../../../store/Products";
 const enhance = compose(
   connect(
     state => {
-      console.log(state);
       return {
         reduxState: state
       };
@@ -15,9 +14,7 @@ const enhance = compose(
     }
   ),
   lifecycle({
-    async componentDidMount() {
-      console.log("cdm");
-    }
+    async componentDidMount() {}
   })
 );
 

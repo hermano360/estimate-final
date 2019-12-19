@@ -3,7 +3,7 @@ import DateTimeField from "react-bootstrap-datetimepicker";
 import Loadable from "react-loading-overlay";
 import * as R from "ramda";
 import EstimateWorksheet from "../../components/Estimate/EstimateWorksheet";
-import EmailFile from "../../components/Estimate/EmailFile/EmailFile";
+import EmailFile from "../../components/Estimate/EmailFile";
 import AddProduct from "../../components/Estimate/AddProduct/AddProduct";
 import AddTemplate from "../../components/Estimate/AddTemplate/AddTemplate";
 import RemoveQuote from "../../components/Estimate/RemoveQuote/RemoveQuote";
@@ -351,6 +351,7 @@ const Estimate = props => {
           name={`${currentQuote.customerFirstName} ${currentQuote.customerLastName}`}
           baseURL={baseURL}
           toggleLoading={toggleLoading}
+          {...props}
         />
 
         <AddProduct

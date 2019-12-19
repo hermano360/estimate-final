@@ -2,18 +2,16 @@ import { compose } from "recompose";
 
 import { connect } from "react-redux";
 
-export default connect(state => {
-  return {
-    quoteNumber: state.quoteNumber
-  };
-})(EmailFile);
+import { emailDocument } from "../../../store/Email";
 
 const enhance = compose(
   connect(
-    ({ quoteNumber }) => ({
-      quoteNumber
-    }),
-    {}
+    ({ quoteNumber }) => {
+      return {
+        quoteNumber
+      };
+    },
+    { emailDocument }
   )
 );
 

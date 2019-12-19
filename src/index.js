@@ -9,8 +9,6 @@ import baseURL from "./pages/baseURL";
 const { Provider } = require("react-redux");
 const store = require("./redux/configureStore.js").configure();
 
-console.log(baseURL);
-
 const Products = props => {
   return <div>Products</div>;
 };

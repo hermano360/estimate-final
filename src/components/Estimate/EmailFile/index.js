@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import TiArrowLeftOutline from "react-icons/lib/ti/arrow-left-outline";
-import TiArrowRightOutline from "react-icons/lib/ti/arrow-right-outline";
-import Loadable from "react-loading-overlay";
+// import TiArrowLeftOutline from "react-icons/lib/ti/arrow-left-outline";
+// import TiArrowRightOutline from "react-icons/lib/ti/arrow-right-outline";
+// import Loadable from "react-loading-overlay";
 import SimpleModal from "../../Common/SimpleModal";
 import request from "superagent";
+import baseURL from "../../baseURL";
 
 import enhance from "./enhance";
+import { determineSubmitError } from "./utils";
 import "./EmailFile.scss";
 
 export class EmailFile extends Component {
@@ -44,57 +45,63 @@ export class EmailFile extends Component {
       fileError: false
     });
   }
+  removeEmptyItems(quote) {
+    return {
+      ...quote,
+      shoppingCart: [...quote.shoppingCart].filter(item => {
+        return item.quantity !== 0;
+      })
+    };
+  }
 
-  handleSubmit() {
+  async handleSubmit() {
     const { fileToBeSent, recipientName, recipientEmail } = this.state;
-    const { name, baseURL, toggleLoading, toggleEmailFile } = this.props;
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    let errorObject = {};
+    const { name, toggleEmailFile, emailDocument } = this.props;
+
+    const { quotes, quoteNumber, grandTotal } = this.props;
+
+    const quoteInformation = this.removeEmptyItems(quotes[quoteNumber]);
+
     let finalName = recipientName === "" ? name : recipientName;
-
-    if (fileToBeSent === "") {
-      errorObject.fileError = true;
-    }
-    if (finalName === "") {
-      errorObject.nameError = true;
-    }
-    if (recipientEmail === "" || !emailRegex.test(recipientEmail)) {
-      errorObject.emailError = true;
-    }
-    if (Object.keys(errorObject).length > 0) {
-      this.setState(errorObject);
-    } else {
-      toggleLoading();
-
-      request
-        .post(`${baseURL}/email/${fileToBeSent}`)
-        .set("Content-Type", "application/json")
-        .send({
-          name: finalName,
-          email: recipientEmail
-        })
-        .then(res => {
-          toggleLoading();
-          toggleEmailFile();
-          console.log(res);
-          this.setState({
-            fileToBeSent: "",
-            recipientName: "",
-            recipientEmail: "",
-            loadingEmail: false
+    if (quotes[quoteNumber].shoppingCart.length > 0) {
+      if (fileToBeSent === "estimate") {
+        console.log("start", fileToBeSent);
+        await request
+          .post(`${baseURL}/assets/estimate`)
+          .set("Content-Type", "application/json")
+          .send({
+            quoteInformation,
+            total: grandTotal
           });
-        })
-        .catch(err => {
-          toggleLoading();
-          console.log(err);
-        });
+        console.log("end", fileToBeSent);
+      } else {
+        console.log("start", fileToBeSent);
+        await request
+          .post(`${baseURL}/assets/shopping-list`)
+          .set("Content-Type", "application/json")
+          .send({
+            shoppingList: quotes[quoteNumber].shoppingCart,
+            quoteNumber,
+            total: grandTotal
+          });
+        console.log("end", fileToBeSent);
+      }
     }
+    await emailDocument(finalName, recipientEmail, fileToBeSent);
+    toggleEmailFile();
+    this.setState({
+      fileToBeSent: "",
+      recipientName: "",
+      recipientEmail: "",
+      loadingEmail: false
+    });
   }
 
   render() {
     const { loadingEmail } = this.state;
-    const { dispatch, show, toggleEmailFile } = this.props;
+    const { dispatch, show, toggleEmailFile, quoteNumber } = this.props;
     let name = this.props.name.trim();
+
     const {
       recipientName,
       recipientEmail,
@@ -107,15 +114,23 @@ export class EmailFile extends Component {
     if (recipientName !== "") {
       name = recipientName;
     }
-    console.log(fileToBeSent);
+    // console.log(fileToBeSent);
 
     return (
       <SimpleModal
         open={show}
-        toggle={toggleEmailFile}
+        toggle={() => {
+          this.setState({
+            fileToBeSent: "",
+            recipientName: "",
+            recipientEmail: "",
+            loadingEmail: false
+          });
+          toggleEmailFile();
+        }}
         className="c-emailfile-modal"
       >
-        <div className="c-emailfile-header">Email File</div>
+        <div className="c-emailfile-header">Email Quote #{quoteNumber}</div>
 
         <div className="c-emailfile-options-files">
           <div className="c-emailfile-option">
@@ -165,9 +180,15 @@ export class EmailFile extends Component {
           value={recipientEmail}
           onChange={e => this.handleEmailChange(e.target.value)}
         />
-        <div className="c-emailfile-options-send" onClick={this.handleSubmit}>
-          Send
-        </div>
+        {determineSubmitError(name, recipientEmail, fileToBeSent) ? (
+          <div className="c-emailfile-error-message">
+            {determineSubmitError(name, recipientEmail, fileToBeSent)}
+          </div>
+        ) : (
+          <div className="c-emailfile-options-send" onClick={this.handleSubmit}>
+            Send
+          </div>
+        )}
       </SimpleModal>
     );
   }

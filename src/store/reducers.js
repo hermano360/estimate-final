@@ -4,6 +4,7 @@ import PageReducer from "./Page";
 import TaxReducer from "./Tax";
 import LaborReducer from "./Labor";
 import MaterialReducer from "./Material";
+import EmailReducer from "./Email";
 import ExtraWorkReducer from "./ExtraWork";
 import EstimatorReducer from "./Estimator";
 import CategoriesReducer from "./Categories";
@@ -28,7 +29,8 @@ const appReducers = {
   QuoteNumberReducer,
   DOMNodesReducer,
   DatabaseQuoteNumbersReducer,
-  Estimate
+  Estimate,
+  EmailReducer
 };
 
 const rootReducer = combineReducers({

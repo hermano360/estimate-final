@@ -1,26 +1,30 @@
-.c-emailfile{
-  &-header{
+.c-emailfile {
+  &-header {
     font-size: 24px;
+  }
+  &-error-message {
+    color: red;
+    margin: 10px;
   }
   &-modal {
     text-align: center;
 
-      .modal-header{
-        border-bottom: none;
-      }
-      .modal-body {
-        width: 90%;
-        margin-left: 5%;
-        border: 2px solid green;
-        border-radius: 10px;
-      }
-      .modal-content {
-        background-color: #F2E1B2;
-        width: 70%;
-        margin-left: 15%;
-      }
+    .modal-header {
+      border-bottom: none;
+    }
+    .modal-body {
+      width: 90%;
+      margin-left: 5%;
+      border: 2px solid green;
+      border-radius: 10px;
+    }
+    .modal-content {
+      background-color: #f2e1b2;
+      width: 70%;
+      margin-left: 15%;
+    }
   }
-  &-option{
+  &-option {
     display: flex;
     align-items: center;
 
@@ -38,33 +42,31 @@
     }
   }
 
-
-  &-options{
-  &-input{
-    width: 100%;
-    margin-top: 10px;
-    text-align: center;
-    font-size: 16px;
-    padding-top: 5%;
-    padding-bottom: 5%;
-    &.invalid{
-      border:2px solid red;
+  &-options {
+    &-input {
+      width: 100%;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 16px;
+      padding-top: 5%;
+      padding-bottom: 5%;
+      &.invalid {
+        border: 2px solid red;
+      }
+    }
+    &-send {
+      width: 50%;
+      margin-left: 25%;
+      background-color: white;
+      border: 1px solid black;
+      padding-top: 5%;
+      padding-bottom: 5%;
+      cursor: pointer;
+      margin-top: 10%;
+      font-size: 16px;
+      text-align: center;
+      color: #006600;
+      border-radius: 15px;
     }
   }
-  &-send {
-    width: 50%;
-    margin-left: 25%;
-    background-color: white;
-    border: 1px solid black;
-    padding-top: 5%;
-    padding-bottom: 5%;
-    cursor: pointer;
-    margin-top: 10%;
-    font-size: 16px;
-    text-align: center;
-    color: #006600;
-    border-radius: 15px;
-  }
-}
-
 }

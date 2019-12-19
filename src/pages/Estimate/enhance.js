@@ -27,7 +27,8 @@ const enhance = compose(
       databaseQuoteNumbers,
       labor,
       material,
-      tax
+      tax,
+      Quotes
     }) => {
       return {
         estimator,
@@ -37,7 +38,8 @@ const enhance = compose(
         databaseQuoteNumbers,
         labor,
         material,
-        tax
+        tax,
+        quoteBusy: R.pathOr("", ["busy"], Quotes)
       };
     },
     {
@@ -51,7 +53,6 @@ const enhance = compose(
       findProducts
     }
   ),
-  withProps(console.log),
   withState("currentDate", "setCurrentDate", ""),
   withState("showTotal", "toggleShowTotal", false),
   withState("showEmailFile", "setShowEmailFile", false),
@@ -62,8 +63,8 @@ const enhance = compose(
   withState("showMaterialInfo", "toggleShowMaterial", false),
   withState("loadingSave", "setLoadingSave", false),
   withHandlers({
-    toggleLoading: ({ setLoadingState, loadingSave }) => () => {
-      setLoadingState(!loadingSave);
+    toggleLoading: ({ setLoadingSave, loadingSave }) => () => {
+      setLoadingSave(!loadingSave);
     },
     toggleEmailFile: ({ showEmailFile, setShowEmailFile }) => () => {
       setShowEmailFile(!showEmailFile);
@@ -192,12 +193,32 @@ const enhance = compose(
     }
   }),
   lifecycle({
-    async componentDidMount() {
-      const { quotes, setQuoteNumber, addNewQuote } = this.props;
+    componentDidMount() {
+      const { quotes, setQuoteNumber, addNewQuote, quoteBusy } = this.props;
       const availableQuoteNumbers = findAvailableQuoteNumbers(quotes);
       if (availableQuoteNumbers.length > 0) {
         setQuoteNumber(availableQuoteNumbers[0]);
-      } else {
+      } else if (!quoteBusy) {
+        debugger;
+        addNewQuote(1);
+        setQuoteNumber(1);
+      }
+    },
+    componentDidUpdate(prevProps) {
+      const { quotes, setQuoteNumber, addNewQuote, quoteBusy } = this.props;
+      const { quotes: prevQuotes = {} } = prevProps;
+      const availableQuoteNumbers = findAvailableQuoteNumbers(quotes);
+      if (
+        Object.keys(prevQuotes).length === 0 &&
+        availableQuoteNumbers.length > 0
+      ) {
+        setQuoteNumber(availableQuoteNumbers[0]);
+      } else if (
+        prevProps.quoteBusy &&
+        !quoteBusy &&
+        availableQuoteNumbers.length === 0
+      ) {
+        debugger;
         addNewQuote(1);
         setQuoteNumber(1);
       }
