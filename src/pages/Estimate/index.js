@@ -1,7 +1,7 @@
 import React from "react";
 import DateTimeField from "react-bootstrap-datetimepicker";
 import Loadable from "react-loading-overlay";
-
+import * as R from "ramda";
 import EstimateWorksheet from "../../components/Estimate/EstimateWorksheet";
 import EmailFile from "../../components/Estimate/EmailFile/EmailFile";
 import AddProduct from "../../components/Estimate/AddProduct/AddProduct";
@@ -50,17 +50,14 @@ const Estimate = props => {
   } = props;
   const availableQuoteNumbers = findAvailableQuoteNumbers(quotes);
   const quoteNumber = props.quoteNumber || availableQuoteNumbers[0];
-  const currentQuote = quotes[quoteNumber];
+  const currentQuote = R.pathOr({}, [quoteNumber], quotes);
 
   let loading = props.loading || loadingSave;
   const estimator = chooseEstimator(
-    quotes[quoteNumber].estimator,
+    currentQuote.estimator,
     localStorage.getItem("estimator")
   );
-  const currentDate = getCurrentDate(
-    props.currentDate,
-    quotes[quoteNumber].date
-  );
+  const currentDate = getCurrentDate(props.currentDate, currentQuote.date);
   const grandTotal = generateTotal(currentQuote);
 
   return (

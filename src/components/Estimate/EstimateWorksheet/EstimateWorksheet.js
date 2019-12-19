@@ -67,7 +67,7 @@ class EstimateWorksheet extends Component {
     toggleShowMaterial();
   }
 
-  generateEstimateWorksheet(shoppingCart, productList) {
+  generateEstimateWorksheet(shoppingCart = [], productList = []) {
     const { retrieveProducts } = this.props;
     return shoppingCart.map((shoppingCartItem, i) => {
       const { keycode, group } = shoppingCartItem;

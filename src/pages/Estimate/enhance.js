@@ -9,12 +9,11 @@ import * as R from "ramda";
 import { connect } from "react-redux";
 import { changePage } from "../../store/Page";
 import { saveQuote } from "../../store/Quotes";
-
+import { findProducts } from "../../store/Products";
 import {
   findAvailableQuoteNumbers,
   chooseEstimator,
-  getCurrentDate,
-  formatDate
+  getCurrentDate
 } from "./utils";
 import actions from "../../redux/actions/actions";
 
@@ -48,9 +47,11 @@ const enhance = compose(
       setShoppingCartNode: actions.setShoppingCartNode,
       editQuoteAttribute: actions.editQuoteAttribute,
       changePage,
-      saveQuote
+      saveQuote,
+      findProducts
     }
   ),
+  withProps(console.log),
   withState("currentDate", "setCurrentDate", ""),
   withState("showTotal", "toggleShowTotal", false),
   withState("showEmailFile", "setShowEmailFile", false),
@@ -191,7 +192,7 @@ const enhance = compose(
     }
   }),
   lifecycle({
-    componentDidMount() {
+    async componentDidMount() {
       const { quotes, setQuoteNumber, addNewQuote } = this.props;
       const availableQuoteNumbers = findAvailableQuoteNumbers(quotes);
       if (availableQuoteNumbers.length > 0) {

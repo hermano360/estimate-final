@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { LargeModal } from "../../Common/SimpleModal";
-import actions from "../../../redux/actions/actions";
 import Loadable from "react-loading-overlay";
 import request from "superagent";
 
-import baseURL from "../../baseURL";
-
+import enhance from "./enhance";
 import "./AddProduct.scss";
 
 export class AddProduct extends Component {
@@ -25,7 +22,8 @@ export class AddProduct extends Component {
     specificationsError: false,
     totalMaterialError: false,
     laborError: false,
-    photo: null
+    photo: null,
+    search: ""
   };
 
   cleanState = {
@@ -142,6 +140,12 @@ export class AddProduct extends Component {
       });
     }
   };
+  handleSearch = async () => {
+    const { findProducts } = this.props;
+    const { search } = this.state;
+    const result = await findProducts("home-depot", search);
+    console.log(result);
+  };
 
   renderGroupOptions = () => {
     let groups = [];
@@ -187,7 +191,8 @@ export class AddProduct extends Component {
       keycodeError,
       totalMaterialError,
       specificationsError,
-      photo
+      photo,
+      search
     } = this.state;
     return (
       <LargeModal
@@ -202,6 +207,20 @@ export class AddProduct extends Component {
         >
           <div className="c-addproduct-body">
             <div className="c-addproduct-header">Add Product</div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-prop">Search</div>
+              <input
+                type="text"
+                className={`c-addproduct-value ${keycodeError ? "error" : ""}`}
+                value={search}
+                onChange={e => this.updateProductProperty("search", e)}
+              />
+            </div>
+            <div className="c-addproduct-group">
+              <div className="c-addproduct-submit" onClick={this.handleSearch}>
+                Search
+              </div>
+            </div>
             <div className="c-addproduct-group">
               <div className="c-addproduct-prop">Desired Key Code</div>
               <input
@@ -325,4 +344,4 @@ export class AddProduct extends Component {
   }
 }
 
-export default AddProduct;
+export default enhance(AddProduct);

@@ -1,9 +1,11 @@
 import * as R from "ramda";
 import { RSAA } from "redux-api-middleware";
 import { makeApiTypes, getApiPath } from "../utils";
+import request from "superagent";
 
 export const types = {
   ...makeApiTypes("FETCH_PRODUCTS", "products"),
+  ...makeApiTypes("FIND_PRODUCT", "products"),
   ...makeApiTypes("FETCH_CUSTOM_PRODUCTS", "products"),
   ...makeApiTypes("CREATE_PRODUCT", "products")
 };
@@ -15,9 +17,16 @@ const initialState = {
   customProducts: []
 };
 
-export const findProducts = searchTerms => {
-  return searchTerms;
-};
+export const findProducts = (store, searchTerm) => ({
+  [RSAA]: {
+    endpoint: getApiPath(`products/find/${store}?search=${searchTerm}`),
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    types: Object.values(makeApiTypes("FIND_PRODUCT", "products"))
+  }
+});
 
 export const fetchProducts = authToken => ({
   [RSAA]: {
